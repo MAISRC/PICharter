@@ -1,0 +1,1265 @@
+@font-face {
+  src: url('OpenSans-VariableFont_wdth,wght.ttf') format('truetype');
+  font-family: "OpenSans";
+  font-weight: 100 900;
+  font-style: normal;
+}
+
+body {
+  background-color: #FAFAFA;
+  color: #7a0019;
+  font-family: "OpenSans", Arial, sans-serif;
+  font-size: large;
+}
+
+/* Consistent global focus indicator */
+:focus-visible {
+  outline: 3px solid #900021 !important;  /* Choose your high-contrast color */
+  outline-offset: 1px !important;
+}
+
+/* Optional: remove focus ring for mouse clicks (but still allow keyboard nav) */
+:focus:not(:focus-visible) {
+  outline: none !important;
+}
+
+div.tab-content {
+  min-width: 320px;
+}
+
+/* THIS TARGETS A ROW CREATED BY NAVBARPAGE THAT IS WHERE THE LOGO AND NAV BUTTONS LIVE WITHIN. */
+header {
+  margin-left: 0px !important;
+  margin-right: 0px !important;
+  min-width: 320px;
+}
+
+button.btn-default, a.skip-link {
+ color: #7a0019;
+ font-weight: bold;
+ font-size: 100%;
+ border: 2px solid black;
+}
+
+button.btn.disabled {
+  color: gray;
+}
+
+.shiny-input-container, .shiny-bound-input {
+  color: black;
+  text-align: left;
+  font-size: 95%;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+div.datatables {
+  background-color: #FAFAFA;
+  color: black;
+  padding: 2% 2% 2% 2%;
+  margin-bottom: 2%;
+  font-size: 80%;
+}
+
+div.standardTable {
+  border: 2px solid black;
+  background-color: #FAFAFA;
+}
+
+div.leaderboards {
+  height: 404px;
+  background-color: #FAFAFA;
+  overflow-y: auto;
+  margin-bottom: 10px;
+}
+
+div.dropdown-menu {
+  color: black; 
+  background-color: #FAFAFA;
+  z-index: 1001;
+}
+
+nav.navbar {
+  visibility: hidden;
+  height: 0px;
+  min-height: 0px;
+}
+
+div.navbar-collapse {
+  visibility: hidden;
+  height: 0px !important;
+}
+
+a, #download_table, #download_records, #download_directory {
+  color: #704D00;
+  text-decoration: underline;
+  font-size: 90%;
+}
+
+a:hover, #download_table:hover, #download_records:hover, #download_directory:hover {
+  color: #664600;
+}
+
+a:visited, #download_table:visited, #download_records:visited, #download_directory:visited {
+  color: #704D00;
+}
+
+a.mapInputs:visited {
+  color: #7a0019;
+}
+
+div.navbar-header {
+  visibility: hidden;
+  height: 0px;
+}
+
+i.fa-download {
+  visibility: hidden;
+  width: 0px;
+}
+
+.mapInputs {
+  background-color: #FAFAFA; 
+  color: #7a0019; 
+  width: 100%;
+  height: 41.225px;
+  white-space: normal;
+  border-color: black; 
+  border-width: 2px; 
+  text-align: center;
+  font-weight: bold;
+  text-decoration: none !important;
+  font-size: 100%;
+}
+
+#selectAll:hover, #clearActives:hover, #taxa_list:hover, #lakes_list:hover, #commonVsSci:hover, #browse_info:hover, #new_sub_showhide:hover, #switch_leaderboard:hover, #switch_browse:hover, #switch_submissions:hover, #toggle_filters:hover, button.btn-default:hover, #browse_disclaimers:hover, #records_disclaimers:hover, #LFOO_explanation:hover, #graph_features:hover, #abundance_map_download {
+  background-color: #900021;
+  color: white }
+  
+div#leaderboardPara {
+  padding-left: 5%; 
+  padding-right: 5%;
+  font-size: 100%;
+  margin-bottom: 15px;
+  min-width: 320px;
+}
+
+div.leaderboardSubParas {
+  font-size: 80%;
+  text-align: center;
+}
+
+div.mistakeNote {
+  font-size: 80%; 
+  margin-bottom: 15px;
+  padding-left: 2%;
+  padding-right: 2%;
+  min-width: 320px;
+}
+
+footer#footerText {
+  font-size: 75%; 
+  padding-left: 1%; 
+  margin-bottom: 10px;
+  margin-top: -30px;
+  text-align: center;
+}
+
+div#heresTheTable, div#survey_table {
+  min-height: 400px;
+  max-height: 60vh;
+  background-color: #FAFAFA;
+  overflow-y: auto;
+  margin-bottom: 1%;
+}
+
+@media (min-width: 1719px) {
+  div#heresTheTable {
+  height: 550px;
+  max-height: 70vh;
+}
+}
+
+@media (min-width: 1416px) and (max-width: 1718px) {
+  div#heresTheTable {
+  height: 575px; /*TO MATCH WITH LEAFLET + CAPTION ON SLIGHTLY SMALLER SCREEN WIDTH. */
+  max-height: 70vh;
+}
+}
+
+@media (min-width: 1360px) and (max-width: 1415px) {
+  div#heresTheTable {
+  height: 600px; /*TO MATCH WITH LEAFLET + CAPTION ON SLIGHTLY SMALLER SCREEN WIDTH. */
+  max-height: 70vh;
+}
+}
+
+@media (min-width: 1283px) and (max-width: 1359px) {
+  div#heresTheTable {
+  height: 625px; /*TO MATCH WITH LEAFLET + CAPTION ON SLIGHTLY SMALLER SCREEN WIDTH. */
+  max-height: 70vh;
+}
+}
+
+/*AT LOWER SCREEN SIZES, ONCE WE'RE IN COLUMN FORMAT, LET THE TABLE GO A LITTLE BIT WILD IN TERMS OF HEIGHTS TO BE MORE READABLE. */
+@media (max-width: 1282px) {
+  #DataTables_Table_0_wrapper > div.dataTables_scroll > div.dataTables_scrollBody {
+  height: max-content !important;
+  }
+  div#heresTheTable {
+    min-height: unset;
+    max-height: 450px;
+    height: unset;
+  }
+}
+
+div#theTableIsHere {
+  min-height: 536px;
+  max-height: 60vh;
+  overflow-y: scroll;
+}
+
+div#surveys_metadata_div {
+  min-height: 536px;
+  max-height: 60vh;
+  background-color: #FAFAFA;
+  overflow-y: auto;
+  margin-bottom: 1%;
+}
+
+div#survey_table {
+  width: auto;
+  max-width: 95%;
+  margin: 15px auto;
+}
+
+#taxon_pct_covers_table {
+  max-width: 100%;
+  font-size: 90%;
+  padding: 15px;
+}
+
+.infoPopUpsText {
+  font-size: 120%;
+  color: #7a0019;
+  margin: 15px; /* ON NARROW SCREENS, KEEPS THESE FROM FEELING TOO TIGHT. */
+}
+
+.modal-title {
+  font-size: x-large; /* LOOKS SMALL ON NARROW SCREENS OTHERWISE */
+}
+
+.dt-top {
+  vertical-align: top !important;
+}
+
+div#new_sub_instruct {
+  max-height: 250px;
+  overflow-y: auto;
+  padding-top: 0%;
+  margin: 20px auto;
+  max-width: 90%;
+}
+
+h3 {
+  display: inline;
+  font-weight: bold;
+  color: #7a0019;
+  padding-right: 2%;
+}
+
+span.delete_ambig_header {
+  color: purple !important;
+  padding-top: 2%;
+  padding-bottom: 2%;
+  font-size: 85%;
+}
+
+span.delete_text {
+  color: darkred !important;
+  padding-top: 2%;
+  padding-bottom: 2%;
+  font-size: 85%;
+  font-weight: bold;
+}
+
+span.ambig_text {
+  color: blue !important;
+  padding-top: 2%;
+  padding-bottom: 2%;
+  font-size: 85%;
+  font-weight: bold;
+}
+
+#texty_columns2, #file_type_warning, #loc_file_warning, #confused_warning, #row_end_warning, #row_start_warning, #date_val_warning, #surveyors_val_warning, #email_val_warning, #name_val_warning, #utm_warning, #active_filters_conflict, #depth_unit_warning, #rake_unit_warning, #flip_table_warning, #column_name_warning, #column_val_warning {
+  font-size: 85%;
+  color: #7a0019;
+  max-width: 96%;
+  margin: 5px auto;
+  font-weight: bold;
+}
+
+div.absences_nonthrows {
+  background-color: #FAFAFA;
+  color: #7a0019;
+  border-width: 2px;
+  border-color: black;
+  border-style: solid;
+  margin-left: 10%;
+  margin-right: 10%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  width: 80%;
+  overflow-x: auto;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+@media (max-width: 1137px) {
+  div.absences_nonthrows {
+    font-size: 70%;
+  }
+}
+
+table.absences_nonthrows tr {
+  border-bottom-color: gray;
+  border-bottom-style: solid;
+  border-width: 2px;
+}
+
+table.absences_nonthrows, div.absences_nonthrows p {
+  padding: 10px;
+}
+
+table.absences_nonthrows th, table.absences_nonthrows td {
+  padding: 10px;
+}
+
+.greenme {
+  color: black;
+  background-color: #CCDDAA;
+}
+
+.redme {
+  color: black;
+  background-color: #FFCCCC;
+}
+
+img {
+  object-fit: contain;
+  max-height: 100px;
+  max-width: 100%;
+  margin-top: 10px;
+}
+
+.map_hovers {
+  font-size: 100% !important;
+  box-shadow: 3px 3px rgba(0,0,0,0.25);
+  border-color: rgba(0,0,0,0.5);
+  color: #5b0013; 
+  min-width: 10%;
+  min-height: 10%;
+}
+
+.waiter-overlay.waiter-local {
+  left: 0 !important;  
+}
+
+select.form-control>option {
+  white-space: break-spaces;
+}
+
+div.modal-body {
+  color: black;
+  display: flex;
+  justify-content: center;
+}
+
+div.modal-header {
+  text-align: center;
+}
+
+#browse_disclaimers, #records_disclaimers {
+  min-width: 320px;
+  margin: 5px auto !important; 
+  max-width: 320px;
+}
+
+#graph_features {
+  min-width: 300px;
+  margin: 5px 0px 0px -20px !important; 
+  max-width: 300px;
+}
+
+#browse_info, #toggle_filters {
+  min-width: 320px;
+  max-width: 320px;
+  margin-bottom: 10px;
+  margin-left: 5px !important;
+  margin-right: 5px !important;
+}
+
+#LFOO_explanation {
+  min-width: 300px;
+  margin: 15px auto 5px auto !important; 
+  max-width: 300px;
+}
+
+
+ul#submission_tabset {
+  
+  background-color: #EEE;
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+  border: 2px solid gray;
+  border-radius: 5px; 
+  flex-wrap: wrap;
+  
+}
+
+ul#submission_tabset>li {
+  
+  width: 4.8%;
+  min-width: 50px;
+  font-size: 125%;
+  text-align: center;
+  background-color: white;
+  border-radius: 0px;
+  margin: 5px 2px;
+  
+}
+
+ul#submission_tabset>li>a {
+  
+  text-decoration: none;
+  color: black;
+  font-weight: bold;
+  pointer-events: none;
+}
+
+.nav-pills>li.active>a {
+  
+  background-color: indianred;
+  border: 2px solid black;
+}
+
+.new_sub_divs, div.sub_2pane_div {
+  
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding: 15px;
+  background: white;
+  display: flex;
+  max-height: 60vh;
+  overflow-y: auto;
+  
+}
+
+.new_sub_divs {
+  display: flex;
+  flex-direction: column;
+}
+
+div.new_sub_divs_halfL {
+  width: 48%;
+  margin-right: 1%;
+}
+
+div.new_sub_divs_halfR {
+  width: 48%;
+  margin-left: 1%;
+  max-height: 525px;
+  overflow-y: scroll;
+}
+
+#new_sub_back, #new_sub_next {
+  margin: 10px;
+  height: 50px;
+  padding: 5px;
+  text-align: center;
+}
+
+div#next_back_div {
+  
+  display: flex;
+  justify-content: center;
+  
+}
+
+.selectize-dropdown {
+        min-height: 100px;
+        overflow-y: auto;
+      }
+      
+.active-previous a { 
+  background-color: indianred; 
+}
+
+#new_sub_showhide {
+  margin-bottom: 10px;
+  width: 320px;
+}
+
+div.datepicker {
+  z-index: 1000 !important;
+}
+
+.flex_div {
+  display: flex;
+  flex-direction: column;
+}
+
+.add50height {
+  height: 40vh;
+}
+
+button.navbuttons {
+  max-width: 320px;
+  min-width: 320px;
+  background-color: #FAFAFA;
+  border: 2px solid black;
+  margin: 5px 5px;
+  display: flex;
+  justify-content: center;
+}
+
+h2.navbuttons {
+  max-width: 300px;
+  min-width: 300px;
+  font-weight: bold;
+  font-size: 175%;
+  text-align: center;
+  color: #C28100;
+}
+
+button.navbuttons_active,
+button.navbuttons:focus-visible,
+button.navbuttons:focus,
+button.navbuttons:active,
+button.navbuttons:hover {
+  background-color: #900021 !important;
+  color: white !important;
+}
+
+button.navbuttons_active h2 span,
+button.navbuttons:focus-visible h2 span,
+button.navbuttons:focus h2 span,
+button.navbuttons:active h2 span,
+button.navbuttons:hover h2 span {
+  color: white !important;
+}
+
+#filter_dow, #filter_county, #filter_taxa {
+  min-width: 305px;
+  max-width: 31%;
+}
+
+@media screen and (max-width: 776px) {
+  div.selectors {
+  width: 265px;
+ }
+}
+
+.browse_buttons {
+  min-width: 310px;
+  max-width: 310px;
+  margin: 5px;
+}
+
+#reset_button2, #download_now2 {
+  max-width: 500px;
+  margin: 5px auto;
+}
+
+#abundance_map_download {
+  max-width: 298px;
+  min-width: 276px;
+  margin: 5px auto;
+}
+
+fieldset#records_formleft, div#records_form_abund, #records_formright {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+div#records_form_abund {
+  height: 512px;
+  justify-content: center;
+  max-width: 320px;
+}
+
+#records_formright>div.tabbable {
+  max-width: 100%;
+  min-width: 298px;
+  width: 100%;
+}
+
+button.howtomodalbuttons {
+  width: 100%;
+  min-width: 320px;  
+  margin: 5px auto;
+  text-wrap: wrap;
+}
+
+div.howtoanswers {
+  margin: 15px; /* ESSENTIAL ON SMALL SCREEN WIDTHS TO MAKE THEM NOT LOOK TIGHT. */
+}
+
+.new_sub_divs>div.shiny-input-container {
+  max-width: 96%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.flexthis {
+  display: flex;
+}
+
+.flexcol {
+  flex-direction: column;
+}
+
+.width100 {
+  width: 100%;
+}
+
+.justifycenter {
+  justify-content: center;
+}
+
+.flexwrap {
+  flex-wrap: wrap;
+}
+
+.autoleftrightmarg {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.flexend {
+  align-items: flex-end;
+}
+
+.centertext {
+  text-align: center;
+}
+
+button.nextback {
+  max-width: 100px;
+}
+
+/* Define CSS for slide-in animation for submission tabsets */
+.fade-in {
+  animation: slideIn 0.75s ease;
+}
+
+/* Define CSS for slide-in animation for submission tabsets */
+.fade-inL {
+  animation: slideInL 0.75s ease;
+}
+
+/* Define CSS for fade-out animation for submission tabsets */
+.fade-out {
+  animation: fadeOut 0.75s ease;
+}
+
+/* Keyframes for fade-in animation -- slide in from right and fade in */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(100%); 
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0%);
+  }
+}
+
+/* Keyframes for fade-in animation -- slide in from left and fade in */
+@keyframes slideInL {
+  from {
+    opacity: 0;
+    transform: translateX(-100%); 
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0%);
+  }
+}
+
+/* Keyframes for fade-out animation */
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+span.boldthis {
+  font-weight: bold;
+}
+
+span.specialleftpadding {
+  display: inline-block;
+  padding-left: 10px;
+}
+
+div#lakefinder_note {
+  font-size: 90%;
+  margin-bottom: 5px; 
+  min-width: 320px;
+}
+
+#LFOO_explanation_div {
+  padding-right: 20px;
+  border-radius: 15px;
+  border: 3px solid #7a0019;
+  max-width: 95%;
+  min-width: 300px !important;
+}
+
+#graph_features_div {
+  border-radius: 15px;
+  border: 3px solid #7a0019;
+  min-width: 300px; 
+  max-width: max(300px, 90%);
+  margin-left: 0px;
+  margin-right: 0px
+}
+
+/* IT SPILLS OUT OF ITS HOUSE AT THESE WIDTHS OTHERWISE, BUT NOT AT OTHERS. */
+@media (max-width: 400px) {
+  #graph_features_div {
+  margin-left: -5px !important;
+  }
+}
+
+span.italicize {
+  font-style: italic;
+}
+
+ul#records_outputs>li>a {
+  text-align: center;
+}
+
+ul#records_outputs>li {
+  text-align: center;
+  min-width: 320px;
+  flex: 1 1 auto;
+}
+
+/* WHEN IT WOULD WANT TO BREAK INTO 2 AND 1, PREVENT THAT AND FORCE IT INTO ONE COLUMN. */
+@media (min-width: 715px) and (max-width: 1388px) {
+  ul#records_outputs>li {
+   display: flex;
+   flex-direction: column; 
+  }
+  ul#records_outputs {
+    flex-direction: column;
+  }
+}
+/* THIS'LL KEEP THESE FROM GETTING UNEVEN IN SIZE. */
+@media (min-width: 1387px) {
+  ul#records_outputs>li {
+    max-width: 33.333333333%;
+  }
+}
+
+ul#records_outputs {
+  margin-left: 0px;
+  margin-right: 0px;
+  display: flex;
+  min-width: 320px;
+  flex-wrap: wrap;
+}
+
+fieldset#records_formleft>div {
+  min-width: 320px;
+}
+
+/* GET THINGS TO BE MORE IN A LINE. */
+fieldset#records_formleft, #records_formright {
+  padding-left: 0px !important;
+}
+
+/* THE SELECTOR HAVE THEIR MENUS TOO FAR IN OTHERWISE */
+fieldset#records_formleft > div:nth-child(2) > div,
+fieldset#records_formleft > div:nth-child(2) > div > div,
+#records_surveys {
+  margin-left: 0px !important;
+}
+
+div#abundance_map {
+  width: 100%;
+  height: 512px !important;
+}
+
+input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+}
+
+#LFOO_graph {
+  min-height: 525px;
+  max-width: 95%;
+}
+
+ul#records_outputs>li>a, ul#LFOO_tabset>li>a {
+  border-top: 2px solid #7a0019;
+  border-left: 2px solid #7a0019;
+  border-right: 2px solid #7a0019;
+  border-radius 5px;
+  color: #7a0019;
+  text-decoration: none;
+}
+
+ul#records_outputs>li>a:hover, ul#LFOO_tabset>li>a:hover,
+ul#records_outputs>li>a:focus, ul#LFOO_tabset>li>a:focus,
+ul#records_outputs>li.active>a, ul#LFOO_tabset>li.active>a,
+ul#records_outputs>li.active>a, ul#LFOO_tabset>li.active>a {
+  color: #3f0003 !important;
+  background-color: #FFCCCC !important;
+}
+
+#surveys_abundance_div {
+  min-height: 536px;
+}
+
+#taxon_filter_rule {
+  display: flex;
+  margin: 5px auto;
+  min-width: 320px;
+}
+
+fieldset#raw_table_downloaders {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-top: 10px;
+  margin-bottom: -5px;
+}
+
+div.checkbox {
+  margin-bottom: 0px;
+}
+
+#LFOO_tabset {
+  min-width: 300px;
+}
+
+ul#LFOO_tabset>li {
+  min-width: 300px;
+  text-align: center;
+  max-width: 50%;
+  width: 50%;
+}
+
+@media (max-width: 703px) {
+  ul#LFOO_tabset>li {
+    min-width: 300px;
+    width: max(300px, 100%);
+    max-width: max(300px, 100%);
+  }
+}
+
+#LFOO_graph > div > div {
+  width: auto;
+}
+
+div#abundance_selectors {
+  max-width: 100%;
+}
+
+/* NEW MEDIA QUERIES TO FIT THESE ELEMENTS SIDE BY SIDE ONLY ONCE AN APPROPRIATE WIDTH PX IS HIT. */
+@media (min-width: 1092px) {
+  div#browse_table_cell {
+    width: 66.666666667%;
+  }
+  div#browse_map_cell {
+    width: 33.33333333%;
+  }
+}
+
+@media (min-width: 1391px) {
+  aside#records_form_left {
+    width: 25%;
+    min-width: 25%;
+  }
+  main#records_form_right {
+    width: 75%;
+    max-width: 75%;
+  }
+  #lakefinder_note {
+    max-width: 320px;
+  }
+}
+
+/*OVERRIDE THE MEDIA QUERY SHINY AUTOMATICALLY PUTS HERE. */
+@media (min-width: 768px) and (max-width: 1282px) {
+  div#browse_table_cell, div#browse_map_cell{
+    max-width: 100% !important;
+    min-width: 100% !important;
+  }
+}
+
+@media (max-width: 1387px) {
+  div#records_page {
+    flex-direction: column;
+  }
+  fieldset#records_formleft>div {
+    width: 100%;
+  }
+}
+
+@media (min-width: 934px) and (max-width: 1387px) {
+  #records_page {
+    margin-left: 15px;
+  }
+}
+
+@media (max-width: 1388px) {
+    div#records_page>div.col-sm-3>aside, /*NEED TO TARGET THREE LAYERS ON THE LEFT NOW THANKS TO THE SEMANTIC TAGS THERE */
+    div#records_page>div.col-sm-3>aside>a, 
+    div#records_page>div.col-sm-3,
+    fieldset#records_formleft, 
+    div#records_page>div.col-sm-9,
+    #records_formright {
+    max-width: 100% !important;
+    min-width: 100% !important;
+    width: 100% !important;
+  }
+  div#records_page>div.col-sm-3>aside>a {
+    display: flex !important;
+    justify-content: center !important;
+    margin-left: unset !important;
+    margin-right: unset !important;
+  }
+}
+
+@media (max-width: 388px) {
+  body >div.container-fluid>div.container-fluid>div.tab-content>div.tab-pane { /* DUMB SELECTOR */
+  margin-left: -30px; /*THIS SEEMS TO GET THE THINGS TO LIE BETTER IN A COLUMN BUT NOT SURE WHY. */
+  }
+  body >div.container-fluid>div.container-fluid>div.tab-content>div.tab-pane:nth-of-type(2) {
+    margin-left: -20px; /*JUST THE LEADERBOARD TAB NEEDS A LITTLE LESS FOR SOME REASON. */
+  }
+  #records_disclaimers {
+    margin-left: 0px !important;
+  }
+}
+
+div#browse_table_cell {
+  min-width: 320px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+/* SHOULD ROUGHLY ALIGN THE TABLE WITH THE MAP AT THESE WIDTHS. NOT HIGHER WIDTHS OR THE COLUMN BREAKING DOESN'T WORK RIGHT. */
+@media (max-width: 408px) {
+  div#browse_table_cell {
+    margin-left: 10px;
+  }
+}
+
+/* THESE 3 QUERIES ALLOW ME TO KEEP THE LAST TWO NAV BUTTONS ON THE SAME ROW TOGETHER UNTIL WE ARE READY TO MOVE TO 4 ACROSS--NO MORE ROWS OF 3 AND 1! */
+div#nav_last_two {
+  display: flex;
+  justify-content: center; 
+}
+
+/* THE MIN HERE AND THE MAX IN THE NEXT RULE NEEDN'T LINE UP BECAUSE THE BEHAVIOR BTW. THOSE TWO VALUES IS ALREADY WHAT IS LISTED IN THIS RULE HERE--WE JUST NEED TO "EXTEND" IT TO WIDER WIDTHS */
+@media (min-width: 1050px) and (max-width: 1390px) {
+  div#nav_last_two {
+    flex: 1 1 100%; 
+  }
+}
+
+@media (max-width: 659px) {
+  div#nav_last_two {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+section#info_filters_row {
+  justify-content: CENTER;
+  margin-bottom: 10px;
+  margin-left: 0px !important;
+  margin-right: 0px !important;
+}
+
+@media (max-width: 699px) {
+  section#info_filters_row {
+    flex-direction: column;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
+/* THESE 2 QUERIES ALLOW ME TO KEEP THE LAST TWO TOGGLE BUTTONS ON THE SAME ROW TOGETHER UNTIL WE ARE READY TO MOVE TO 6 ACROSS--NO MORE ROWS OF 5 AND 1 OR 4 AND 2! */
+/* THIS SAYS, GENERALLY, MAKE THESE THREE SIT NEXT TO EACH OTHER ON THE SAME LINE, OCCUPYING 33% OF THE AVAILABLE SPACE EACH. */
+fieldset#browse_toggles_last_three, fieldset#browse_toggles_first_three {
+  flex: 0 1 33%; 
+  display: flex;
+  justify-content: center; 
+}
+
+
+/* BREAK INTO THEIR OWN SEPARATE LINES AT THIS POINT. */
+@media (max-width: 990px) { 
+  fieldset#browse_toggles_last_three, fieldset#browse_toggles_first_three {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+    .browse_buttons {
+    max-width: 80%;
+  }
+}
+
+@media (min-width: 664px) and (max-width: 990px) {
+    fieldset#browse_toggles_first_three {
+    margin-right: 10px;
+  }
+}
+
+@media (max-width: 664px) { 
+  div#browse_all_buttons {
+    display: flex;
+    align-items: center;
+  }
+}
+
+div#browse_all_buttons {
+  flex-direction: column;
+}
+
+/* OTHERWISE, THIS FORCES THE BUTTONS INSIDE TO DUCK OUT OF VIEW TO THE LEFT AT VERY NARROW WIDTHS AND DON'T BENEFIT US AT LARGER WIDTHS */
+div#browse_all_buttons {
+  margin-left: 0px !important;
+  margin-right: 0px !important;
+}
+
+/* PARSE ALL THESE FILTERS ONTO THEIR OWN ROWS WHEN THEY'D OTHERWISE BREAK INTO TWO LINES OF 2 AND 1. */
+@media (max-width: 959px) {
+  #browse_filters_row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    width: max(90%, 310px);
+  }
+  #browse_filters_row>div {
+    width: max(90%, 310px);
+  }
+}
+
+#browse_filters_row {
+  display: flex;
+  justify-content: center;
+  align-items: end;
+}
+
+/* THIS ALL MAKES THE DISCLAIMERS A BIT MORE POLISHED BY MAKING IT LOOK LESS INDENTED AND MORE LIKE A LIST IN A CLEARLY DEFINED BOX WITH JUST ENOUGH SPACE TO EITHER SIDE TO LOOK A LITTLE INSET. */
+ul.disclaimers {
+  padding-inline-start: 25px !important;
+  border-radius: 15px;
+  border: 3px solid #7a0019;
+  padding: 2%;
+}
+
+ul.disclaimers>li {
+  margin-bottom: 10px;
+}
+
+ul.disclaimers>li:last-child {
+  margin-bottom: 0px;
+}
+
+div#interactivemap {
+  min-width: 320px;
+}
+
+div#interactivemapdf, div#survey_table {
+  padding-top: 5px; /*NEED A LIGHTER PADDING HERE CUZ OTHERWISE IT'S TOO HEAVY. */
+} 
+
+@media (max-width: 998px) {
+  #abundance_tab_all {
+    display: flex;
+    flex-direction: column;
+  }
+  div#records_form_abund, #abundance_map_cell, #abundance_selectors {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  #abundance_map_cell, #abundance_selectors>div {
+    max-width: 95%;
+    width: 95%;
+  }
+  div#records_form_abund {
+    height: auto;
+  }
+}
+
+@media (min-width: 768px) {
+#sub_instruct_row {
+  display: flex;
+  align-items: center;
+}
+#sub_instruct_cell {
+  width: 100%;
+  margin-left: 0px;
+}
+}
+
+@media (max-width: 767px) {
+  div.sub_2pane_div {
+    display: flex;
+    flex-direction: column;
+    max-height: none;
+  }
+  div.new_sub_divs_halfL, div.new_sub_divs_halfR {
+    width: 100%;
+    max-height: none;
+    overflow-y: auto;
+  }
+}
+
+#columns_delete2a {
+  margin-bottom: 10px;
+}
+
+#records_formright > div.waiter-overlay.waiter-local {
+  top: 0px !important;
+}
+
+a.leaflet-control-zoom-out, a.leaflet-control-zoom-in {
+  color: #8C8C8C !important;
+}
+
+figcaption#overview_map_cap, div#browseTableCaptionDiv, div#rawTableCaptionDiv {
+  color: #4d4d4d;
+  font-size: 90%;
+  padding: 5px;
+}
+
+figcaption#records_plotly {
+  color: #4d4d4d;
+  font-size: 100%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  text-align: left;
+}
+
+figcaption#records_map {
+  color: #4d4d4d;
+  font-size: medium;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  text-align: left;
+}
+
+caption {
+  color: #4d4d4d;
+  font-size: 100%;
+}
+
+/*THIS ALWAYS ADDS EXTRA WHITE SPACE AT THE BOTTOM OF THE TABLE UNNECESSARILY. THIS ALLOWS IT TO BE THE RIGHT SIZE. */
+#DataTables_Table_3_wrapper > div.dataTables_scroll > div.dataTables_scrollBody {
+  height: max-content !important;
+}
+
+address {
+  display: inline;
+}
+
+/* THESE FIVE BUTTONS NEED AUTO HEIGHT OR, WHEN JACKING UP FONT SPACING FOR ACCESSIBILITY, THEIR TEXT WILL CLIP OUT OF THEIR BOUNDS */
+#browse_info, #toggle_filters, #graph_features, #abundance_map_download {
+  height: auto;
+}
+
+legend.overview_filter_legends {
+  width: 80%; 
+  margin: 5px auto; 
+  color: #4d4d4d; 
+  min-width: 310px;
+  font-size: medium;
+  display: flex;
+  justify-content: center;
+}
+
+div#abundance_tab_all {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* DELETE THE CONTENTS OF THESE BEFORE PSEUDOELEMENTS SINCE THAT THEY'RE NOW REDUNDANT */
+#ss-connect-dialog::before, #ss-reload-link::before {
+  content: none !important;
+}
+
+#progress_bar_text {
+  margin-left: 5%;
+  font-weight: bold;
+}
+
+/* THIS CSS HERE SETS STYLING FOR THE SKIP TO MAIN CONTENT LINK, MAKING IT VISIBLE ONLY IF IT GETS KEYBOARD FOCUS AND NOT OTHERWISE. */
+a.skip-link {
+  position: static;         /* Let it behave like a normal block */
+  width: 100%;              /* Stretch to match modal width */
+  padding: 0;
+  margin-bottom: 1rem;      /* Some spacing */
+  height: 1px;              /* Visually collapse when not focused */
+  overflow: hidden;
+  text-decoration: none !important;
+  border: none !important;
+}
+
+.skip-link:focus {
+  height: auto;
+  overflow: visible;
+  padding: 8px 12px;
+  background: #900021;
+  color: white;
+  border: 2px solid black;
+}
+
+/* ALLOW MORE OF THE MODAL TO APPEAR ON SCREEN--THE DEFAULT IS ONLY 600PX ON LARGE SCREENS */
+.modal-dialog {
+  width: 80%;
+}
+
+@media (max-width: 767px) {
+.modal-dialog {
+  width: 93%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+}
+
+.modal {
+  z-index: 999999; /*OTHERWISE THE WAITERS OVERLAY IT */
+}
+
+/* THIS PREVENTS THIS HIDDEN DIV FROM EVER GETTING FOCUS */
+#mainOverviewContent:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+}
