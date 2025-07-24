@@ -332,3 +332,7 @@ submitter_leaderboard = {
   saveRDS(lakes.summary.sf, "inputs/MadeUpstream/lakes_summary_sf")
   saveRDS(submitter_leaderboard, "inputs/MadeUpstream/submitter_leaderboard")
 }
+
+###COPY OVER THE DB FILE TO WHERE IT WILL SHIP WITH THE APP.
+
+file.copy("upstream/db_unified.parquet", "inputs/MadeUpstream/db_unified.parquet", overwrite = TRUE)

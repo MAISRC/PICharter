@@ -89,7 +89,8 @@ recordsUI = function() {
                       HTML("<span><b>Select one (or more) survey(s).</b> Use control+click or click+drag to select multiples. Choose 'No selection' to pick a different lake. This is a required question; until you select at least one survey date, the tabs on the right-hand side of the screen will not populate.</span>"),
                       choices = NULL,
                       multiple = TRUE,
-                      options = list(`selected-text-format` = "count > 2", 
+                      options = list(`actions-box` = TRUE, #GIVES SELECT AND DESELECT ALL BUTTONS,
+                                     `selected-text-format` = "count > 2", 
                                      `count-selected-text` = "{0} survey dates")
                       ))
             
