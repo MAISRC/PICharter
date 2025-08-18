@@ -51,6 +51,7 @@ characeae_taxa,Muskgrasses
 cicuta_maculata,Water hemlock
 cicuta_sp,Water-hemlocks
 cirsium_palustre,Marsh thistle
+cladophora_sp,Reticulated algae
 comarum_palustre,Purple marshlocks
 conium_maculatum,Poison hemlock
 crassula_helmsii,Swamp stonecrop
@@ -127,6 +128,7 @@ labiatae_sp,Mint family
 lagarosiphon_major,African oxygen weed
 lamiaceae_taxa,Mint family
 leersia_oryzoides,Rice cut grass
+lemna_gibba,Gibbous duckweed
 lemna_minor,Lesser duckweed
 lemna_obscura,Little duckweed
 lemna_perpusilla,Minute duckweed
@@ -259,6 +261,7 @@ schoenoplectus_x_oblongus,Hybrid bulrush
 scirpus_atrovirens,Dark green bulrush
 scirpus_cyperinus,Woolgrass
 scirpus_sp,Bulrushes
+scripus_validus,Softstem bulrush
 scolochloa_festucacea,Whitetop
 scorpidium_scorpioides,Hooked scorpion-moss
 scutellaria_lateriflora,Mad-dog skullcap
@@ -297,6 +300,7 @@ utricularia_cornuta,Horned bladderwort
 utricularia_geminiscapa,Hidden-fruit bladderwort
 utricularia_gibba,Humped bladderwort
 utricularia_intermedia,Intermediate bladderwort
+ultricularia_macrorhiza,Common bladderwort
 utricularia_minor,Lesser bladderwort
 utricularia_purpurea,Purple-flowered bladderwort
 utricularia_resupinata,Lavender bladderwort

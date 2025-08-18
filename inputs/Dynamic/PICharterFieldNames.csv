@@ -42,6 +42,7 @@ chara_sp,"""_sp"" indicates an unknown species within a given genus, as indicate
 characeae_taxa,"""_taxa"" indicates an unknown taxon within a given family, as indicated by the surveyor, not MAISRC",Y
 cicuta_maculata,,Y
 cicuta_sp,"""_sp"" indicates an unknown species within a given genus, as indicated by the surveyor, not MAISRC",Y
+cladophora_sp,"""_sp"" indicates an unknown species within a given genus, as indicated by the surveyor, not MAISRC",Y
 comarum_palustre,,Y
 cyanobacteria,,Y
 cyperaceae_taxa,"""_taxa"" indicates an unknown taxon within a given family, as indicated by the surveyor, not MAISRC",Y
@@ -87,9 +88,11 @@ hypericum_sp,"""_sp"" indicates an unknown species within a given genus, as indi
 impatiens_capensis,,Y
 impatiens_sp,"""_sp"" indicates an unknown species within a given genus, as indicated by the surveyor, not MAISRC",Y
 iris_sp,"""_sp"" indicates an unknown species within a given genus, as indicated by the surveyor, not MAISRC",Y
+iris_pseudacorus,,Y
 iris_versicolor,,Y
 iris_virginica,,Y
 isoetes_echinospora,,Y
+isoetes_lacustris,,Y
 isoetes_sp,"""_sp"" indicates an unknown species within a given genus, as indicated by the surveyor, not MAISRC",Y
 juncus_arcticus,,Y
 juncus_canadensis,,Y
@@ -100,6 +103,7 @@ lake_name,One commonly accepted name for the lake (there may be others),N
 lamiaceae_taxa,"""_taxa"" indicates an unknown taxon within a given family, as indicated by the surveyor, not MAISRC",Y
 latitude,Latitude data for the sampled location,N
 leersia_oryzoides,,Y
+lemna_gibba,,Y
 lemna_minor,,Y
 lemna_sp,"""_sp"" indicates an unknown species within a given genus, as indicated by the surveyor, not MAISRC",Y
 lemna_trisulca,,Y
@@ -138,6 +142,7 @@ nitella_furcata,,Y
 nitella_macounii,,Y
 nitella_mucronata,,Y
 nitella_sp,"""_sp"" indicates an unknown species within a given genus, as indicated by the surveyor, not MAISRC",Y
+nitella_tenuissima,,Y
 nitellopsis_obtusa,,Y
 nitellopsis_sp,"""_sp"" indicates an unknown species within a given genus, as indicated by the surveyor, not MAISRC",Y
 nostoc_sp,,Y
@@ -158,7 +163,8 @@ phalaris_arundinacea,,Y
 phragmites_australis,,Y
 phragmites_australis_americanus,Native subspecies,Y
 phragmites_australis_australis,Non-native subspecies,Y
-plant_height,An approximation of the maximum height of plant growth at a sample location as estimated by some surveyors. Optional.,N
+phragmites_sp,"""_sp"" indicates an unknown species within a given genus, as indicated by the surveyor, not MAISRC",Y
+plant_height,An approximation of the maximum height of plant growth at a sample location as estimated by some surveyors. Optional. In the original units and should not be assumed to be in feet.,N
 poaceae_taxa,"""_taxa"" indicates an unknown taxon within a given family, as indicated by the surveyor, not MAISRC",Y
 pontederia_cordata,,Y
 potamogeton_alpinus,,Y
@@ -177,6 +183,7 @@ potamogeton_nodosus,,Y
 potamogeton_obtusifolius,,Y
 potamogeton_perfoliatus,,Y
 potamogeton_praelongus,,Y
+potamogeton_pulcher,,Y
 potamogeton_pusillus,,Y
 potamogeton_richardsonii,,Y
 potamogeton_robbinsii,,Y
@@ -205,6 +212,7 @@ sagittaria_montevidensis,,Y
 sagittaria_rigida,,Y
 sagittaria_sp,"""_sp"" indicates an unknown species within a given genus, as indicated by the surveyor, not MAISRC",Y
 salix_sp,"""_sp"" indicates an unknown species within a given genus, as indicated by the surveyor, not MAISRC",Y
+sample_notes,"Any notes left by the surveyor in the file at the observation level, retained where available as added context",N
 schoenoplectus_acutus,,Y
 schoenoplectus_heterochaetus,,Y
 schoenoplectus_pungens,,Y
@@ -215,6 +223,7 @@ schoenoplectus_x_oblongus,,Y
 scirpus_atrovirens,,Y
 scirpus_cyperinus,,Y
 scirpus_sp,"""_sp"" indicates an unknown species within a given genus, as indicated by the surveyor, not MAISRC",Y
+scirpus_validus,,Y
 scolochloa_festucacea,,Y
 scorpidium_scorpioides,,Y
 scutellaria_lateriflora,,Y
@@ -245,8 +254,10 @@ SUBMITTER_EMAIL,The email address of the submitting user (removed from records q
 SUBMITTER_NAME,The name provided to PI Charter during submission (or the submitting organization prior to PI Charter),N
 substrate,"Observational data of the consistency or makeup of the lake bottom at a sampling location, collected by some surveyors",N
 surface_growth,An indicator recorded by some surveyors that flags if plant growth is evident at the water's surface at a location,N
+survey_notes,"Information provided by MAISRC about the survey from which an observation came from, usually to do with how the data were sent to us, as added context.",N
 SURVEY_START,The date on which the survey began (some surveys take more than one day to complete),N
 SURVEYORS,"The surveyors who conducted the survey, if known",N
+thelypteris_palustris,,Y
 tolypella_intricata,,Y
 triadenum_fraseri,,Y
 typha_angustifolia,,Y
@@ -257,6 +268,7 @@ unk_sp,"""Unknown species,"" as indicated by the original surveyor, not MAISRC",
 utricularia_geminiscapa,,Y
 utricularia_gibba,,Y
 utricularia_intermedia,,Y
+utricularia_macrorhiza,,Y
 utricularia_minor,,Y
 utricularia_purpurea,,Y
 utricularia_sp,"""_sp"" indicates an unknown species within a given genus, as indicated by the surveyor, not MAISRC",Y

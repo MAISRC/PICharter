@@ -8,7 +8,7 @@ recordsServer = function(input, output, session) {
   )
   records_waiter <- Waiter$new(id = "records_formright", 
                            html = spin_hexdots(),
-                           color = "#ffb71e")
+                           color = "#ffb71e", )
   
   #Set up a debounce on Records_surveys so that users could realistically select multiple surveys before the app starts doing things.
   surveys_debounced = debounce(reactive({input$records_surveys}), 1250)

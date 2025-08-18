@@ -1144,10 +1144,6 @@ div#interactivemapdf, div#survey_table {
   margin-bottom: 10px;
 }
 
-#records_formright > div.waiter-overlay.waiter-local {
-  top: 0px !important;
-}
-
 a.leaflet-control-zoom-out, a.leaflet-control-zoom-in {
   color: #8C8C8C !important;
 }

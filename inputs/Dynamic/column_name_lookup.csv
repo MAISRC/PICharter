@@ -1214,9 +1214,9 @@ total_rake_fullness,Meg Rattei_19,olson,whole_rake_density,N
 total_rake_fullness,Meg Rattei_19,silver,whole_rake_density,N
 total_rake_fullness,Meg Rattei_19,westwood,whole_rake_density,N
 total_rake,alexadd,alexadd,whole_rake_density,N
-"too_deep,_no_rake_hook_thrown",Allison Gamble,sakatah,not_sampled,N
-too_deep,Allison Gamble,benton,not_sampled,N
-too_deep,mccomas,clearw,not_sampled,N
+"too_deep,_no_rake_hook_thrown",Allison Gamble,sakatah,delete,N
+too_deep,Allison Gamble,benton,delete,N
+too_deep,mccomas,clearw,delete,N
 tolly_pella,Allison Gamble,frances,Tolypella intricata,Y
 tlat,James Johnson,beebe,Typha latifolia,Y
 tlat,James Johnson,eastbattle,Typha latifolia,Y
@@ -1227,7 +1227,7 @@ tlat,James Johnson,wilmes,Typha latifolia,Y
 tl,dustin,carrie,Typha latifolia,Y
 tl,dustin,redsand,Typha latifolia,Y
 three,Andrea Prichard_19,whitebear,Schoenoplectus pungens,Y
-"td_=_too_deep,_may_=_depth_taken_from_may_sample_date",Allison Gamble,sakatah,not_sampled,N
+"td_=_too_deep,_may_=_depth_taken_from_may_sample_date",Allison Gamble,sakatah,delete,N
 tang,James Johnson,beebe,Typha angustifolia,Y
 tang,James Johnson,riley,Typha angustifolia,Y
 tang,James Johnson,susan,Typha angustifolia,Y
@@ -4113,19 +4113,19 @@ polyg,James Johnson,wilmes,Persicaria amphibia,Y
 polyg,Jill Sweet,isles,Persicaria amphibia,Y
 poly_amph,newman,silver,Persicaria amphibia,Y
 poly_amp,newman,vails,Persicaria amphibia,Y
-points_not_surveyed,Jill Sweet,marsh,not_sampled,N
-points_not_surveyed,Jill Sweet,mud,not_sampled,N
-points_not_surveyed,Jill Sweet,parley,not_sampled,N
-points_not_surveyed,Jill Sweet,piersons,not_sampled,N
-points_not_surveyed,Jill Sweet,wasserman,not_sampled,N
-points_not_surveyed,Jill Sweet,west auburn,not_sampled,N
-points_not_sampled,fieldseth,minnewashta,not_sampled,N
-points_not_sampled,Jill Sweet,minnewashta,not_sampled,N
-points_not_sampled,Jill Sweet,st joe,not_sampled,N
-points_not_sampled,Jill Sweet,taft,not_sampled,N
-points_not_sampled,Jill Sweet,windsor,not_sampled,N
-pointnotsurveyed,fieldseth,halsted,not_sampled,N
-pointnotsurveyed,Jill Sweet,halsteads,not_sampled,N
+points_not_surveyed,Jill Sweet,marsh,delete,N
+points_not_surveyed,Jill Sweet,mud,delete,N
+points_not_surveyed,Jill Sweet,parley,delete,N
+points_not_surveyed,Jill Sweet,piersons,delete,N
+points_not_surveyed,Jill Sweet,wasserman,delete,N
+points_not_surveyed,Jill Sweet,west auburn,delete,N
+points_not_sampled,fieldseth,minnewashta,delete,N
+points_not_sampled,Jill Sweet,minnewashta,delete,N
+points_not_sampled,Jill Sweet,st joe,delete,N
+points_not_sampled,Jill Sweet,taft,delete,N
+points_not_sampled,Jill Sweet,windsor,delete,N
+pointnotsurveyed,fieldseth,halsted,delete,N
+pointnotsurveyed,Jill Sweet,halsteads,delete,N
 point_y,dustin,peltier,y,N
 point_x,dustin,peltier,x,N
 point_number,April Londo,forest,STA_NBR,N
@@ -4134,7 +4134,7 @@ point_numb,Rob Brown,calhoun,STA_NBR,N
 point_numb,Rob Brown,cedar,STA_NBR,N
 point_numb,Rob Brown,loring,STA_NBR,N
 point_numb,Rob Brown,powderhorn,STA_NBR,N
-point_not_surveyed,Jill Sweet,east auburn,not_sampled,N
+point_not_surveyed,Jill Sweet,east auburn,delete,N
 point_id,James Johnson,coal,STA_NBR,N
 point_id,James Johnson,crookneck,STA_NBR,N
 point_id,James Johnson,fish,STA_NBR,N
@@ -5445,8 +5445,8 @@ notes,Jill Sweet_19,zumbra,SURVEY_NOTES,N
 notes,Mark Ranweiler,barrett,SURVEY_NOTES,N
 notes,Mark Ranweiler,blueberry,SURVEY_NOTES,N
 notes,mccomas,keller,SURVEY_NOTES,N
-not_sampled,Mark Ranweiler,blueberry,not_sampled,N
-not_sampled,Mark Ranweiler,irene,not_sampled,N
+not_sampled,Mark Ranweiler,blueberry,delete,N
+not_sampled,Mark Ranweiler,irene,delete,N
 northing,dustin,artichoke,y,N
 northing,dustin,belle,y,N
 northing,dustin,carlos,y,N
@@ -5709,38 +5709,38 @@ no_veg,Jill Sweet_19,wasserman,no_veg_found,N
 no_veg,Jill Sweet_19,west auburn,no_veg_found,N
 no_veg,Jill Sweet_19,zumbra,no_veg_found,N
 no_veg,Mark Ranweiler,upper cormorant,no_veg_found,N
-no_survey,Allison Gamble,ballantyne,not_sampled,N
-no_survey,Allison Gamble,dudley,not_sampled,N
-no_survey,Allison Gamble,emily,not_sampled,N
-no_survey,Allison Gamble,french,not_sampled,N
-no_survey,Allison Gamble,kelly,not_sampled,N
-no_survey,Allison Gamble,madison,not_sampled,N
-no_survey,Allison Gamble,rays,not_sampled,N
-no_survey,Allison Gamble,roemhildt,not_sampled,N
-no_survey,Allison Gamble,sakatah bay,not_sampled,N
-no_survey,Allison Gamble,sleepy eye,not_sampled,N
-no_survey,Allison Gamble,tetonka,not_sampled,N
-no_sample,Allison Gamble,ballantyne,not_sampled,N
-no_sample,Allison Gamble,beaver,not_sampled,N
-no_sample,Allison Gamble,dudley,not_sampled,N
-no_sample,Allison Gamble,fountain,not_sampled,N
-no_sample,Allison Gamble,fox,not_sampled,N
-no_sample,Allison Gamble,frances,not_sampled,N
-no_sample,Allison Gamble,german,not_sampled,N
-no_sample,Allison Gamble,gorman,not_sampled,N
-no_sample,Allison Gamble,kelly,not_sampled,N
-no_sample,Allison Gamble,lily,not_sampled,N
-no_sample,Allison Gamble,rays,not_sampled,N
-no_sample,Allison Gamble,reeds,not_sampled,N
-no_sample,Allison Gamble,roberds,not_sampled,N
-no_sample,Allison Gamble,roemhildt,not_sampled,N
-no_sample,Allison Gamble,shields,not_sampled,N
-no_sample,Allison Gamble,west jefferson,not_sampled,N
-no_sample,Allison Gamble_19,cedar,not_sampled,N
-no_sample,Allison Gamble_19,dudley,not_sampled,N
-no_sample,Allison Gamble_19,frances,not_sampled,N
-no_sample,Allison Gamble_19,kelly,not_sampled,N
-no_sample,Allison Gamble_19,reeds,not_sampled,N
+no_survey,Allison Gamble,ballantyne,delete,N
+no_survey,Allison Gamble,dudley,delete,N
+no_survey,Allison Gamble,emily,delete,N
+no_survey,Allison Gamble,french,delete,N
+no_survey,Allison Gamble,kelly,delete,N
+no_survey,Allison Gamble,madison,delete,N
+no_survey,Allison Gamble,rays,delete,N
+no_survey,Allison Gamble,roemhildt,delete,N
+no_survey,Allison Gamble,sakatah bay,delete,N
+no_survey,Allison Gamble,sleepy eye,delete,N
+no_survey,Allison Gamble,tetonka,delete,N
+no_sample,Allison Gamble,ballantyne,delete,N
+no_sample,Allison Gamble,beaver,delete,N
+no_sample,Allison Gamble,dudley,delete,N
+no_sample,Allison Gamble,fountain,delete,N
+no_sample,Allison Gamble,fox,delete,N
+no_sample,Allison Gamble,frances,delete,N
+no_sample,Allison Gamble,german,delete,N
+no_sample,Allison Gamble,gorman,delete,N
+no_sample,Allison Gamble,kelly,delete,N
+no_sample,Allison Gamble,lily,delete,N
+no_sample,Allison Gamble,rays,delete,N
+no_sample,Allison Gamble,reeds,delete,N
+no_sample,Allison Gamble,roberds,delete,N
+no_sample,Allison Gamble,roemhildt,delete,N
+no_sample,Allison Gamble,shields,delete,N
+no_sample,Allison Gamble,west jefferson,delete,N
+no_sample,Allison Gamble_19,cedar,delete,N
+no_sample,Allison Gamble_19,dudley,delete,N
+no_sample,Allison Gamble_19,frances,delete,N
+no_sample,Allison Gamble_19,kelly,delete,N
+no_sample,Allison Gamble_19,reeds,delete,N
 no_plants,mccomas,clearw,no_veg_found,N
 no_plants,mccomas,gleason,no_veg_found,N
 no_plants,mccomas,gleasonnorth,no_veg_found,N
@@ -12422,3 +12422,5 @@ Yellowwaterlily,alexadd,alexadd,Ambiguous N. advena or N. variegata please clari
 Quillwort,alexadd,alexadd,Isoetes echinospora,Y
 Crows,alexadd,alexadd,Ambiguous Which Ranunculus Sp Is This Please Clarify,Y
 Claspg Leaf Pondweed,alexadd,alexadd,Potamogeton richardsonii,Y
+Cladophoria Algae,alexadd,alexadd,Cladophora sp,Y
+Elodea robbinsii,alexadd,alexadd,Eleocharis robbinsii,Y
