@@ -1209,6 +1209,10 @@ div#abundance_tab_all {
   content: none !important;
 }
 
+#ss-connect-dialog a {
+  font-size: 100% !important;
+}
+
 #progress_bar_text {
   margin-left: 5%;
   font-weight: bold;

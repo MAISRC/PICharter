@@ -295,6 +295,23 @@ for(n in 1:length(content.ids)) {
       rewritetoG()
     }
   }
+  
+  #HERE, WE CHECK TO SEE IF THE DOW IS 7 CHARACTERS AND IF SO COERCE IT TO 8 CHARACTERS AUTOMATICALLY.
+  if(nchar(current.import$DOW[1]) == 7) {
+    current.import$DOW = paste0("0", as.character(current.import$DOW))
+    print("The DOW wasn't 8 characters--appending leading 0.")
+    rewritetoG()
+  }
+  
+  #THEN, WE CHECK TO SEE IF THE LAST 2 DIGITS ARE NOT 00 AND COERCE THEM TO 00 IF SO.
+  if(str_sub(current.import$DOW[1], 7, 8) != "00") {
+    new_DOW = str_sub(current.import$DOW[1], 7, 8) = "00"
+    current.import$DOW = new_DOW
+    print("The DOW was for a sub-basin of a lake--coercing last two digits of DOW to 00.")
+    rewritetoG()
+  }
+  
+  
   #VISUAL CHECK STEP
   {print(unique(current.import$DOW))
   print(unique(current.import$SURVEY_START))
@@ -324,12 +341,18 @@ for(n in 1:length(content.ids)) {
      rewritetoG()
    }
   if(is.null(current.import$SURVEYORS[1])) {
-    current.import$SURVEYORS = NA #IF NO SURVEYORS GIVEN, THIS COLUMN GETS CUT SOMEHOW, AND WE CAN REINTRODUCE IT HERE.
+    current.import$SURVEYORS = "Unnamed hardworking surveyor(s)" #IF NO SURVEYORS GIVEN, THIS COLUMN GETS CUT SOMEHOW, AND WE CAN REINTRODUCE IT HERE.
   } else {
   if(grepl("\\.", current.import$SURVEYORS[1])) {
     current.import$SURVEYORS = gsub("\\.", "", current.import$SURVEYORS)
     rewritetoG()
    }
+  }
+  #HERE, CHECK FOR NA IN SURVEYOR STRING AND THEN REPLACE WITH ANONYMIZED STRING
+  if(grepl("NA", current.import$SURVEYORS[1])) {
+    current.import$SURVEYORS = gsub("NA", "Unnamed hardworking surveyor(s)", current.import$SURVEYORS)
+    print("At least one substring in SURVEYORS was NA, so this was overwritten with the anonymized surveyor string.")
+    rewritetoG()
   }
   
   print(unique(current.import$SUBMITTER_NAME))
@@ -337,9 +360,14 @@ for(n in 1:length(content.ids)) {
   if(!current.import$SUBMITTER_NAME[1] %in% unique(current_db$SUBMITTER_NAME)) {
     print("The submitter listed for this survey has not previously appeared in our database, FYI!")
   }
-  if(!current.import$SURVEYORS[1] %in% unique(current_db$SURVEYORS)) {
-    print("The exact mix of surveyors listed for this survey has not previously appeared in our database, FYI!")
+  
+  #HERE WE WANT TO CHECK AND FLAG IF THIS SET OF SURVEYORS CONTAINS ANY NEW NAMES
+  old_names = unique(unlist(unname(sapply(unique(grow.dat$SURVEYORS), function(x) { str_split_1(x, ",") }))))
+  new_names = str_split_1(current.import$SURVEYORS[1], ", ")
+  if(!any(new_names %in% old_names)) {
+    print(paste0("The following surveyors in this survey would be new additions to the database: ", new_names[which(!new_names %in% old_names)]))
   }
+
   textcols_check = readline("Do the submitter and surveyor names listed above look ok?\nPress Y if yes.\nPress M to edit the submitter's name.\nPress V to edit the surveyor's names.\nPress multiple letters to edit multiple fields.\nPress N to stop.\nPress any other key to continue.")
       if(grepl("M", textcols_check)) {
         new_submitter_name = readline("Type what the new value should be for the submitter's name (DON'T put quotes!).")
@@ -365,41 +393,33 @@ for(n in 1:length(content.ids)) {
     for(row in rows.marked) {
       if(!all(current.import[row, taxonomic_cols] == 0 |
               is.na(current.import[row, taxonomic_cols]))) {
-        print(row)
-        print("The row printed above seems to have some taxonomic data even though it is marked as having a non-0, non-NA no_veg_found.")
-        print(sort(unique(unlist(current.import[row, taxonomic_cols]))))
-        print("Above are all the different values in the taxonomic columns for this row.")
-        change_wrk = readline("If you want to change the no veg found value for this row, enter the new value here.\nOtherwise, press N to continue.")
-        if(change_wrk != "N") {
+
+
           #OVERWRITE AND RE-WRITE TO GDRIVE
-          current.import[row, "no_veg_found"] = change_wrk 
-          tmp.path = base::file.path(base::paste0(base::tempdir(), "\\"))
-          file.tmp = paste0(tmp.path, metadata_row$CLEAN_FILE) 
-          write.csv(x = current.import, file = file.tmp, row.names = FALSE) 
-          googledrive::drive_upload(media = file.tmp, 
-                                    path = submitted_clean_id,
-                                    name = metadata_row$CLEAN_FILE)
+        print(paste0("The no_veg_found value for row ", row, "was not 0/NA but there were positive rake scores there--replacing with 0."))
+        if(row == rows.marked[1]) {
+          heads_up = readline("Press any key to continue")
         }
-      }
+          current.import[row, "no_veg_found"] = 0 
+          rewritetoG()
+        }
+
     }
+    
     for(row in rows.unmarked) {
       if(all(current.import[row, taxonomic_cols] %in% c(NA, 0))) {
-        print(row)
-        print("The row printed above seems to have no taxonomic data but is not marked as such for no_veg_found.")
-        change_wrk = readline("If you want to change the no veg found value for this row, enter the new value here.\nOtherwise, press N to continue.")
-        if(change_wrk != "N") {
-          current.import[row, "no_veg_found"] = change_wrk 
-          #OVERWRITE AND RE-WRITE TO GDRIVE
-          tmp.path = base::file.path(base::paste0(base::tempdir(), "\\"))
-          file.tmp = paste0(tmp.path, metadata_row$CLEAN_FILE) 
-          write.csv(x = current.import, file = file.tmp, row.names = FALSE) 
-          googledrive::drive_upload(media = file.tmp, 
-                                    path = submitted_clean_id,
-                                    name = metadata_row$CLEAN_FILE)
+
+        print(paste0("The no_veg_found value for row ", row, "was 0/NA but there were no positive rake scores there--replacing with 1."))
+        if(row == rows.unmarked[1]) {
+          heads_up = readline("Press any key to continue")
         }
+          current.import[row, "no_veg_found"] = 1 
+          rewritetoG()
+
       }
     }
   }
+  
   #LOGIC OF ANY WHOLE_RAKE_DENSITY COL--SIMILAR TO ABOVE
   if(any(names(current.import) == "whole_rake_density")) {
     rows0s = which(current.import$whole_rake_density == 0 |
@@ -411,42 +431,39 @@ for(n in 1:length(content.ids)) {
     for(row in rows0s) {
       if(any(!is.na(current.import[row, taxonomic_cols]) &
              current.import[row,taxonomic_cols] != 0)) {
-        print(row)
-        print("The row printed above seems to have some taxonomic data even though it is marked as being a 0/NA for whole_rake_density.")
-        print(sort(unique(unlist(current.import[row, taxonomic_cols]))))
-        print("Above are all the different values in the taxonomic columns for this row.")
-        change_wrk = readline("If you want to change the whole rake density value for this row, enter the new value here.\nOtherwise, press N to continue.")
-        if(change_wrk != "N") {
+
+        possible_vals = sort(unique(as.numeric(unlist(current.import[row, taxonomic_cols]))))
+        max_val = max(possible_vals, na.rm=T)
+        
+        if(length(max_val) == 1) {
           #OVERWRITE AND RE-WRITE TO GDRIVE
-          current.import[row, "whole_rake_density"] = change_wrk 
-          tmp.path = base::file.path(base::paste0(base::tempdir(), "\\"))
-          file.tmp = paste0(tmp.path, metadata_row$CLEAN_FILE) 
-          write.csv(x = current.import, file = file.tmp, row.names = FALSE) 
-          googledrive::drive_upload(media = file.tmp, 
-                                    path = submitted_clean_id,
-                                    name = metadata_row$CLEAN_FILE)
+          print(paste0("The whole_rake_density value for row ", row, "was 0/NA but there were positive rake scores--replacing with the highest one."))
+          if(row == rows0s[1]) {
+            heads_up = readline("Press any key to continue")
+          }
+          current.import[row, "whole_rake_density"] = max_val 
+          rewritetoG()
         }
       }
     }
+    
     for(row in rowsnon0) {
       if(all(is.na(current.import[row, taxonomic_cols]) |
              current.import[row, taxonomic_cols] == 0)) {
-        print(row)
-        print("The row printed above seems to have no taxonomic data even though it is marked as having a non-0, non-NA whole_rake_density.")
-        change_wrk = readline("If you want to change the whole rake density value for this row, enter the new value here.\nOtherwise, press N to continue.")
-        if(change_wrk != "N") {
-          current.import[row, "whole_rake_density"] = change_wrk 
-          #OVERWRITE AND RE-WRITE TO GDRIVE
-          tmp.path = base::file.path(base::paste0(base::tempdir(), "\\"))
-          file.tmp = paste0(tmp.path, metadata_row$CLEAN_FILE) 
-          write.csv(x = current.import, file = file.tmp, row.names = FALSE) 
-          googledrive::drive_upload(media = file.tmp, 
-                                    path = submitted_clean_id,
-                                    name = metadata_row$CLEAN_FILE)
-        }
+
+
+          print(paste0("The whole_rake_density value for row ", row, "was not 0/NA but there weren't positive rake scores--replacing with 0."))
+          if(row == rowsnon0[1]) {
+            heads_up = readline("Press any key to continue")
+          }
+        current.import[row, "whole_rake_density"] = 0
+          rewritetoG()
+
       }
     }
   }
+  
+  
   #DEPTH COLUMN LOGIC
   if(any(names(current.import) == "depth_ft")) {
     #ANY 0 DEPTHS OR SUPER DEEP DEPTHS?
@@ -562,6 +579,9 @@ for(n in 1:length(content.ids)) {
   if(any(list.files("upstream/") %in% "db_unified.parquet")) {
     db.new = read_parquet("upstream/db_unified.parquet")
     grow.dat = rbindlist(list(current.import, db.new), fill = T)
+    
+    if(nrow(grow.dat) == nrow(db.new)) { stop("Why does it seem like the database file didn't just grow in length?") }
+    
     write_parquet(as.data.frame(grow.dat), sink = "upstream/db_unified.parquet")
 
     print(metadata_row$CLEAN_FILE)
