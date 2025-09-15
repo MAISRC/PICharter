@@ -153,9 +153,15 @@ for(n in 1:length(content.ids)) {
       current_raw_id = as_id(raw_contents$id[raw_contents$name == metadata_row$RAW_FILE]) #GET ID OF THE CURRENT RAW FILE
       current_raw_dl = drive_download( #DOWNLOAD THAT FILE LOCALLY
         current_raw_id,
-        path = 'temp1.csv', #MIGHT NEED TO BE AN XLS(X) FILE EXTENSION HERE.
+        path = metadata_row$RAW_FILE, #MAINTAIN NAME SAVED BY APP PLUS FILE EXTENSION.
         overwrite = TRUE)
-      current_raw_df = readxl::read_excel("temp1.csv") #LOAD INTO R.
+      if(grepl(".xls", metadata_row$RAW_FILE)) { #LOAD INTO R, BASED ON FILE TYPE
+      current_raw_df = readxl::read_excel(metadata_row$RAW_FILE)
+      } else {
+      current_raw_df = read.csv(metadata_row$RAW_FILE) 
+      print("Here are the column names in the raw data file, in case they don't match what the app reported due to formatting differences: ")
+      print(names(current_raw_df))
+      }
       which_cols_check = readline("Provide a string of the names of the columns in the RAW file to move to the clean file,\ne.g. 'A, B, C, D', with no quotes and exact spacing.") #GET LIST OF COLS TO PORT
       cols_to_port = str_split_1(which_cols_check, ", ") #SPLIT LIST PROVIDED INTO A VECTOR OF NAMES
       ported_cols = current_raw_df[, cols_to_port] #GRAB COLS BY THOSE NAMES
@@ -305,8 +311,8 @@ for(n in 1:length(content.ids)) {
   
   #THEN, WE CHECK TO SEE IF THE LAST 2 DIGITS ARE NOT 00 AND COERCE THEM TO 00 IF SO.
   if(str_sub(current.import$DOW[1], 7, 8) != "00") {
-    new_DOW = str_sub(current.import$DOW[1], 7, 8) = "00"
-    current.import$DOW = new_DOW
+    str_sub(current.import$DOW[1], 7, 8) = "00" #SET THE LAST TWO DIGITS TO 00 FOR THE FIRST ENTRY
+    current.import$DOW = current.import$DOW[1] #THEN, EXTRAPOLATE THAT TO ALL ENTRIES.
     print("The DOW was for a sub-basin of a lake--coercing last two digits of DOW to 00.")
     rewritetoG()
   }
@@ -362,7 +368,7 @@ for(n in 1:length(content.ids)) {
   }
   
   #HERE WE WANT TO CHECK AND FLAG IF THIS SET OF SURVEYORS CONTAINS ANY NEW NAMES
-  old_names = unique(unlist(unname(sapply(unique(grow.dat$SURVEYORS), function(x) { str_split_1(x, ",") }))))
+  old_names = unique(unlist(unname(sapply(unique(current_db$SURVEYORS), function(x) { str_split_1(x, ",") }))))
   new_names = str_split_1(current.import$SURVEYORS[1], ", ")
   if(!any(new_names %in% old_names)) {
     print(paste0("The following surveyors in this survey would be new additions to the database: ", new_names[which(!new_names %in% old_names)]))
@@ -437,7 +443,7 @@ for(n in 1:length(content.ids)) {
         
         if(length(max_val) == 1) {
           #OVERWRITE AND RE-WRITE TO GDRIVE
-          print(paste0("The whole_rake_density value for row ", row, "was 0/NA but there were positive rake scores--replacing with the highest one."))
+          print(paste0("The whole_rake_density value for row ", row, " was 0/NA but there were positive rake scores--replacing with the highest one."))
           if(row == rows0s[1]) {
             heads_up = readline("Press any key to continue")
           }
@@ -585,7 +591,7 @@ for(n in 1:length(content.ids)) {
     write_parquet(as.data.frame(grow.dat), sink = "upstream/db_unified.parquet")
 
     print(metadata_row$CLEAN_FILE)
-    pausetomove = readline("The file noted above is ready to be moved into the approved and compiled subfolder indicated by the letter initial printed above.\nDo that, then press any key to continue.\nNow's a good time to confirm that grow.dat is longer than whatever it was!")
+    pausetomove = readline("The file noted above is ready to be moved into the approved and compiled subfolder indicated by the letter initial printed above.\nDo that, then press any key to continue.")
   } else {
     stop("Where'd the database file go??")
   }
