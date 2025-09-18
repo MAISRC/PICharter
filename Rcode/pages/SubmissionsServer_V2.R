@@ -349,14 +349,21 @@ if(isTruthy(input$rake_units2) &&
   
   #DISPLAY WARNING IF USER INDICATES THEY ARE PROVIDING UTM DATA
   if(isTruthy(input$location_data2) &&
-     input$location_data2 %in% c("Yes, my raw data file contains UTM data for every point.",
-                                "Yes, my raw data file contains both lat-long and UTM data for every point.",
-                                "No, my data file doesn't contain location data, but I can upload an additional file containing those location data.")) {
+     input$location_data2 == "Yes, my raw data file contains UTM data for every point.") {
     
     output$utm_warning = renderUI({
      HTML("<strong>Important: You have indicated you might be providing UTM location data, which require knowing the projection used. We\'ll indicate that your data use the NAD83 / UTM Zone 15 North projection (CRS code 26915) unless told otherwise. If that isn\'t right, or if you aren\'t sure, let us know in the comments box on question 19 (this is not relevant if you are providing lat-long data instead or in addition).</strong>")
     })
   } else {
+    
+    if(isTruthy(input$location_data2) &&
+       input$location_data2 == "No, my data file doesn't contain location data, but I can upload an additional file containing those location data."){
+      
+      output$utm_warning = renderUI({
+        HTML("<strong>Important: Accurately joining data across two files is not always straightforward. For your information, here\'s how we\'d attempt to do it in this case: First, we\'ll look for \"station number\" columns in <i>both</i> data sets. Assuming we find them and assuming <i>all</i> station numbers in your PI survey data file are <i>also</i> found in your location data file, we\'ll <i>then</i> look for coordinate data in your location data file. If we find any, we\'ll attempt to join them to your survey data by matching up station numbers. All this will happen post-submission. If <i>any</i> part of this process fails, to avoid introducing errors, <i>we won\'t use your provided location data</i>. As such, we recommend either manually transferring coordinate data into your PI survey files or ensuring compatible station number codes exist in both files prior to submission.</strong>")
+      })
+      
+    } else {
     
     if(isTruthy(input$location_data2) &&
        input$location_data2 == "No selection") {
@@ -369,7 +376,9 @@ if(isTruthy(input$rake_units2) &&
     
     output$utm_warning = renderUI({ })
     }
+      
   }
+}
   
 })
 
