@@ -287,10 +287,10 @@ $(document).ready(function() {
       div(class = "new_sub_divs",
           selectInput("rake_units2",
                   "What was the HIGHEST value the rake data in your survey could have gone up to? This is typically a number between 1 and 5. If your data are 'presence/absence,' select 1 here.",
-                  choices = c("No selection", 1, 2, 3, 4, 5, "Wet weights (g) instead of rake scores", "Unknown", "Something else (explain later please!)"),
+                  choices = c("No selection", 1, 2, 3, 4, 5, "Wet weights (g) instead of rake scores", "Relative fractions of captured matter", "Unknown", "Something else (explain later please!)"),
                   selected = "No selection",
                   width = "100%",
-                  size = 9,
+                  size = 10,
                   selectize = F
                ), 
           tags$div(

@@ -1195,8 +1195,10 @@ observeEvent(input$survey_date2, priority = -1, {
         #APPEND AS FLAG.
         metadata_df$CONSEC_SITES = consec_rows
 
-        #DO CHECK TO SEE IF TOO LOW A RAKE SCORE VAL WAS PROVIDED.
-        if(isTruthy(as.numeric(input$rake_units2))) { #IS THE INPUT CHOICE NUMERIC
+        #DO CHECK TO SEE IF TOO LOW A MAX RAKE SCORE VAL MAY HAVE BEEN PROVIDED.
+
+        if(isTruthy(suppressWarnings(as.numeric(input$rake_units2))) |
+           input$rake_units2 == "Relative fractions of captured matter") { #IS THE INPUT CHOICE NUMERIC
           
           taxonomic_names = tidyName(
             unique(newfieldnames$newfieldname[newfieldnames$taxonomic == "Y"])
@@ -1213,7 +1215,14 @@ observeEvent(input$survey_date2, priority = -1, {
           only_taxa_vec = only_taxa_vec[-nas2remove]
           }
           
-          if(any(only_taxa_vec > as.numeric(input$rake_units2))) {
+          #CARVE-OUT FOR THESE KINDS OF VALUES
+          if(input$rake_units2 == "Relative fractions of captured matter") {
+            comp_val = 1 
+          } else {
+            comp_val = as.numeric(input$rake_units2)
+          }
+          
+          if(any(only_taxa_vec > comp_val)) {
             metadata_df$rake_unit_flag = TRUE #IF VAL OBSERVED THAT IS HIGHER THAN MAX INDICATED, FLAG TRUE 
           } else {
             metadata_df$rake_unit_flag = FALSE #ELSE FALSE

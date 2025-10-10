@@ -19,11 +19,11 @@ library(shiny)
 # Set global authentication options ------------------------------------------------------
 
 #SET SCOPES FOR WHAT OUR GOOGLE APIs WILL BE ALLOWED TO DO
-sheets_scope <- "https://www.googleapis.com/auth/spreadsheets"
-drive_scope <- "https://www.googleapis.com/auth/drive"
+sheets_scope = "https://www.googleapis.com/auth/spreadsheets"
+drive_scope = "https://www.googleapis.com/auth/drive"
 
 #SET FILE PATH TO THE GOOGLE SERVICE ACCOUNT TOKEN
-sa_key_path <- "PI_Survey/.secrets/picharter-57080685c8d0.json"
+sa_key_path = "PI_Survey/.secrets/picharter-57080685c8d0.json"
 
 #DON'T TRY TO AUTHENTICATE USING STANDARD INTERACTIVE SESSION TOKENS.
 options(
@@ -36,7 +36,7 @@ googlesheets4::gs4_auth(path = sa_key_path, scopes = c(sheets_scope, drive_scope
 
 # Load pre-req files and functions ------------------------------------------------------
 
-tidyName <- function(x) {
+tidyName = function(x) {
   base::tolower(
     stringr::str_replace_all(x,
                              pattern = "([\\.\\(\\)\\-\\/\\?])|([_]+)|([\\s]+)",
@@ -44,33 +44,24 @@ tidyName <- function(x) {
   )
 }
 
-#REWRITE TO GDRIVE ANON FUNCTIONS
-
-# #RE-WRITE FILE TO GDRIVE--THESE STEPS REPEAT MANY TIMES, COMMENTED ONLY HERE.
-# tmp.path = base::file.path(base::paste0(base::tempdir(), "\\")) #MAKE TEMP PATH
-# file.tmp = paste0(tmp.path, metadata_row$CLEAN_FILE) #MAKE FILE NAME
-# write.csv(x = current.import, file = file.tmp, row.names = FALSE) #WRITE LOCAL OBJ
-# googledrive::drive_upload(media = file.tmp, #SHIP TO GDRIVE
-#                           path = submitted_clean_id,
-#                           name = metadata_row$CLEAN_FILE) #RESULTS IN MULTIPLE VERSIONS OF THE SAME FILE (CAN'T GIVE OVERWRITE PRIVLEDGES), SO THESE MUST BE MANUALLY TIDIED.
-
+#REWRITE TO GDRIVE FUNCTION
 rewritetoG = function() {
-  tmp.path = base::file.path(base::paste0(base::tempdir(), "\\")) 
-  file.tmp = paste0(tmp.path, metadata_row$CLEAN_FILE) 
-  write.csv(x = current.import, file = file.tmp, row.names = FALSE) 
-  googledrive::drive_upload(media = file.tmp, 
+  tmp.path = base::file.path(base::paste0(base::tempdir(), "\\"))  #MAKE TEMP PATH
+  file.tmp = paste0(tmp.path, metadata_row$CLEAN_FILE) #MAKE FILE NAME
+  write.csv(x = current.import, file = file.tmp, row.names = FALSE) #WRITE LOCAL OBJ
+  googledrive::drive_upload(media = file.tmp,  #SHIP TO GDRIVE
                             path = submitted_clean_id,
-                            name = metadata_row$CLEAN_FILE)
+                            name = metadata_row$CLEAN_FILE) #RESULTS IN MULTIPLE VERSIONS OF THE SAME FILE (CAN'T GIVE OVERWRITE PRIVLEDGES), SO THESE MUST BE MANUALLY TIDIED.
 }
 
 #SMART COL CONVERSION, HERE UNIQUE FROM GLOBAL.R IN THAT IT CONVERTS FIRST TO NUMERIC, OTHERWISE FACTOR FOR NICE SUMMARIES.
-convert_column_types_approv <- function(df) {
+convert_column_types_approv = function(df) {
   suppressWarnings(lapply(df, function(column) {
 
     #ATTEMPT TO CONVERT TO NUMERIC NEXT
     numeric_column = column
     numeric_column[is.na(numeric_column)] = 0
-    numeric_column <- as.numeric(numeric_column)
+    numeric_column = as.numeric(numeric_column)
     if (!anyNA(numeric_column)) {
       return(numeric_column)
     }
@@ -81,15 +72,11 @@ convert_column_types_approv <- function(df) {
 }
 
 #THE PLAIN CONVERT COLUMN TYPES FUNCT, WHICH STILL REDUCES TO CHARACTERS WHERE NECESSARY
-convert_column_types <- function(df) {
+convert_column_types = function(df) {
   suppressWarnings(lapply(df, function(column) {
-    # #ATTEMPT TO CONVERT TO LOGICAL IF NO NAS
-    # logical_column <- as.logical(column)
-    # if (!anyNA(logical_column)) {
-    #   return(logical_column)
-    # }
+
     #ATTEMPT TO CONVERT TO NUMERIC NEXT
-    numeric_column <- as.numeric(column)
+    numeric_column = as.numeric(column)
     if (!anyNA(numeric_column)) {
       return(numeric_column)
     }

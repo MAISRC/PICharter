@@ -86,7 +86,7 @@ recordsUI = function() {
        uiOutput("lakefinder_note"),
        #SELECTOR FOR PICKING THAT LAKE'S RECORDS
        hidden(shinyWidgets::pickerInput("records_surveys", 
-                      HTML("<span><b>Select one (or more) survey(s).</b> Use control+click or click+drag to select multiples. Choose 'No selection' to pick a different lake. This is a required question; until you select at least one survey date, the tabs on the right-hand side of the screen will not populate.</span>"),
+                      HTML("<span><b>Select one (or more) survey(s).</b> Uncheck all selections to pick a different lake. This is a required question; until you select at least one survey date, the tabs on the right-hand side of the screen will not populate.</span>"),
                       choices = NULL,
                       multiple = TRUE,
                       options = list(`actions-box` = TRUE, #GIVES SELECT AND DESELECT ALL BUTTONS,

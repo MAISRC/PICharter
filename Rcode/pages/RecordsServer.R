@@ -561,8 +561,10 @@ records_tabs_preprocessing = function(df) {
        rename(taxon = sym(input$abundance_taxon)) %>%
        arrange(taxon)
 
+     if(data_map2$RAKE_MAX[1] != "Relative fractions of captured matter") {
      data_map2$taxon = round(data_map2$taxon, 0) #ROUND OFF THE VALUES TO WHOLE NUMBERS, AS NEEDED.
-
+     }
+     
      data_map3 = data_map2 %>% 
        filter(round(latitude, 0) != 0,
               round(longitude, 0) != 0) %>%  #NO SENSE IN PLOTTING THOSE ROWS WITHOUT ANY LOC DATA, AS THOSE WILL JUST END UP PLOTTING OVER BY AFRICA LOL. THESE WOULD BE 0S (FORMER NAS) BY THIS POINT
@@ -583,7 +585,8 @@ records_tabs_preprocessing = function(df) {
        output$abundance_map <- renderLeaflet({
  
          #IF MAPPING WET WEIGHTS FROM JILL, WE NEED TO DO SOMETHING DIFFERENT...
-         if(any(grepl("Wet", data_map3$RAKE_MAX), na.rm=T)) {
+         if(any(data_map3$RAKE_MAX %in% c("Relative fractions of captured matter", 
+                                         "Wet weights (g) instead of rake scores"), na.rm = T)) {
            
            #USE A NUMERIC PALETTE
            map_abund_pal = colorNumeric(palette = "viridis", 
@@ -591,7 +594,15 @@ records_tabs_preprocessing = function(df) {
                                         na.color = "gray")
            
            #HAVE A DIFFERENT SUBSTRING IN THE LEGEND TITLE
-           rake_lab = "<br>wet mass (g)"
+           if(all(data_map3$RAKE_MAX ==  "Wet weights (g) instead of rake scores")) {
+             rake_lab = "<br>wet mass (g)"
+           } else {
+             if(all(data_map3$RAKE_MAX == "Relative fractions of captured matter")) {
+               rake_lab = "<br>Relative fraction"
+             } else {
+               "<br>See data for units"
+             }
+           }
            
            #AND LIMIT # BINS IN LEGEND.
            bins1 = TRUE
@@ -784,10 +795,11 @@ records_tabs_preprocessing = function(df) {
   })
   
 #OBSERVER WATCHING THE SURVEY SELECTOR AND GRABBING THE DATA
-observeEvent(surveys_debounced(), {
+observeEvent(surveys_debounced(), 
+             ignoreNULL = FALSE, #<--ALLOWS REOPENING THE DOW SELECTOR
+             {
 
-    if(isTruthy(input$records_surveys) &&
-       !"Select a lake first" %in% input$records_surveys) {
+    if(isTruthy(input$records_surveys)) {
       
       #TURN ON THE WAITER.
       records_waiter$show()
