@@ -12439,3 +12439,6 @@ plotidd,alexadd,alexadd,STA_NBR,N
 PLOTID,alexadd,alexadd,STA_NBR,N
 OBJECTID,alexadd,alexadd,STA_NBR,N
 ET_ID,alexadd,alexadd,STA_NBR,N
+Unknown_species,alexadd,alexadd,unk_sp,Y
+X_coor,alexadd,alexadd,latitude,N
+Y_coor,alexadd,alexadd,longitude,N

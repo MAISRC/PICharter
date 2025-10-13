@@ -311,6 +311,9 @@ for(n in 1:length(content.ids)) {
   
   #THEN, WE CHECK TO SEE IF THE LAST 2 DIGITS ARE NOT 00 AND COERCE THEM TO 00 IF SO.
   if(str_sub(current.import$DOW[1], 7, 8) != "00") {
+    subbasin_digits = str_sub(current.import$DOW[1], 7, 8)
+    current.import$subbasin = subbasin_digits #STASH THIS INFO IN THE SUBBASIN COLUMN FOR FUTURE REFERENCE.
+    
     str_sub(current.import$DOW[1], 7, 8) = "00" #SET THE LAST TWO DIGITS TO 00 FOR THE FIRST ENTRY
     current.import$DOW = current.import$DOW[1] #THEN, EXTRAPOLATE THAT TO ALL ENTRIES.
     print("The DOW was for a sub-basin of a lake--coercing last two digits of DOW to 00.")
@@ -517,7 +520,7 @@ for(n in 1:length(content.ids)) {
     unmatched_names = unmatched_names[!unmatched_names %in% c("SUBMITTER_NAME", "SUBMITTER_EMAIL", "DOW", "SURVEY_START", "RAKE_MAX", "SUBMIT_TIME", "SURVEYORS")] #REMOVE THE METADATA ^^^WOULD NEED TO BE UPDATED IF OTHER METADATA COLS GET ADDED...
     for(name in unmatched_names) { #FOR EACH NONMATCH
       print(name) #ASK ME TO RENAME OR DELETE IT.
-      colfix_check = readline("This column name is in this file, but it isn't in our lookup table. What should it be replaced with?\nType a replacement column name or else type 'D' to delete this column.")
+      colfix_check = readline("This column name is in this file, but it isn't in our lookup table. What should it be replaced with?\nType a replacement column name (or the same name again) or else type 'D' to delete this column.")
       if(colfix_check != "D") {
         names(current.import)[names(current.import) == name] = colfix_check
         rewritetoG()
@@ -535,7 +538,7 @@ for(n in 1:length(content.ids)) {
   
   #SUMMARY OF ALL VALS FOR ONE MORE GOOD LOOK (FIRST NUMERICS, THEN CATEGORICALS, NO METADATA COLS)
   print(summary(summary_check_df)[-c(2, 4, 5), unlist(lapply(summary_check_df, is.numeric))][,-c(1:2)])
-  print(summary(summary_check_df)[, unlist(lapply(summary_check_df, is.factor))][,-c(1:6)])
+  print(summary(summary_check_df)[, unlist(lapply(summary_check_df, is.factor)), drop = F][,-c(1:6)])
   summary_check = readline("Does the summary above look ok?\nPress N if no,\nPress any other key to continue.\nYou can delete specific rows next, if needed.")
   if(summary_check == "N") {
     stop("The summary check of the data for this import failed--the file may need repair.")
