@@ -232,7 +232,8 @@ $(document).ready(function() {
       tabPanel(title = 5, value = 5,
              
       tags$fieldset(class = "new_sub_divs add50height", 
-          tags$legend(HTML("Which lake was surveyed? Start typing a lake name or 8-digit DOW number in the first search box to search our database of lakes, then select your lake from the dropdown menu. Not sure of your lake's name or DOW number? <a target= '_blank', href='https://maps1.dnr.state.mn.us/lakefinder/mobile/'>Use LakeFinder to find it!</a>"),
+          tags$legend(HTML("Which lake was surveyed? Start typing a lake name or 8-digit DOW number in the first search box to search our database of lakes, then select your lake from the dropdown menu. Not sure of your lake's name or DOW number? <a target= '_blank', href='https://maps1.dnr.state.mn.us/lakefinder/mobile/'>Use LakeFinder to find it!</a><br>
+                           Note that, if your survey is of a subbasin (the last two digits do not end in 00), the app will coerce the DOW to that of the main waterbody (last digits of 00) automatically. However, subbasin information will be retained separately in a \"subbasin\" column."),
                       style = "font-size: 95%; font-weight: bold;"),
           #SEARCH BAR TO HANDLE SERVER-SIDE CHOICE PROCESSING FOR SELECTOR BELOW
           textInput("lake_search", 

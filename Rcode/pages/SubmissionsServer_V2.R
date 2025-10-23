@@ -1029,11 +1029,17 @@ observeEvent(input$survey_date2, priority = -1, {
         current_lake2 <- current_lake
         if(nchar(current_lake) == 7) { current_lake2 <- paste0("0", current_lake) } 
         
+        #CHECK FOR ANY ANON SURVEYORS, REPLACE WITH GENERIC STRING
+        surveyors_st = input$surveyors_names2 
+        if(grepl("NA", surveyors_st)) {
+          surveyors_st = gsub("NA", "Unnamed hardworking surveyor(s)", surveyors_st)
+        }
+
         #BEGIN COMPILING METADATA FOR SUBMISSION
         metadata_df = dplyr::tibble(
           submitter_name = input$submitter_name2,
           submitter_email = input$submitter_email2,
-          surveyors = input$surveyors_names2,
+          surveyors = surveyors_st,
           DOW = current_lake2,
           survey_dateStart = date2use,
           start_row = input$start_row2,
@@ -1076,14 +1082,21 @@ observeEvent(input$survey_date2, priority = -1, {
         #BEGIN UPLOAD OF CLEANED FILE 
         cleanfile4upload = sub_reactives$sub_dfV6
         
+        #CHECK FOR SUBBASIN, APPEND SUBBASIN COL
+        if(stringr::str_sub(string = current_lake2, start = 7, end = 8) != "00") {
+          subbasin_digits = stringr::str_sub(string = current_lake2, start = 7, end = 8) #EXTRACT SUBBASIN #
+          stringr::str_sub(string = current_lake2, start = 7, end = 8) = "00" #REPLACE ORIG W/ 00
+          cleanfile4upload$subbasin = subbasin_digits #STASH SUBBASIN IN NEW COL
+        }
+        
         #APPEND NEW METADATA TO CLEANED FILE
         cleanfile4upload$SUBMITTER_NAME = input$submitter_name2
         cleanfile4upload$SUBMITTER_EMAIL = input$submitter_email2
-        cleanfile4upload$DOW = input$lake_name2
+        cleanfile4upload$DOW = current_lake2 
         cleanfile4upload$SURVEY_START = date2use
         cleanfile4upload$RAKE_MAX = input$rake_units2
         cleanfile4upload$SUBMIT_TIME = as.character(.POSIXct(Sys.time(), tz = "America/Chicago")) 
-        cleanfile4upload$SURVEYORS = input$surveyors_names2
+        cleanfile4upload$SURVEYORS = surveyors_st
 
         #DEPTH CHECKS. IF DEPTH COLUMN (IF ANY) "EMPTY", SILENTLY DELETE, OVERRIDE METADATA OF DEPTH UNITS TO NONE. ALSO, FLIP NEGATIVES TO POSITIVE. 
         if("depth_ft" %in% colnames(cleanfile4upload)) {
@@ -1195,19 +1208,58 @@ observeEvent(input$survey_date2, priority = -1, {
         #APPEND AS FLAG.
         metadata_df$CONSEC_SITES = consec_rows
 
+        taxonomic_names = tidyName(
+          unique(newfieldnames$newfieldname[newfieldnames$taxonomic == "Y"])
+        ) #FIND TAXONOMIC OPTIONS
+        
+        which_taxonomic = which(colnames(cleanfile4upload) %in% taxonomic_names) #DETERMINE WHICH COLS ARE TAXONOMIC
+        
+        only_taxa_cols = cleanfile4upload[, c(which_taxonomic), drop = F] #CUT TO ONLY TAXONOMIC COLS
+      
+        
+        #WE CHECK FOR AND AUTO-CORRECT WHOLE_RAKE_DENSITY LOGIC HERE.
+        if(any(names(cleanfile4upload) == "whole_rake_density")) {
+          rows0s = which(cleanfile4upload$whole_rake_density == 0 |
+                           is.na(cleanfile4upload$whole_rake_density)) #WHICH ROWS SHOULD HAVE NO TAX DATA?
+          rowsnon0 = which(cleanfile4upload$whole_rake_density != 0 &
+                             !is.na(cleanfile4upload$whole_rake_density)) #WHICH ROWS SHOULD HAVE SOME TAX DATA?
+          
+          #CYCLE THRU ROWS, LOOK FOR ERRANT LOGIC
+          for(row in rows0s) {
+            if(any(!is.na(cleanfile4upload[row, which_taxonomic]) &
+                   cleanfile4upload[row,which_taxonomic] != 0)) {
+              
+              possible_vals = sort(unique(suppressWarnings(as.numeric(unlist(cleanfile4upload[row, which_taxonomic])))))
+              max_val = max(possible_vals, na.rm=T)
+              
+              if(length(max_val) == 1) {
+                cleanfile4upload[row, "whole_rake_density"] = max_val 
+               }
+            }
+          }
+          
+          for(row in rowsnon0) {
+            #REPLACING NON-0S WITH 0S...
+            if(all(is.na(cleanfile4upload[row, which_taxonomic]) |
+                   cleanfile4upload[row, which_taxonomic] == 0)) {
+              cleanfile4upload[row, "whole_rake_density"] = 0
+            }
+            
+            #REPLACING WRD VALUES WITH TAXONOMIC VALUES THAT WERE HIGHER.
+            if(any(suppressWarnings(as.numeric(cleanfile4upload[row, which_taxonomic])) > 
+                   cleanfile4upload$whole_rake_density[row], 
+                   na.rm = T)) {
+              cleanfile4upload$whole_rake_density[row] = max(suppressWarnings(as.numeric(cleanfile4upload[row, which_taxonomic])), na.rm = T)
+            }
+          }
+        }
+        
+        
         #DO CHECK TO SEE IF TOO LOW A MAX RAKE SCORE VAL MAY HAVE BEEN PROVIDED.
 
         if(isTruthy(suppressWarnings(as.numeric(input$rake_units2))) |
            input$rake_units2 == "Relative fractions of captured matter") { #IS THE INPUT CHOICE NUMERIC
-          
-          taxonomic_names = tidyName(
-            unique(newfieldnames$newfieldname[newfieldnames$taxonomic == "Y"])
-            ) #FIND TAXONOMIC OPTIONS
-          
-          which_taxonomic = which(colnames(cleanfile4upload) %in% taxonomic_names) #DETERMINE WHICH COLS ARE TAXONOMIC
-          
-          only_taxa_cols = cleanfile4upload[, c(which_taxonomic)] #CUT TO ONLY TAXONOMIC COLS
-          
+
           only_taxa_vec = unique(suppressWarnings(as.numeric(unlist(only_taxa_cols)))) #CONVERT TO NUMERIC VECTOR, ONLY UNIQUE VALS
           
           nas2remove = which(is.na(only_taxa_vec)) #REMOVE NAS IF APPLICABLE
