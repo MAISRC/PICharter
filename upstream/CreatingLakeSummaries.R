@@ -52,7 +52,7 @@ data2summ = read_parquet("H:\\Shared drives\\MAISRC\\Quantification, Data, and C
 if(any(data2summ$SURVEYORS == "NA")) { stop("Alex, you left NAs in the DB file for surveyors!") }
 
 #READ IN TAXONOMIC/NOT COLUMN NAMES FILE
-newfieldnames = utils::read.csv("inputs/Dynamic/column_name_lookup.csv") %>% 
+newfieldnames = read.csv("inputs/Dynamic/column_name_lookup.csv") %>% 
   dplyr::mutate(fieldname = tidyName(fieldname)) %>%
   dplyr::select(fieldname, newfieldname, taxonomic) %>%
   dplyr::distinct()
@@ -71,7 +71,7 @@ nontaxonomic = newfieldnames %>%
 #FIRST STEP--REMOVE ALL COL NAMES NOT TAXONOMIC
 data2summ = data2summ %>% 
   select_if(!names(data2summ) %in% nontaxonomic) %>% 
-  select(-subbasin, -multipartsurvey, -SUBMITTER_EMAIL, -RAKE_MAX, -SUBMIT_TIME, -sta_nbr.1, -plant_height.1, -unk_sp, -unk_sp.1) #^^^IF ANY MORE COLUMN NAMES ENTER THE DB THAT ARE NOT IN THE COL_NAME_LOOKUP FILE LIKE THESE, THEY WOULD NEED TO BE ADDED HERE. SOMETHING TO CONSIDER DURING APPROVALS.
+  select(-multipartsurvey, -SUBMITTER_EMAIL, -RAKE_MAX, -SUBMIT_TIME, -sta_nbr.1, -plant_height.1, -unk_sp, -unk_sp.1) #^^^IF ANY MORE COLUMN NAMES ENTER THE DB THAT ARE NOT IN THE COL_NAME_LOOKUP FILE LIKE THESE, THEY WOULD NEED TO BE ADDED HERE. SOMETHING TO CONSIDER DURING APPROVALS.
 
 #REMOVE ALL TEXT VALS FROM ALL BUT THE METADATA COLS (^^^SHOULD ALWAYS BE COLS 1-4 AT THIS POINT!) BUT BEING CAREFUL TO DO SO NOT IN A WAY THAT WILL ELIMINATE MIKE'S TRUES AND FALSES
 #Eliminated TRUEs and FALSEs, so this should no longer be needed. 

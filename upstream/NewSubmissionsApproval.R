@@ -189,38 +189,6 @@ for(n in 1:length(content.ids)) {
     }
   }
 
-  #TEXT-CONTAINING COLUMNS FLAG 
-  #***This check works well and might be preferable, but the summary check later will already produce this same output...
-  # if(!is.na(metadata_row$COLUMNS_WTEXT)) {
-  #   test_text = current.import %>% 
-  #     dplyr::select(-c(SUBMITTER_NAME, SUBMITTER_EMAIL, DOW, SURVEY_START, RAKE_MAX, SUBMIT_TIME, SURVEYORS)) #DON'T LOOK FOR TEXT IN 1ST 8 COLS--METADATA ^^^ WOULD NEED UPDATING IF THIS CHANGES.
-  #   test_text = data.frame(sapply(test_text, function(x) {
-  #     gsub("\xc2\xa0", "", x, fixed=T) #GET RID OF NON-BREAKING SPACES
-  #   }))
-  #   test_text[is.na(test_text)] = 0 #TURN NAS TO 0S
-  #   test_text = data.frame(convert_column_types(test_text)) #TYPE CONVERT COLS TO NUMERIC IF POSSIBLE
-  #   text_columns = sapply(test_text, is.character) #CHECK WHICH ARE STILL CHARACTERS.
-  #   names(text_columns) = NULL #ELIM NAMES
-  #   
-  #   if(any(text_columns == TRUE)) {
-  #   
-  #   ##THIS WILL LOOP THRU ALL COLUMNS THAT HAVE TEXT, PRINTING FIRST THE NAME OF THE COLUMN, THEN A TABLE OF ALL ITS CONTENT VALUES (WHICH MIGHT BE A LITTLE VERBOSE IF OTHERWISE NUMERIC)
-  #   running_logs = rep(FALSE, 8) #ELIM METADATA COLS
-  #   for(i in 1:length(text_columns)) { #LOOP OVER TEXTY COLS
-  #     running_logs = c(running_logs, text_columns[i])  #TACK ON THE NEXT T/F
-  #     if(running_logs[length(running_logs)] == TRUE) { #IF TRUE (TEXTY)
-  #        print(names(current.import)[length(running_logs)]) #PRINT NAME OF CURRENT COL (ONLY 1 TRUE POSSIBLE)
-  #      print(table(current.import[,length(running_logs)])) #PRINT TABLE OF THIS COL'S VALS
-  #     }
-  #     running_logs[running_logs==TRUE] = FALSE #COERCE ALL OLD TRUES TO FALSE
-  #   }
-  #   
-  #   textycols_check = readline("The app noted the columns listed above have at least one text-based value in them.\nAll values in each such column were printed above.\nDo we need to stop and make any corrections?\nPress Y for yes,\nPress any other key to continue")
-  #   if(textycols_check == "Y") {
-  #     stop("Some errant text values may need to be removed from at least one column.")
-  #   }
-  #   }
-  # }
   #CONSECUTIVE SITES FLAG
   if(isTruthy(metadata_row$CONSEC_SITES) &&
      metadata_row$CONSEC_SITES[[1]] == FALSE) {
@@ -238,7 +206,8 @@ for(n in 1:length(content.ids)) {
           stop("We should clarify with the submitter if any absences data are missing from the current submission based on sites not being consecutive.")
         }
       }
-    }
+  }
+  
   #RAKE_UNIT_FLAG--JUST IGNORED AND CHECKED HERE ANEW INSTEAD
   if(any(suppressWarnings(as.numeric(unique(unlist(current.import %>% select(all_of(taxonomic_cols)))))) > current.import$RAKE_MAX[1], na.rm=T)) {
     if(metadata_row$RAKE_UNIT_FLAG[1] != TRUE) { print("The rake max flag isn't working!") }
@@ -457,18 +426,32 @@ for(n in 1:length(content.ids)) {
     }
     
     for(row in rowsnon0) {
+      #REPLACING NON-0S WITH 0S...
       if(all(is.na(current.import[row, taxonomic_cols]) |
              current.import[row, taxonomic_cols] == 0)) {
 
 
           print(paste0("The whole_rake_density value for row ", row, "was not 0/NA but there weren't positive rake scores--replacing with 0."))
-          if(row == rowsnon0[1]) {
-            heads_up = readline("Press any key to continue")
-          }
         current.import[row, "whole_rake_density"] = 0
           rewritetoG()
 
       }
+      #REPLACING WRD VALUES WITH TAXONOMIC VALUES THAT WERE HIGHER.
+      if(any(suppressWarnings(as.numeric(current.import[row, taxonomic_cols])) > 
+             current.import$whole_rake_density[row], 
+             na.rm = T)) {
+        print(paste0("The whole_rake_density value for row ", row, " was ", current.import$whole_rake_density[row], ", but there were taxonomic rake score values higher than that--replacing with the highest one."))
+        current.import$whole_rake_density[row] = max(suppressWarnings(as.numeric(current.import[row, taxonomic_cols])), na.rm = T)
+        rewritetoG()
+      }
+      #REPLACING HIGHER WRD VALUES WITH A MAX TAXONOMIC VALUE THAT WAS LOWER
+      if(current.import$whole_rake_density[row] > 
+             max(suppressWarnings(as.numeric(current.import[row, taxonomic_cols])), na.rm = T)) {
+        print(paste0("The whole_rake_density value for row ", row, " was ", current.import$whole_rake_density[row], ", but there were no taxonomic rake score values that high--replacing with the max rake score observed."))
+        current.import$whole_rake_density[row] = max(suppressWarnings(as.numeric(current.import[row, taxonomic_cols])), na.rm = T)
+        rewritetoG()
+      }
+      
     }
   }
   
