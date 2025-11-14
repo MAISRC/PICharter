@@ -18,7 +18,7 @@ library(gpx)
 # Establishing connections to the Google Drive structures -----------------
 
 #GET ACCESS TO THE METADATA FILE FOR ITS FLAGS AND METADATA
-metadata_id = googledrive::drive_get("https://docs.google.com/spreadsheets/d/1iqJThuAjoMhRs1njvWPi_7pbszM-Dlvl933L6wsPR6k/edit?usp=sharing")$id
+metadata_id = googledrive::drive_get("https://docs.google.com/spreadsheets/d/1WqRuDTOp3omqltK7_knXme6zoNnVBTD4VlThy8gSWl0")$id
 metadata_sheet = googlesheets4::read_sheet(ss = metadata_id,
                                            sheet = "submitted_metadata")
 
@@ -26,12 +26,10 @@ metadata_sheet = googlesheets4::read_sheet(ss = metadata_id,
 col_name_lookup_id = "https://drive.google.com/file/d/1LbNRwQ0-5v7CHyXnjb814pJYYLAr4RBB/view?usp=sharing"
 
 #GET ACCESS TO THE LOCATION DATA SET FOLDER.
-locdata_id = googledrive::drive_get("https://drive.google.com/drive/folders/14ASYFti6Yfjy3Bv2K7lpwQn5t9J46Y7P")$id
-garbage_id = googledrive::drive_get("https://drive.google.com/drive/folders/1WIgmRVbY1mDedi-wZSQQUBOqadehWKyp")$id
-awaiting_fixes_id = googledrive::drive_get("https://drive.google.com/drive/folders/1yNhbvWWdREet0cUgkVabzEkJ2Mc1x2f8")
-archived_id_loc = googledrive::drive_get("https://drive.google.com/drive/folders/1aRdTI0jDyL0JoylaOQod5xHWRDVt-QAm")$id
-cleandata_id_needloc = googledrive::drive_get("https://drive.google.com/drive/u/1/folders/1DpG5FCZka1sXx-ztuEOitVA8MpRdx5r4")$id
-archived_id_clean = googledrive::drive_get("https://drive.google.com/drive/u/1/folders/1DgBorlz_n0RLPKCpQsA0OAlOgXt8UG_A")$id
+locdata_id = googledrive::drive_get("https://drive.google.com/drive/folders/1dcqR5jiWO5zU-dt6iovSFT8ci6zJJm8R")$id
+archived_id_loc = googledrive::drive_get("https://drive.google.com/drive/folders/1iGHDQhaKamNqgSZYt7T3l1WWt_Zn0r10")$id
+cleandata_id_needloc = googledrive::drive_get("https://drive.google.com/drive/folders/1DpG5FCZka1sXx-ztuEOitVA8MpRdx5r4")$id
+archived_id_clean = googledrive::drive_get("https://drive.google.com/drive/folders/1DgBorlz_n0RLPKCpQsA0OAlOgXt8UG_A")$id
 
 # Convenience functions -------------------------------------------
 tidyName = function(x) {
@@ -151,10 +149,6 @@ write_parquet(as.data.frame(current_db), sink = paste0(archival_path, archival_f
 #CONDUCT A SURVEY OF THE LOCATION DATA FOLDER UPON STARTUP
 locdata_filenames = googledrive::drive_ls(path = locdata_id)$name
 locdata_fileids = googledrive::drive_ls(path = locdata_id)$id
-
-#EXCLUDE GARBAGE FOLDER
-locdata_filenames = locdata_filenames[locdata_filenames != "garbage"]
-locdata_fileids = locdata_fileids[locdata_fileids != garbage_id]
 
 #EXCLUDE AWAITING FIXES FOLDER
 locdata_filenames = locdata_filenames[locdata_filenames != "Awaiting fixes"]

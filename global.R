@@ -508,10 +508,10 @@ tribal_conflicts = ourlakes[which(ourlakes %in% tribal_DOWs)] #FIND THOSE WE HAV
 MN = base::readRDS("inputs/Static/MN") #Outline of Minnesota's polygon for mapping on the browse tab.
 
 #Get the sheet ids for the metadata GDrive sheet and google folders for file submissions.
- metadata_id = googledrive::drive_get("https://docs.google.com/spreadsheets/d/1iqJThuAjoMhRs1njvWPi_7pbszM-Dlvl933L6wsPR6k/edit?usp=sharing")$id
- rawdata_id = googledrive::drive_get("https://drive.google.com/drive/folders/1IRSvqDu5idxQBfJqYXlxDCl9Yo8WlN2l")$id
- cleandata_id = googledrive::drive_get("https://drive.google.com/drive/folders/1LwxRFKd9m8fNPFB0Fgl4n9v9oBRP4_FF")$id
- locdata_id = googledrive::drive_get("https://drive.google.com/drive/folders/14ASYFti6Yfjy3Bv2K7lpwQn5t9J46Y7P")$id
+ metadata_id = googledrive::drive_get("https://docs.google.com/spreadsheets/d/1WqRuDTOp3omqltK7_knXme6zoNnVBTD4VlThy8gSWl0")$id
+ rawdata_id = googledrive::drive_get("https://drive.google.com/drive/folders/1u5uWPGtQGCdhy1L4rxapJtVkrMb3-dJH")$id
+ cleandata_id = googledrive::drive_get("https://drive.google.com/drive/folders/1l5RUDBR3LDAR2AbJSEJzipIzMz-Pa4f_")$id
+ locdata_id = googledrive::drive_get("https://drive.google.com/drive/folders/1dcqR5jiWO5zU-dt6iovSFT8ci6zJJm8R")$id
 
 db_path = "inputs/MadeUpstream/db_unified.parquet"
 

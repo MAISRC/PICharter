@@ -97,7 +97,7 @@ directoryfile = utils::read.csv("inputs/Dynamic/PICharterFieldNames.csv")
 nametogglefile = utils::read.csv("inputs/Static/commonsci_name_lookup.csv")
 
 #GET ACCESS TO THE METADATA FILE FOR ITS FLAGS AND METADATA
-metadata_id = googledrive::drive_get("https://docs.google.com/spreadsheets/d/1iqJThuAjoMhRs1njvWPi_7pbszM-Dlvl933L6wsPR6k/edit?usp=sharing")$id
+metadata_id = googledrive::drive_get("https://docs.google.com/spreadsheets/d/1WqRuDTOp3omqltK7_knXme6zoNnVBTD4VlThy8gSWl0")$id
 metadata_sheet = googlesheets4::read_sheet(ss = metadata_id,
                                            sheet = "submitted_metadata")
 
@@ -117,9 +117,7 @@ write_parquet(as.data.frame(current_db), sink = paste0(archival_path, archival_f
 
 # Access the GDrive's "clean" folder and discover contents ---------------
 
-submitted_raw_id = googledrive::drive_get("https://drive.google.com/drive/folders/1IRSvqDu5idxQBfJqYXlxDCl9Yo8WlN2l")$id
-submitted_clean_id = googledrive::drive_get("https://drive.google.com/drive/folders/1LwxRFKd9m8fNPFB0Fgl4n9v9oBRP4_FF")$id
-already_approved_id = googledrive::drive_get("https://drive.google.com/drive/folders/17YNVoTJ6cTVjaTzuDNLy48DsL1VhSQ_L")$id 
-need_fixes_id = googledrive::drive_get("https://drive.google.com/drive/folders/1y7x9EBNgmG6YqUlKc6lb9LZKxSKaBLKb")$id 
-already_approved_name = googledrive::drive_get("https://drive.google.com/drive/folders/17YNVoTJ6cTVjaTzuDNLy48DsL1VhSQ_L")$name 
-need_fixes_name = googledrive::drive_get("https://drive.google.com/drive/folders/1y7x9EBNgmG6YqUlKc6lb9LZKxSKaBLKb")$name
+submitted_raw_id = googledrive::drive_get("https://drive.google.com/drive/folders/1u5uWPGtQGCdhy1L4rxapJtVkrMb3-dJH")$id
+submitted_clean_id = googledrive::drive_get("https://drive.google.com/drive/folders/1l5RUDBR3LDAR2AbJSEJzipIzMz-Pa4f_")$id
+already_approved_id = googledrive::drive_get("https://drive.google.com/drive/folders/1hEI9S4TwwhQ-uuQ6ja-vH3B20ixj_rGt")$id 
+already_approved_name = googledrive::drive_get("https://drive.google.com/drive/folders/1hEI9S4TwwhQ-uuQ6ja-vH3B20ixj_rGt")$name
