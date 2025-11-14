@@ -46,6 +46,7 @@ cladophora_sp,"""_sp"" indicates an unknown species within a given genus, as ind
 comarum_palustre,,Y
 cyanobacteria,,Y
 cyperaceae_taxa,"""_taxa"" indicates an unknown taxon within a given family, as indicated by the surveyor, not MAISRC",Y
+cyperus_esculentus,,Y
 cyperus_sp,"""_sp"" indicates an unknown species within a given genus, as indicated by the surveyor, not MAISRC",Y
 decodon_verticillatus,,Y
 depth_ft,"Depth measurement data, coerced to be in feet for consistency (so long as the original units were understood). If users submitted data in meters but did not specify as much, these data could be incorrectly labelled as feet data.",N
@@ -64,6 +65,7 @@ eleocharis_sp,"""_sp"" indicates an unknown species within a given genus, as ind
 elodea_canadensis,,Y
 elodea_nuttallii,,Y
 elodea_sp,"""_sp"" indicates an unknown species within a given genus, as indicated by the surveyor, not MAISRC",Y
+elymus_virginicus,,Y
 equisetum_fluviatile,,Y
 equisetum_sp,"""_sp"" indicates an unknown species within a given genus, as indicated by the surveyor, not MAISRC",Y
 eragrostis_sp,"""_sp"" indicates an unknown species within a given genus, as indicated by the surveyor, not MAISRC",Y

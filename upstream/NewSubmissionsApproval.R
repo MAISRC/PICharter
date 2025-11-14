@@ -31,6 +31,8 @@ for(n in 1:length(content.ids)) {
   id <- content.ids[n] #CURRENT FILE ID
   name <- content.names[n] #CURRENT FILE NAME
   metadata_row = metadata_sheet[metadata_sheet$CLEAN_FILE == name,] #WHERE IS THIS FILE, WHAT'S IT CALLED.
+  metadata_row$SURVEY_DATE = format(metadata_row$SURVEY_DATE, "%Y-%m-%d") #<--NEW UPDATE IS MAKING THIS GET READ AS A POSITCX INSTEAD.
+  
   raw_file_name = metadata_row$RAW_FILE
 
   #READ FILE
@@ -83,8 +85,19 @@ for(n in 1:length(content.ids)) {
   ##CHECKING FOR SURVEY DUPLICATION
   currentdow = current.import$DOW[1] #GET DOW
   currentsurveydate = current.import$SURVEY_START[1] #GET SURVEY DATE
-  if(length(which(current_db$DOW == currentdow &  #LOOK FOR THESE SAME VALS IN THE DB
-                  current_db$SURVEY_START == currentsurveydate)) > 0) {
+  currentsubbasin = current.import$subbasin[1] #GET SUBBASIN
+  
+  #NEW--MUST BRANCHING LOGIC FOR THE CHECK HERE IF THIS IS A SUBBASIN
+  if(is.null(currentsubbasin)) {
+    next_check = length(which(current_db$DOW == currentdow &  #LOOK FOR THESE SAME VALS IN THE DB
+                   current_db$SURVEY_START == currentsurveydate)) > 0
+  } else {
+    next_check = length(which(current_db$DOW == currentdow &  #LOOK FOR THESE SAME VALS IN THE DB
+                                current_db$SURVEY_START == currentsurveydate &
+                              current_db$subbasin == currentsubbasin)) > 0
+  }
+
+  if(next_check){
     stop("There's evidence that this is a duplicate survey record. Please verify before continuing submission.")
   } else {
     if(isTruthy(grow.dat) &&
@@ -504,10 +517,26 @@ for(n in 1:length(content.ids)) {
 
   #ALL TAXONOMIC COL VALS--DO THEY LOOK AS WE'D EXPECT?
   print(sort(unique(unlist(current.import[,taxonomic_cols]))))
-  taxvals_check = readline("Printed above are all the different non-NA values observed in all the taxonomic columns. Do they all look ok?\nPress N if no,\nPress any other key to continue.")
+  taxvals_check = readline("Printed above are the different non-NA values in all taxonomic columns. 
+  Do they all look ok? Press N if no; Press D to divide columns by 100.
+  Press any other key to continue.")
   if(taxvals_check == "N") {
     stop("At least one value in a taxonomic column looks strange.")
   }
+  
+  if(taxvals_check == "D") {
+    divide_cols = readline("Which column numbers should be divided by 100?
+                           Provide a min,max in that format.")
+    divide_cols2 = str_split_1(divide_cols, pattern = ",")
+    if(length(divide_cols2) != 2) { stop("You done goofed!") }
+    #THIS WILL OVERRIDE ANY TEXT VALS!
+    print("Dividing those columns by 100...")
+    current.import[divide_cols2[1]:divide_cols2[2]] = 
+      sapply(current.import[divide_cols2[1]:divide_cols2[2]], 
+             function(x) {as.numeric(x)/100})
+    rewritetoG()
+  }
+  
   
   #CHECKING FOR TYPOED COLUMN NAMES
   if(any(!names(current.import) %in% newfieldnames$newfieldname)) { #ANY UNMATCHED NAMES ACCORDING TO OUR DB

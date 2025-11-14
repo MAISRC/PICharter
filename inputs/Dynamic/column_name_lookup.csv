@@ -1,4 +1,4 @@
-Ôªøfieldname,datasourcemv,lknamemv,newfieldname,taxonomic
+fieldname,datasourcemv,lknamemv,newfieldname,taxonomic
 zpal,James Johnson,beebe,Zannichellia palustris,Y
 zpal,James Johnson,crookneck,Zannichellia palustris,Y
 zpal,James Johnson,fish,Zannichellia palustris,Y
@@ -2871,7 +2871,7 @@ robbin's_pondweed,Allison Gamble,roemhildt,Potamogeton robbinsii,Y
 robbins_pondweed,Mark Ranweiler,toad,Potamogeton robbinsii,Y
 robbins,April Londo,coon,Potamogeton robbinsii,Y
 robbins,Jill Sweet,libbs,Potamogeton robbinsii,Y
-Robbin‚Äôs pondweed Potamogeton robbinsii,alexadd,alexadd,Potamogeton robbinsii,Y
+Robbinís pondweed Potamogeton robbinsii,alexadd,alexadd,Potamogeton robbinsii,Y
 rlon,James Johnson,coal,Ranunculus aquatilis,Y
 rlon,James Johnson,crookneck,Ranunculus aquatilis,Y
 rlon,James Johnson,lowermission,Ranunculus aquatilis,Y
@@ -6738,7 +6738,7 @@ lychnothamnus_barbatus_bearded_stonewort,Meg Rattei_19,westwood,Lychnothamnus ba
 "lychnothamnus_barbatus,bearded_stonewort",Meg Rattei,westwood,Lychnothamnus barbatus,Y
 "lychnothamnus_barbatus,bearded_stonewort",Meg Rattei_19,long,Lychnothamnus barbatus,Y
 "lychnothamnus_barbatus,bearded_stonewort",Meg Rattei_19,westwood,Lychnothamnus barbatus,Y
-"lychnothamnus¬†barbatus,bearded_stonewort",Meg Rattei,crane,Lychnothamnus barbatus,Y
+"lychnothamnus†barbatus,bearded_stonewort",Meg Rattei,crane,Lychnothamnus barbatus,Y
 Lyc_bar,alexadd,alexadd,Lychnothamnus barbatus,Y
 ltri,Cole Loewen,louisa,Lemna trisulca,Y
 ltri,Cole Loewen,marie,Lemna trisulca,Y
@@ -8186,7 +8186,7 @@ flatstem_pondweed,mccomas,clearw,Potamogeton zosteriformis,Y
 flatstem_pondweed,mccomas,reshanau,Potamogeton zosteriformis,Y
 flatstem_pondweed,mccomas,round,Potamogeton zosteriformis,Y
 flatstem_p,sblood,kohlman,Potamogeton zosteriformis,Y
-Flat‚Äêstem Pondweed,alexadd,alexadd,Potamogeton zosteriformis,Y
+Flat?stem Pondweed,alexadd,alexadd,Potamogeton zosteriformis,Y
 Flat-stem Pond-weed,alexadd,alexadd,Potamogeton zosteriformis,Y
 Flatstem pond- weed,alexadd,alexadd,Potamogeton zosteriformis,Y
 flatstem,Andrea Prichard,island,Potamogeton zosteriformis,Y
@@ -12227,11 +12227,11 @@ Abundance,alexadd,alexadd,Ambiguous is this whole rake density,N
 PE,alexadd,alexadd,Ambiguous P. epihydrus or Persicaria sp. please clarify,Y
 UM,alexadd,alexadd,Ambiguous U. minor or U. vulgaris please clarify,Y
 MYT,alexadd,alexadd,Ambiguous M. trifoliata or M. tenellum please clarify,Y
-Water stargrass¬†,alexadd,alexadd,Heteranthera dubia,Y
-Mares¬†tail,alexadd,alexadd,Hippuris vulgaris,Y
+Water stargrass†,alexadd,alexadd,Heteranthera dubia,Y
+Mares†tail,alexadd,alexadd,Hippuris vulgaris,Y
 Chara - 2,alexadd,alexadd,Chara sp,Y
-Bladderwort - 2¬†(minor),alexadd,alexadd,Utricularia sp,Y
-Cattails¬†,alexadd,alexadd,Typha sp,Y
+Bladderwort - 2†(minor),alexadd,alexadd,Utricularia sp,Y
+Cattails†,alexadd,alexadd,Typha sp,Y
 Chara spp.,alexadd,alexadd,Chara sp,Y
 Najas spp.,alexadd,alexadd,Najas sp,Y
 Depth (m),alexadd,alexadd,depth_ft,N
@@ -12345,9 +12345,9 @@ LUDPAL,alexadd,alexadd,Ludwigia palustris,Y
 MYRHYB,alexadd,alexadd,Myriophyllum spicatum x sibiricum,Y
 SAGLAT,alexadd,alexadd,Sagittaria latifolia,Y
 WOLSPP,alexadd,alexadd,Wolffia sp,Y
-P.¬†pusilius,alexadd,alexadd,Potamogeton pusillus,Y
-P. strictiformis¬†,alexadd,alexadd,Potamogeton strictifolius,Y
-no plants¬†,alexadd,alexadd,no_veg_found,N
+P.†pusilius,alexadd,alexadd,Potamogeton pusillus,Y
+P. strictiformis†,alexadd,alexadd,Potamogeton strictifolius,Y
+no plants†,alexadd,alexadd,no_veg_found,N
 Brasenia_schreberi_Watershield,alexadd,alexadd,Brasenia schreberi,Y
 Myriophyllum_sibiricum_Northern_water_milfoil,alexadd,alexadd,Myriophyllum sibiricum,Y
 Najas_flexilis_Slender_naiad,alexadd,alexadd,Najas flexilis,Y
@@ -12445,3 +12445,15 @@ Y_coor,alexadd,alexadd,longitude,N
 subbasin,alexadd,alexadd,subbasin,N
 UTMX,alexadd,alexadd,x,N
 UTMY,alexadd,alexadd,y,N
+Unique_ID,alexadd,alexadd,STA_NBR,N
+Survey_pt,alexadd,alexadd,STA_NBR,N
+PLOTID,alexadd,alexadd,STA_NBR,N
+Samplingpo,alexadd,alexadd,STA_NBR,N
+Point,alexadd,alexadd,STA_NBR,N
+Unique_id,alexadd,alexadd,STA_NBR,N
+PointID,alexadd,alexadd,STA_NBR,N
+STA_NBR,alexadd,alexadd,STA_NBR,N
+IDENT,alexadd,alexadd,STA_NBR,N
+Cyperus esculemtus,alexadd,alexadd,Cyperus esculentus,Y
+Potamogeton foliosus subsp. foliosus,alexadd,alexadd,Potamogeton foliosus,Y
+Elymus virginicus var. virginicus,alexadd,alexadd,Elymus virginicus,Y
