@@ -86,53 +86,6 @@ browseUI = function() {
     }
   });
 ")),
-     
-      #THIS SCRIPT LOOKS FOR A LEAFLET MAP OF THE GIVEN ID AND MAKES ALL THE MARKERS TABBABLE. IT ALSO GIVES THEM A BUTTON ROLE AND AN ARIA-LABEL INDICATING IT'S A MAP MARKER AND THAT IT CAN BE ACTIVATED AND HOW. IT WORKS TO MAKE THEM TABBABLE AND ACTIVATABLE, BUT IT JUST MAKES THEM A KEYBOARD TRAP SINCE THERE ARE SO MANY OF THEM, AND THEY CAN'T EASILY BE UNIQUELY IDENTIFIED. SO, I ADVISE SCREEN-READER USERS TO EMPLOY A DIFFERENT METHODOLOGY. 
-#       tags$script(HTML("
-#   Shiny.addCustomMessageHandler('makeMarkersFocusable', function(message) {
-#     var mapId = message.mapId;
-# 
-#     var tries = 0;
-#     var maxTries = 20;
-# 
-#     var interval = setInterval(function() {
-#       var mapContainer = document.getElementById(mapId);
-#       if (!mapContainer) return;
-# 
-#       var markers = mapContainer.querySelectorAll('path.leaflet-interactive');
-#       var updated = 0;
-# 
-#       markers.forEach(function(el) {
-#         var d = el.getAttribute('d');
-#         var isCircle = d && d.match(/a5,5/i); // circle marker, radius 5
-# 
-#         if (isCircle && !el.hasAttribute('tabindex')) {
-#           el.setAttribute('tabindex', '0');
-#           el.setAttribute('role', 'button');
-#           el.setAttribute('aria-label', 'Lake marker'); // update this with a smarter label if desired
-# 
-#           el.addEventListener('keydown', function(e) {
-#             if (e.key === 'Enter' || e.key === ' ') {
-#               e.preventDefault();
-#               el.dispatchEvent(new MouseEvent('click', {
-#                 view: window,
-#                 bubbles: true,
-#                 cancelable: true
-#               }));
-#             }
-#           });
-# 
-#           updated++;
-#         }
-#       });
-# 
-#       tries++;
-#       if (updated > 0 || tries > maxTries) {
-#         clearInterval(interval);
-#       }
-#     }, 300);
-#   });
-# ")),
 
 #INSTEAD, THIS SCRIPT ENSURES THAT EVERY TIME THE LEAFLET MAP GETS REBORN ON THIS PAGE, IT GETS ARIA-HIDDEN AND LOSES KEYBOARD NAV.
 tags$script(HTML("

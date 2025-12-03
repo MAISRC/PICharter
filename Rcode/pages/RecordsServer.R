@@ -106,9 +106,9 @@ records_tabs_preprocessing = function(df) {
      data_graph = data_graph %>% 
        select(-whole_rake_density)
    }
-   
+
    #FOR EACH SURVEY, CALCULATE POPULATION FREQUENCY OF OCCURRENCE (% COVER) FOR EACH TAXON AND FOR ALL PLANTS AS A WHOLE
-   data_graph2 <- data_graph[, sapply(data_graph, function(x) !all(x == 0))] #EXCLUDE ALL COLS CONTAINING ONLY 0S
+   data_graph2 = data_graph[, sapply(data_graph, function(x) !all(x == 0))] #EXCLUDE ALL COLS CONTAINING ONLY 0S
   
    #REDUCE ALL TAXONOMIC DATA TO PRESENCE/ABSENCE AT THIS POINT
    notThese = which(names(data_graph2) %in% c("SURVEY_START", "depth_ft")) 
@@ -796,11 +796,13 @@ records_tabs_preprocessing = function(df) {
   
 #OBSERVER WATCHING THE SURVEY SELECTOR AND GRABBING THE DATA
 observeEvent(surveys_debounced(), 
+             ignoreInit = TRUE, #OTHERWISE TRIGGERS ON LOAD.
              ignoreNULL = FALSE, #<--ALLOWS REOPENING THE DOW SELECTOR
              {
 
-    if(isTruthy(input$records_surveys)) {
-      
+    if(isTruthy(input$records_surveys) &&
+       input$records_surveys != "Select a lake first") {
+
       #TURN ON THE WAITER.
       records_waiter$show()
       

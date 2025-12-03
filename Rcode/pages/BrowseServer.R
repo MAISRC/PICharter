@@ -942,19 +942,16 @@ browseServer = function(input, output, session) {
     ), 
  {
 
-    shiny::showModal( 
-      shiny::modalDialog(
-        title = HTML("<h3>Welcome to P.I Charter!<h3>"), #SCREEN READERS NEED A HEADER HERE.
+   dialog = shiny::modalDialog(
+        title = tagList(div("Welcome to P.I Charter!"),
+                    div(style = "position: absolute;
+                                 top: 8px;
+                                 right: 8px;",
+                      shiny::modalButton(HTML("&#10006;")))),
         size = "l",
         easyClose = T,
         div(class = "flexthis flexcol width100", 
             style = "min-width: 330px;",
-            #THIS IS A SKIP TO MAIN CONTENT LINK
-            tags$a(
-              href = "#mainOverviewContent",
-              class = "skip-link",
-              "Skip to the main content of the Overview tab"
-            ),
             actionButton("howto8",
                          class = "howtomodalbuttons",
                          "What is P.I. Charter?",
@@ -1062,8 +1059,21 @@ While the methodologies used to collect these data are standardized across surve
 <h4>• For contractors:</h4><br>
 <blockquote>Our company collaborates with the Minnesota Aquatic Invasive Species Research Center (MAISRC). By default, all point intercept plant survey data will be shared with MAISRC researchers and made available on a public database to inform management, monitor long-term trends, and support research. The data will be submitted to MAISRC via <b>P.I. Charter</b>: <a href='z.umn.edu/PICharter' target='_blank'>z.umn.edu/PICharter</a>. If you do not wish for us to share your survey data, please notify us in writing.</blockquote>"))),
         )
-      )
-    )
+   )
+   
+   #BY DEFAULT, THE MODAL TITLE WILL BE AN H4, BUT IT NEEDS TO BE AN H3 FOR US. THIS FINDS AND REPLACES THE TAG TYPE.
+   dlg_fixed =
+     htmltools::tagQuery(dialog)$
+     find("h4.modal-title")$
+     each(function(node, i) {  # <- note the second arg. No need to use, but must be present.
+       node$name = "h3"
+       node      # must return the modified node
+     })$
+     allTags()
+
+  shiny::showModal( 
+   dlg_fixed #FIRE THE FIXED VERSION.
+  )
   })
   
   #OBSERVER FOR SHOWING/HIDING THE FILTERS AND TOGGLES

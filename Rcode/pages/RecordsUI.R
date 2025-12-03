@@ -60,7 +60,7 @@ recordsUI = function() {
               tags$h3("Survey records selection menu", class = "sr-only"), #SCREEN READER HEADING.
               tags$a(href = "https://www.youtube.com/watch?v=aX5mOzsezwE", 
                      target = "_blank",
-                     "Click here to view a tutorial for this tab on MAISRC's Youtube channel (opens in a new tab).",
+                     "A tutorial for this tab is available on MAISRC's Youtube channel (opens in a new tab).",
                      style= "width: 80%; margin-bottom: 10px; display: block; margin-left: auto; margin-right: auto;"),
               tags$fieldset( #SEMANTICALLY APPROPRIATE DIV
               id = "records_formleft",

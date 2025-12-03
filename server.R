@@ -56,12 +56,4 @@ submissionsServer_V2(input, output, session)
 recordsServer(input, output, session)
 
 
-# Miscellaneous -----------------------------------------------------------
-#IF THE USER USES THE SKIP TO MAIN CONTENT LINK, WE NEED TO CLOSE ANY MODALS OPEN
-observe({
-  req(input$skip_main_content)
-  removeModal()
-  session$sendCustomMessage("clearSkipHash", "") #CLEAR THE HASH TO MAKE IT REUSABLE.
-})
-
 }) #End Server Side

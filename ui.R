@@ -1,16 +1,5 @@
 ui <- shiny::fluidPage( #Really, the whole UI is a navbarPage, but I wrap it in a fluidPage so I can stuff all the annoying "housekeeping elements here at the top, since navbarPage doesn't like receiving them.
-  
-  #FOR THE SKIP TO MAIN CONTENT LINK, WE NEED TO LET SHINY KNOW SO IT CAN CLOSE MODALS.
-  tags$head(
-    tags$script(HTML("
-    window.addEventListener('hashchange', function() {
-      if (window.location.hash === '#mainOverviewContent') {
-        Shiny.setInputValue('skip_main_content', Math.random()); //Send new value every time to ensure it can be reused.
-      }
-    }, false);
-  "))
-  ),
-  
+
   style = "margin-top: -45px;", 
   
   tags$html(lang = "en"), #SET THE PAGE LANGUAGE TO ENGLISH FOR SCREEN READERS.
@@ -32,11 +21,12 @@ ui <- shiny::fluidPage( #Really, the whole UI is a navbarPage, but I wrap it in 
   waiter::useWaiter(), 
   waiter::waiter_preloader(html = shiny::tagList(
     waiter::spin_loaders(6), shiny::br(), shiny::br(),
-    shiny::HTML("Welcome to P.I. Charter, operated by the Minnesota Aquatic Invasive Species Research Center! Please wait while we chart your course..."), #Provides more text so that it doesn't need to go into the alt text.
+    shiny::HTML("Charting your course..."), #Provides more text so that it doesn't need to go into the alt text.
     shiny::br(), shiny::br(),
-    shiny::img(src = "preload.png", alt = "")), #THIS ALT CAN BE EMPTY--THE TEXT ABOVE CONVEYS ALL NECCESSARY INFO. 
+    shiny::img(src = "maisrc-white.png", alt = "")
+    ), #THIS ALT CAN BE EMPTY--THE TEXT ABOVE CONVEYS ALL NECCESSARY INFO. 
     color = "#7a0019",
-    fadeout = 500,
+    fadeout = 500
   ),
 
 #Here, we load in our CSS stylesheet.
@@ -136,7 +126,7 @@ tags$script(HTML("
     if (el) {
       // Create an accessible alert
       var msgContainer = document.createElement('div');
-      msgContainer.textContent = 'Hmm...something has gone wrong. Either you have been idle for too long and the app has timed out or an error has been triggered in the R code of the application. To try again, refresh the page. If, after doing so, you encounter this page again after taking the same actions as before, please file a bug report with Alex at bajcz003@umn.edu. We appreciate your cooperation!';
+      msgContainer.innerHTML = 'P.I. Charter has timed out or crashed.<br>If you suspect a crash, contact <address><a href=\"mailto:bajcz003@umn.edu\" id = \"disconnectemail\">Dr. Alex Bajcz</a></address>.';
       msgContainer.setAttribute('role', 'alertdialog');
       msgContainer.setAttribute('tabindex', '-1');
       msgContainer.setAttribute('aria-label', 'Error message');
@@ -145,6 +135,23 @@ tags$script(HTML("
 
       // Insert it at the beginning of the disconnect dialog
       el.insertBefore(msgContainer, el.firstChild);
+      
+      // WIPE OUT CONTENT THAT GETS ASSIGNED TO THIS LINK
+      const link = document.querySelector('#ss-connect-dialog > div > address > a');
+      
+      if (link) {
+        const style = document.createElement('style');
+        style.textContent = `
+         #ss-connect-dialog address a::before {
+           content: none !important;
+         }
+         #ss-connect-dialog a#disconnectemail {
+         display: inline !important;
+         margin-top: 0px !important;
+         }
+        `;
+          document.head.appendChild(style);
+        }
 
       // Shift focus
       msgContainer.focus();
@@ -161,13 +168,6 @@ tags$script(HTML("
 "))
 
 ),
-
-#THIS CUSTOM SCRIPT ALLOWS ME TO RESET THE HASH LOCATION IN THE URL SO THAT OUR SKIP TO MAIN CONTENT BUTTON CAN BE REUSED.
-tags$script(HTML("
-  Shiny.addCustomMessageHandler('clearSkipHash', function(message) {
-    history.replaceState(null, '', window.location.pathname + window.location.search);
-  });
-")),
 
 shinyjs::useShinyjs(), #ENABLE SHINYJS
 
@@ -198,10 +198,15 @@ tags$script(HTML("
                  header = 
                    tags$header( #MORE SEMANTICALLY APPROPRIATE DIV
                      class = "flexthis flexcol width100 justifycenter flexwrap",
-                     h1(img(src = "PIlogocrop.png",
+                     h1(tagList(
+                       img(src = "maisrc-black.png",
+                           alt = "MAISRC logo.",#THIS ALT SHOULD JUST BE THE TEXT SIGHTED PERSONS WOULD SEE HERE.
+                           style = "min-width: 320px;"),
+                       img(src = "PIlogocrop.png",
                          alt = "P.I. Charter.",#THIS ALT SHOULD JUST BE THE TEXT SIGHTED PERSONS WOULD SEE HERE.
-                         style = "min-width: 320px;"),
-                        class = "flexthis flexcol width100 justifycenter flexwrap"), #BY ADDING AN H1 HERE, SCREEN READERS WILL BE ABLE TO RECOGNIZE THIS AS A TOP-LEVEL HEADER.
+                         style = "min-width: 320px;")
+                       ),
+                        class = "flexthis flexrow width100 justifycenter flexwrap"), #BY ADDING AN H1 HERE, SCREEN READERS WILL BE ABLE TO RECOGNIZE THIS AS A TOP-LEVEL HEADER.
                      fluidRow(
                        tags$nav( #SEMANTICALLY APPROPRIATE DIV
                          class = "flexthis flexwrap justifycenter",
@@ -243,12 +248,10 @@ tags$script(HTML("
                  windowTitle = "P.I. Charter", #Our browser window blurb.
                  
                  #Insert a footer with links, contact info, funding credits, and current version number.
-                 footer = tags$footer(shiny::HTML("<br><br>P.I. Charter was designed and is maintained by <address><a href='mailto:bajcz003@umn.edu'>Dr. Alex Bajcz (bajcz003@umn.edu)</a>, staff Quantitative Ecologist for <a href ='https://maisrc.umn.edu/ target = '_blank'>MAISRC</a></address>. P.I. Charter is currently directed by <address><a href='mailto:walsh229@umn.edu'>Dr. Jake Walsh (walsh229@umn.edu)</a>, Assistant Professor in the Department of Fisheries, Wildlife, and Conservation Biology <a href ='https://maisrc.umn.edu/jake-walsh target = '_blank'>(Jake's website)</a></address>.<br><br>App last updated November 14 2025. Version 2.6.1. <a href = 'https://docs.google.com/document/d/1rQ6Kw9rzMbkKU-p9EGlcYTWbK25HGBgVWG9W2w-EA1g/edit?usp=sharing' target = '_blank'>View the accessibility statement (opens in a new tab)</a><br><br>
-                                   Funding for this work was provided by the Minnesota Environment and Natural Resources Trust Fund (ENRTF) as recommended by the Minnesota Aquatic Invasive Species Research Center (MAISRC) and the Legislative-Citizen Commission on Minnesota Resources (LCCMR) and also the State of Minnesota.<br>"), 
-                          shiny::img(src = "jointlogo.png",
-                                     alt = "", #THIS ALT TEXT CAN BE EMPTY BECAUSE THE LOGOS ARE FUNCTIONALLY DECORATIVE--THE ESSENTIAL FUNDING INFO IS LISTED IN TEXT ABOVE THEM.
-                                              style = "margin-top: 10px;
-                                       margin-bottom: 10px;"),
+                 footer = tags$footer(
+                 shiny::HTML("<br>Created by the Minnesota Aquatic Invasive Species Research Center, University of Minnesota by <address><a href='mailto:bajcz003@umn.edu'>Dr. Alex Bajcz (bajcz003@umn.edu)</a></address>, under the current direction of <address><a href='mailto:walsh229@umn.edu'>Dr. Jake Walsh (walsh229@umn.edu)</a></address>.<br>
+App last updated December 3 2025. Version 2.6.2. View the <a href = 'https://z.umn.edu/PI-AS' target = '_blank'>accessibility statement</a> (opens in new tab).<br>
+Funding for this work was provided by the Minnesota Environment and Natural Resources Trust Fund as recommended by the Minnesota Aquatic Invasive Species Research Center and the Legislative-Citizen Commission on Minnesota Resources, and the State of Minnesota.<br><br>"), 
                               id = "footerText",
                           style = "min-width: 320px;"),
                  
