@@ -801,7 +801,7 @@ observeEvent(surveys_debounced(),
              {
 
     if(isTruthy(input$records_surveys) &&
-       input$records_surveys != "Select a lake first") {
+       !"Select a lake first" %in% input$records_surveys) {
 
       #TURN ON THE WAITER.
       records_waiter$show()
