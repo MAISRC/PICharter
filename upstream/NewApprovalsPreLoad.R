@@ -46,12 +46,34 @@ tidyName = function(x) {
 
 #REWRITE TO GDRIVE FUNCTION
 rewritetoG = function() {
-  tmp.path = base::file.path(base::paste0(base::tempdir(), "\\"))  #MAKE TEMP PATH
-  file.tmp = paste0(tmp.path, metadata_row$CLEAN_FILE) #MAKE FILE NAME
-  write.csv(x = current.import, file = file.tmp, row.names = FALSE) #WRITE LOCAL OBJ
-  googledrive::drive_upload(media = file.tmp,  #SHIP TO GDRIVE
-                            path = submitted_clean_id,
-                            name = metadata_row$CLEAN_FILE) #RESULTS IN MULTIPLE VERSIONS OF THE SAME FILE (CAN'T GIVE OVERWRITE PRIVLEDGES), SO THESE MUST BE MANUALLY TIDIED.
+  file.tmp = base::file.path(base::tempdir(), metadata_row$CLEAN_FILE) #WRITE FILE LOCALLY
+  utils::write.csv(x = current.import, file = file.tmp, row.names = FALSE)
+  
+  #FIND PRE-EXISTING FILE, IF WE CAN
+  f = googledrive::drive_get(
+    q = sprintf(
+      "name = '%s' and '%s' in parents and trashed = false",
+      gsub("'", "\\\\'", metadata_row$CLEAN_FILE),
+      submitted_clean_id
+    )
+  )
+  
+  #IF WE CAN'T, CREATE IT (UNLIKELY!)
+  if (nrow(f) == 0) {
+    googledrive::drive_upload(
+      media = file.tmp,
+      path  = submitted_clean_id,
+      name  = metadata_row$CLEAN_FILE
+    )
+  } else if (nrow(f) == 1) {
+    #OTHERWISE, JUST CREATE NEW REVISION.
+    googledrive::drive_update(
+      file  = f,
+      media = file.tmp
+    )
+  } else {
+    stop("Multiple Drive files matched name within folder; refusing to guess.")
+  }
 }
 
 #SMART COL CONVERSION, HERE UNIQUE FROM GLOBAL.R IN THAT IT CONVERTS FIRST TO NUMERIC, OTHERWISE FACTOR FOR NICE SUMMARIES.
@@ -109,15 +131,15 @@ all_DOWs = utils::read.csv("inputs/Static/dows_lakenames_counties.csv", colClass
 # Pre QA/QC stops, checksums, prompts, etc. -------------------------------------
 
 #ARCHIVE PREV DB FILE BEFORE CONTINUING
-archival_path = "H:\\Shared drives\\MAISRC\\Quantification, Data, and Computation\\Projects\\Statewide Plant Surveys App\\PI Charter\\upstream\\Archived database summaries" #ARCHIVE FOLDER
+archival_path = "H:\\Shared drives\\MAISRC\\Quantification, Data, and Computation\\Projects\\PI Charter App Folder\\PI Charter\\upstream\\Archived database summaries" #ARCHIVE FOLDER
 archival_filename = paste0("\\picharter_dbnew", Sys.Date(), ".parquet") #NEW FILE NAME
-current_dbname = "H:\\Shared drives\\MAISRC\\Quantification, Data, and Computation\\Projects\\Statewide Plant Surveys App\\PI Charter\\upstream\\db_unified.parquet" #CURRENT FILE'S NAME
+current_dbname = "H:\\Shared drives\\MAISRC\\Quantification, Data, and Computation\\Projects\\PI Charter App Folder\\PI Charter\\upstream\\db_unified.parquet" #CURRENT FILE'S NAME
 current_db = read_parquet(current_dbname) #READ
 write_parquet(as.data.frame(current_db), sink = paste0(archival_path, archival_filename)) #WRITE
 
 # Access the GDrive's "clean" folder and discover contents ---------------
 
-submitted_raw_id = googledrive::drive_get("https://drive.google.com/drive/folders/1u5uWPGtQGCdhy1L4rxapJtVkrMb3-dJH")$id
-submitted_clean_id = googledrive::drive_get("https://drive.google.com/drive/folders/1l5RUDBR3LDAR2AbJSEJzipIzMz-Pa4f_")$id
-already_approved_id = googledrive::drive_get("https://drive.google.com/drive/folders/1hEI9S4TwwhQ-uuQ6ja-vH3B20ixj_rGt")$id 
-already_approved_name = googledrive::drive_get("https://drive.google.com/drive/folders/1hEI9S4TwwhQ-uuQ6ja-vH3B20ixj_rGt")$name
+submitted_raw_id = googledrive::drive_get("https://drive.google.com/drive/u/1/folders/1u5uWPGtQGCdhy1L4rxapJtVkrMb3-dJH")
+submitted_clean_id = googledrive::drive_get("https://drive.google.com/drive/u/1/folders/1l5RUDBR3LDAR2AbJSEJzipIzMz-Pa4f_")
+already_approved_id = googledrive::drive_get("https://drive.google.com/drive/u/1/folders/1hEI9S4TwwhQ-uuQ6ja-vH3B20ixj_rGt")$id 
+already_approved_name = googledrive::drive_get("https://drive.google.com/drive/u/1/folders/1hEI9S4TwwhQ-uuQ6ja-vH3B20ixj_rGt")$name

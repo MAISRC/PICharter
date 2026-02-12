@@ -12,9 +12,9 @@ all_subs = drive_ls(submitted_clean_id)
 content.ids = all_subs$id
 content.names = all_subs$name
 content.ids = content.ids[!as.character(content.ids) %in%  #IGNORE IRRELEVANT CONTENTS OF THIS FOLDER
-                            as.character(c(already_approved_id, need_fixes_id))]
+                            as.character(c(already_approved_id))]
 content.names = content.names[!as.character(content.names) %in%
-                            as.character(c(already_approved_name, need_fixes_name))]
+                            as.character(c(already_approved_name))]
 
 #PREVENT CONTINUING IF DUPES EXIST IN CLEAN DATA FOLDER.
 if(any(duplicated(content.names))) {
@@ -100,10 +100,19 @@ for(n in 1:length(content.ids)) {
   if(next_check){
     stop("There's evidence that this is a duplicate survey record. Please verify before continuing submission.")
   } else {
+    if(is.null(currentsubbasin)) {
     if(isTruthy(grow.dat) &&
        length(which(grow.dat$DOW == currentdow &
                     grow.dat$SURVEY_START == currentsurveydate)) > 0) {
       stop("There's evidence that this is a duplicate survey record (within the current submission). Please verify before continuing submission.")
+    }
+    } else {
+      if(isTruthy(grow.dat) &&
+         length(which(grow.dat$DOW == currentdow &
+                      grow.dat$SURVEY_START == currentsurveydate &
+                      grow.dat$subbasin == currentsubbasin)) > 0) {
+        stop("There's evidence that this is a duplicate survey record (within the current submission). Please verify before continuing submission.")
+      }
     }
   }
   
@@ -226,7 +235,13 @@ for(n in 1:length(content.ids)) {
     if(metadata_row$RAKE_UNIT_FLAG[1] != TRUE) { print("The rake max flag isn't working!") }
     print(sort(unique(unlist(current.import %>% select(all_of(taxonomic_cols)))))) 
     print(current.import$RAKE_MAX[1])
-    rakeflag_check = readline("1+ rake score value(s) are higher than the max rake score.\nAll values observed in taxonomic columns are listed above, as is the max rake score.\nShould we replace all values exceeding the max rake score?\nPress H for yes,\nPress X to replace the max rake score value instead.\nPress any other key to continue.")
+    cat(
+      "1+ rake score value(s) exceed the max rake score.\n",
+      "Observed values and the max are printed above.\n",
+      "H = Replace high values\n",
+      "X = Replace the max rake score\n"
+    )
+    rakeflag_check = readline("Continue? (H/X/Enter): ")
     if(rakeflag_check == "H") {
       newhighrakes = readline("Enter the new value to be given to all values that exceed the max rake score.")
       for(i in taxonomic_cols) {
@@ -328,13 +343,16 @@ for(n in 1:length(content.ids)) {
   }
   #SURVEYORS AND SUBMITTERS--ARE THEY DB-READY IN FORMAT?
    ##HERE, CHECK FOR CERTAIN PUNCTUATION AND IF PRESENT REMOVE
-   if(grepl("\\,", current.import$SUBMITTER_NAME[1]) |
-      grepl("\\.", current.import$SUBMITTER_NAME[1])) {
+  #HOPEFULLY MORE ROBUST NOW TO AVOID OVER-TRIGGERS
+  if (isTRUE(grepl(",", current.import$SUBMITTER_NAME[1], fixed = TRUE)) ||
+      isTRUE(grepl(".", current.import$SUBMITTER_NAME[1], fixed = TRUE))) {
      current.import$SUBMITTER_NAME = gsub("\\,", "", current.import$SUBMITTER_NAME)
      current.import$SUBMITTER_NAME = gsub("\\.", "", current.import$SUBMITTER_NAME)
      rewritetoG()
    }
-  if(is.null(current.import$SURVEYORS[1])) {
+  #THIS CHECK IS NOW MORE ROBUST TO HOPEFULLY NOT TRIGGER ERRONEOUSLY
+  if(!"SURVEYORS" %in% names(current.import) ||
+     all(is.na(current.import$SURVEYORS)) || current.import$SURVEYORS[1] == "") {
     current.import$SURVEYORS = "Unnamed hardworking surveyor(s)" #IF NO SURVEYORS GIVEN, THIS COLUMN GETS CUT SOMEHOW, AND WE CAN REINTRODUCE IT HERE.
   } else {
   if(grepl("\\.", current.import$SURVEYORS[1])) {
@@ -359,10 +377,14 @@ for(n in 1:length(content.ids)) {
   }
   
   #HERE WE WANT TO CHECK AND FLAG IF THIS SET OF SURVEYORS CONTAINS ANY NEW NAMES
-  old_names = unique(unlist(unname(sapply(unique(current_db$SURVEYORS), function(x) { str_split_1(x, ",") }))))
-  new_names = str_split_1(current.import$SURVEYORS[1], ", ")
-  if(!any(new_names %in% old_names)) {
-    print(paste0("The following surveyors in this survey would be new additions to the database: ", new_names[which(!new_names %in% old_names)]))
+  old_names = unique(trimws(unlist(strsplit(unique(current_db$SURVEYORS), ","))))
+  new_names = trimws(unlist(strsplit(current.import$SURVEYORS[1], ",")))
+  
+  new_only = setdiff(new_names, old_names)
+  new_only = new_only[!is.na(new_only) & new_only != "NA" & new_only != ""]
+  
+  if (length(new_only) > 0) {
+    print(paste0("These appear to be new surveyor name(s) to our database: ", paste(new_only, collapse = ", ")))
   }
 
   textcols_check = readline("Do the submitter and surveyor names listed above look ok?\nPress Y if yes.\nPress M to edit the submitter's name.\nPress V to edit the surveyor's names.\nPress multiple letters to edit multiple fields.\nPress N to stop.\nPress any other key to continue.")
@@ -418,67 +440,67 @@ for(n in 1:length(content.ids)) {
   }
   
   #LOGIC OF ANY WHOLE_RAKE_DENSITY COL--SIMILAR TO ABOVE--DEPRECATED
-  if(any(names(current.import) == "whole_rake_density")) {
-    rows0s = which(current.import$whole_rake_density == 0 |
-                     is.na(current.import$whole_rake_density)) #WHICH ROWS SHOULD HAVE NO TAX DATA?
-    rowsnon0 = which(current.import$whole_rake_density != 0 &
-                      !is.na(current.import$whole_rake_density)) #WHICH ROWS SHOULD HAVE SOME TAX DATA?
-    
-    #CYCLE THRU ROWS, LOOK FOR ERRANT LOGIC
-    for(row in rows0s) {
-      if(any(!is.na(current.import[row, taxonomic_cols]) &
-             current.import[row,taxonomic_cols] != 0)) {
-
-        print("Hey Alex, some WRD non-logic is slipping through! Correct your submissions process! (#1)")
-        
-        # possible_vals = sort(unique(as.numeric(unlist(current.import[row, taxonomic_cols]))))
-        # max_val = max(possible_vals, na.rm=T)
-        # 
-        # if(length(max_val) == 1) {
-        #   #OVERWRITE AND RE-WRITE TO GDRIVE
-        #   print(paste0("The whole_rake_density value for row ", row, " was 0/NA but there were positive rake scores--replacing with the highest one."))
-        #   if(row == rows0s[1]) {
-        #     heads_up = readline("Press any key to continue")
-        #   }
-        #   current.import[row, "whole_rake_density"] = max_val 
-        #   rewritetoG()
-        # }
-      }
-    }
-    
-    for(row in rowsnon0) {
-      #REPLACING NON-0S WITH 0S...
-      if(all(is.na(current.import[row, taxonomic_cols]) |
-             current.import[row, taxonomic_cols] == 0)) {
-
-        print("Hey Alex, some WRD non-logic is slipping through! Correct your submissions process! (#2)")
+#   if(any(names(current.import) == "whole_rake_density")) {
+#     rows0s = which(current.import$whole_rake_density == 0 |
+#                      is.na(current.import$whole_rake_density)) #WHICH ROWS SHOULD HAVE NO TAX DATA?
+#     rowsnon0 = which(current.import$whole_rake_density != 0 &
+#                       !is.na(current.import$whole_rake_density)) #WHICH ROWS SHOULD HAVE SOME TAX DATA?
+#     
+#     #CYCLE THRU ROWS, LOOK FOR ERRANT LOGIC
+#     for(row in rows0s) {
+#       if(any(!is.na(current.import[row, taxonomic_cols]) &
+#              current.import[row,taxonomic_cols] != 0)) {
 # 
-#           print(paste0("The whole_rake_density value for row ", row, "was not 0/NA but there weren't positive rake scores--replacing with 0."))
-#         current.import[row, "whole_rake_density"] = 0
-#           rewritetoG()
-
-      }
-      #REPLACING WRD VALUES WITH TAXONOMIC VALUES THAT WERE HIGHER.
-      if(any(suppressWarnings(as.numeric(current.import[row, taxonomic_cols])) > 
-             current.import$whole_rake_density[row], 
-             na.rm = T)) {
-        
-        print("Hey Alex, some WRD non-logic is slipping through! Correct your submissions process! (#3)")
-        
-        # print(paste0("The whole_rake_density value for row ", row, " was ", current.import$whole_rake_density[row], ", but there were taxonomic rake score values higher than that--replacing with the highest one."))
-        # current.import$whole_rake_density[row] = max(suppressWarnings(as.numeric(current.import[row, taxonomic_cols])), na.rm = T)
-        # rewritetoG()
-      }
-      # #REPLACING HIGHER WRD VALUES WITH A MAX TAXONOMIC VALUE THAT WAS LOWER --UNDESIRABLE! A 4 FOR WRD MIGHT BE A BUNCH OF 1S SUMMED UP, EFFECTIVELY. 
-      # if(current.import$whole_rake_density[row] > 
-      #        max(suppressWarnings(as.numeric(current.import[row, taxonomic_cols])), na.rm = T)) {
-      #   print(paste0("The whole_rake_density value for row ", row, " was ", current.import$whole_rake_density[row], ", but there were no taxonomic rake score values that high--replacing with the max rake score observed."))
-      #   current.import$whole_rake_density[row] = max(suppressWarnings(as.numeric(current.import[row, taxonomic_cols])), na.rm = T)
-      #   rewritetoG()
-      # }
-      
-    }
-  }
+#         print("Hey Alex, some WRD non-logic is slipping through! Correct your submissions process! (#1)")
+#         
+#         # possible_vals = sort(unique(as.numeric(unlist(current.import[row, taxonomic_cols]))))
+#         # max_val = max(possible_vals, na.rm=T)
+#         # 
+#         # if(length(max_val) == 1) {
+#         #   #OVERWRITE AND RE-WRITE TO GDRIVE
+#         #   print(paste0("The whole_rake_density value for row ", row, " was 0/NA but there were positive rake scores--replacing with the highest one."))
+#         #   if(row == rows0s[1]) {
+#         #     heads_up = readline("Press any key to continue")
+#         #   }
+#         #   current.import[row, "whole_rake_density"] = max_val 
+#         #   rewritetoG()
+#         # }
+#       }
+#     }
+#     
+#     for(row in rowsnon0) {
+#       #REPLACING NON-0S WITH 0S...
+#       if(all(is.na(current.import[row, taxonomic_cols]) |
+#              current.import[row, taxonomic_cols] == 0)) {
+# 
+#         print("Hey Alex, some WRD non-logic is slipping through! Correct your submissions process! (#2)")
+# # 
+# #           print(paste0("The whole_rake_density value for row ", row, "was not 0/NA but there weren't positive rake scores--replacing with 0."))
+# #         current.import[row, "whole_rake_density"] = 0
+# #           rewritetoG()
+# 
+#       }
+#       #REPLACING WRD VALUES WITH TAXONOMIC VALUES THAT WERE HIGHER.
+#       if(any(suppressWarnings(as.numeric(current.import[row, taxonomic_cols])) > 
+#              current.import$whole_rake_density[row], 
+#              na.rm = T)) {
+#         
+#         print("Hey Alex, some WRD non-logic is slipping through! Correct your submissions process! (#3)")
+#         
+#         # print(paste0("The whole_rake_density value for row ", row, " was ", current.import$whole_rake_density[row], ", but there were taxonomic rake score values higher than that--replacing with the highest one."))
+#         # current.import$whole_rake_density[row] = max(suppressWarnings(as.numeric(current.import[row, taxonomic_cols])), na.rm = T)
+#         # rewritetoG()
+#       }
+#       # #REPLACING HIGHER WRD VALUES WITH A MAX TAXONOMIC VALUE THAT WAS LOWER --UNDESIRABLE! A 4 FOR WRD MIGHT BE A BUNCH OF 1S SUMMED UP, EFFECTIVELY. 
+#       # if(current.import$whole_rake_density[row] > 
+#       #        max(suppressWarnings(as.numeric(current.import[row, taxonomic_cols])), na.rm = T)) {
+#       #   print(paste0("The whole_rake_density value for row ", row, " was ", current.import$whole_rake_density[row], ", but there were no taxonomic rake score values that high--replacing with the max rake score observed."))
+#       #   current.import$whole_rake_density[row] = max(suppressWarnings(as.numeric(current.import[row, taxonomic_cols])), na.rm = T)
+#       #   rewritetoG()
+#       # }
+#       
+#     }
+#   }
   
   
   #DEPTH COLUMN LOGIC
@@ -557,14 +579,29 @@ for(n in 1:length(content.ids)) {
   }
   
   #TRY SMART COLUMN CONVERSION TO SEE IF WE CAN GET NUMERALS FOR THE TAXONOMIC COLS AT LEAST
-  summary_check_df = current.import
+  summary_check_df = current.import %>% dplyr::select(-c(SUBMITTER_NAME, SUBMITTER_EMAIL, DOW, SURVEY_START, RAKE_MAX, SUBMIT_TIME, SURVEYORS))
   summary_check_df = data.frame(convert_column_types_approv(summary_check_df))
   
   #SUMMARY OF ALL VALS FOR ONE MORE GOOD LOOK (FIRST NUMERICS, THEN CATEGORICALS, NO METADATA COLS)
-  print(summary(summary_check_df)[-c(2, 4, 5), unlist(lapply(summary_check_df, is.numeric))][,-c(1:2)])
-  print(summary(summary_check_df)[, unlist(lapply(summary_check_df, is.factor)), drop = F][,-c(1:6)])
-  summary_check = readline("Does the summary above look ok?\nPress N if no,\nPress any other key to continue.\nYou can delete specific rows next, if needed.")
-  if(summary_check == "N") {
+  num_cols = vapply(summary_check_df, is.numeric, logical(1))
+  fac_cols = vapply(summary_check_df, is.factor,  logical(1))
+  
+  #PRINT NUMERICAL SUMMARY STATS
+  if (any(num_cols)) {
+    num_sum = summary(summary_check_df[, num_cols, drop = FALSE])
+    keep = setdiff(seq_len(nrow(num_sum)), c(2,4,5))
+    print(num_sum[keep, , drop = FALSE])
+  }
+  
+  #PRINT CATEGORICAL SUMMARY STATS
+  if (any(fac_cols)) {
+    print(summary(summary_check_df[, fac_cols, drop = FALSE]))
+  }
+  
+  summary_check = readline(
+    "Does the summary above look ok?\nPress N if no,\nPress any other key to continue.\nYou can delete specific rows next, if needed."
+  )
+  if (summary_check == "N") {
     stop("The summary check of the data for this import failed--the file may need repair.")
   }
   

@@ -18,7 +18,7 @@ library(gpx)
 # Establishing connections to the Google Drive structures -----------------
 
 #GET ACCESS TO THE METADATA FILE FOR ITS FLAGS AND METADATA
-metadata_id = googledrive::drive_get("https://docs.google.com/spreadsheets/d/1WqRuDTOp3omqltK7_knXme6zoNnVBTD4VlThy8gSWl0")$id
+metadata_id = googledrive::drive_get("https://docs.google.com/spreadsheets/d/1WqRuDTOp3omqltK7_knXme6zoNnVBTD4VlThy8gSWl0/edit?usp=sharing")$id
 metadata_sheet = googlesheets4::read_sheet(ss = metadata_id,
                                            sheet = "submitted_metadata")
 
@@ -26,10 +26,10 @@ metadata_sheet = googlesheets4::read_sheet(ss = metadata_id,
 col_name_lookup_id = "https://drive.google.com/file/d/1LbNRwQ0-5v7CHyXnjb814pJYYLAr4RBB/view?usp=sharing"
 
 #GET ACCESS TO THE LOCATION DATA SET FOLDER.
-locdata_id = googledrive::drive_get("https://drive.google.com/drive/folders/1dcqR5jiWO5zU-dt6iovSFT8ci6zJJm8R")$id
-archived_id_loc = googledrive::drive_get("https://drive.google.com/drive/folders/1iGHDQhaKamNqgSZYt7T3l1WWt_Zn0r10")$id
-cleandata_id_needloc = googledrive::drive_get("https://drive.google.com/drive/folders/1DpG5FCZka1sXx-ztuEOitVA8MpRdx5r4")$id
-archived_id_clean = googledrive::drive_get("https://drive.google.com/drive/folders/1DgBorlz_n0RLPKCpQsA0OAlOgXt8UG_A")$id
+locdata_id = googledrive::drive_get("https://drive.google.com/drive/folders/1dcqR5jiWO5zU-dt6iovSFT8ci6zJJm8R?usp=drive_link")$id
+archived_id_loc = googledrive::drive_get("https://drive.google.com/drive/folders/1iGHDQhaKamNqgSZYt7T3l1WWt_Zn0r10?usp=drive_link")$id
+cleandata_id_needloc = googledrive::drive_get("https://drive.google.com/drive/folders/1GJbbhQVdTciVcDdYXNh2DrnFLVsCKnXu?usp=drive_link")$id
+archived_id_clean = googledrive::drive_get("https://drive.google.com/drive/folders/1JEa1TF1fwuoLmBldz9o8A75e_sO1Q_51?usp=drive_link")$id
 
 # Convenience functions -------------------------------------------
 tidyName = function(x) {
@@ -149,10 +149,6 @@ write_parquet(as.data.frame(current_db), sink = paste0(archival_path, archival_f
 #CONDUCT A SURVEY OF THE LOCATION DATA FOLDER UPON STARTUP
 locdata_filenames = googledrive::drive_ls(path = locdata_id)$name
 locdata_fileids = googledrive::drive_ls(path = locdata_id)$id
-
-#EXCLUDE AWAITING FIXES FOLDER
-locdata_filenames = locdata_filenames[locdata_filenames != "Awaiting fixes"]
-locdata_fileids = locdata_fileids[locdata_fileids != awaiting_fixes_id$id]
 
 #EXCLUDE ARCHIVED FOLDER
 locdata_filenames = locdata_filenames[locdata_filenames != "Archived"]
@@ -752,21 +748,34 @@ if(coord_check == FALSE | #NO OBVIOUS COORD DATA
 if("sta_nbr" %in% names(test_locfile)) {
 any_duped_stanbrs = if(isTRUE(any(duplicated(test_locfile$sta_nbr)))) {TRUE} else {FALSE}
 
+
+#CHECK TO MAKE SURE THERE ISN'T A STATION NUMBER OF 0 IN THE LOC FILE WHEN IT'S BOGUS.
+if(any(as.numeric(test_locfile$sta_nbr) == 0, na.rm=T)) {
+tmp0 = readline("Heads-up, there's a 0 in the station numbers column...
+                 Should this 0 row just be deleted? Say Y/N")
+
+
+if(tmp0 == "Y") {
+  test_locfile = test_locfile %>% 
+    dplyr::filter(sta_nbr != 0)
+}
+}
+
 #CHECK #6A -- ARE ANY OF THE STATION NUMBERS 0? IF SO, THEY MAY START AT 0 EVEN THOUGH THE ONES IN THE SURVEY START AT 1...I THINK THIS WAS COMMON PRACTICE.
 if(any(as.numeric(test_locfile$sta_nbr) == 0, na.rm=T)) {
   print(unique(sort(suppressWarnings(as.numeric(current_db$sta_nbr[db_data])))))
- tmp1 = readline("Heads-up, there's a 0 in the station numbers column...
-         make sure the survey data aren't misaligned!
-         Those are printed here--is there a 0?
-                 Say Y/N")
+
+ tmp1 = readline("Given that there's a 0 in the station numbers column,
+ We must ensure these aren't misaligned with our survey station numbers.
+ Those are printed here--is there a 0? Say Y/N")
+ 
  if(tmp1 == "N") {
+   
    tmp2 = readline("Does it look like all the location data stations 
                    just need to be advanced by 1? Say Y/N")
-   
 
 ## A failure state ---------------------------------------------------------
 
-   
    if(tmp2 == "N") {
      readline("These location data do not have station numbers we can use.
           This is a failure state--the starting values differ.

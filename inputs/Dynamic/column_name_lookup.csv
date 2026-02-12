@@ -7759,12 +7759,12 @@ JUNPEL,alexadd,alexadd,Juncus pelocarpus,Y
 "juncus_canadensis,canada_rush",Meg Rattei,jane,Juncus canadensis,Y
 "juncus_canadensis,canada_rush",Meg Rattei_19,elmo,Juncus canadensis,Y
 "juncus_canadensis,canada_rush",Meg Rattei_19,jane,Juncus canadensis,Y
-"juncus_arcticus_variation_balticus,baltic_rush",Meg Rattei,jane,Juncus arcticus,Y
-"juncus_arcticus_variation_balticus,_baltic_rush",April Londo,jane,Juncus arcticus,Y
-"juncus_arcticus_var_balticus,baltic_rush",Meg Rattei,jane,Juncus arcticus,Y
-"juncus_arcticus_var_balticus,baltic_rush",Meg Rattei,sunfish,Juncus arcticus,Y
-"juncus_arcticus_var_balticus,baltic_rush",Meg Rattei_19,jane,Juncus arcticus,Y
-"juncus_arcticus_var_balticus,_baltic_rush",Meg Rattei,sunfish,Juncus arcticus,Y
+"juncus_arcticus_variation_balticus,baltic_rush",Meg Rattei,jane,Juncus balticus,Y
+"juncus_arcticus_variation_balticus,_baltic_rush",April Londo,jane,Juncus balticus,Y
+"juncus_arcticus_var_balticus,baltic_rush",Meg Rattei,jane,Juncus balticus,Y
+"juncus_arcticus_var_balticus,baltic_rush",Meg Rattei,sunfish,Juncus balticus,Y
+"juncus_arcticus_var_balticus,baltic_rush",Meg Rattei_19,jane,Juncus balticus,Y
+"juncus_arcticus_var_balticus,_baltic_rush",Meg Rattei,sunfish,Juncus balticus,Y
 jpal,James Johnson,beebe,Juncus pelocarpus,Y
 jpal,James Johnson,riley,Juncus pelocarpus,Y
 jpal,James Johnson,susan,Juncus pelocarpus,Y
@@ -12457,3 +12457,39 @@ IDENT,alexadd,alexadd,STA_NBR,N
 Cyperus esculemtus,alexadd,alexadd,Cyperus esculentus,Y
 Potamogeton foliosus subsp. foliosus,alexadd,alexadd,Potamogeton foliosus,Y
 Elymus virginicus var. virginicus,alexadd,alexadd,Elymus virginicus,Y
+Potamogeton illioensis,alexadd,alexadd,Potamogeton illinoensis,Y
+Sagittaria spp.,alexadd,alexadd,Sagittaria sp,Y
+Chara spp & Nitella spp.,alexadd,alexadd,Characeae,Y
+Lemna minor & Lemna major,alexadd,alexadd,Lemna sp,Y
+Lemna minor & Spirodela polyrhiza,alexadd,alexadd,Lemnaceae,Y
+Lemna minor & L. major,alexadd,alexadd,Lemna sp,Y
+Neddle Spike Rush,alexadd,alexadd,Eleocharis acicularis,Y
+Iris vericolor,alexadd,alexadd,Iris versicolor,Y
+Juncus_balticus_Baltic_rush,alexadd,alexadd,Juncus balticus,Y
+Juncus_canadensis__Canada_rush,alexadd,alexadd,Juncus canadensis,Y
+Iris_psuedacorus_Yellow_iris,alexadd,alexadd,Iris pseudacorus,Y
+Eleocharis_palustris_Creeping_spikerush,alexadd,alexadd,Eleocharis palustris ,Y
+Typha_X_glauca_Hybrid_cattail,alexadd,alexadd,Typha x glauca,Y
+Typha_latifolia_Broad_leaved_cattail,alexadd,alexadd,Typha latifolia,Y
+Scirpus_cyperinus_Woolgrass,alexadd,alexadd,Scirpus cyperinus,Y
+Juncus_effusus_Common_rush,alexadd,alexadd,Juncus effusus,Y
+Myriophyllum_spicatu_Eurasian_water_milfoil_or_Hybrid_water_milfoil,alexadd,alexadd,Myriophyllum spicatum,Y
+Lemna_turionifera_Turion_duckweed,alexadd,alexadd,Lemna turionifera,Y
+Ricciocarpus_natans_Purple_fringed_riccia_,alexadd,alexadd,Ricciocarpus natans,Y
+Scirpus_atrovirens__Black_bulrush,alexadd,alexadd,Scirpus atrovirens,Y
+Scirpus_cyperinus__Woolgrass,alexadd,alexadd,Scirpus cyperinus,Y
+Utricularia_gibba_Creeping_bladderwort,alexadd,alexadd,Utricularia gibba,Y
+Latitdue,alexadd,alexadd,latitude,N
+Persicaria_lapathifolia_Pale_smartweed,alexadd,alexadd,Persicaria lapathifolia,Y
+Solanum_dulcamara_Bittersweet_Nightshade,alexadd,alexadd,Solanum dulcamara,Y
+Myriophyllum spicatum X sibiricum hybrid,alexadd,alexadd,Myriophyllum spicatum x sibiricum,Y
+Elodea sp.,alexadd,alexadd,Elodea sp,Y
+Wolffia sp.,alexadd,alexadd,Wolffia sp,Y
+Duckweeds (Lemna sp. and Spirodela sp.),alexadd,alexadd,Lemnaceae,Y
+Lemna sp.,alexadd,alexadd,Lemna sp,Y
+Nitella sp.,alexadd,alexadd,Nitella sp,Y
+Myriophyllum sp.,alexadd,alexadd,Myriophyllum sp,Y
+Depth to Sediment (ft),alexadd,alexadd,depth_ft,N
+Whole Rake Rating (0-3),alexadd,alexadd,whole_rake_density,N
+Najas sp.,alexadd,alexadd,Najas sp,Y
+Lemna minor ,alexadd,alexadd,Lemna minor,Y

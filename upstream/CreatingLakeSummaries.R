@@ -47,7 +47,7 @@ convert_column_types <- function(df) {
 }
 
 #READ IN MOST RECENT CLEAN DB--THE PATH TO THIS SHOULD NEVER CHANGE NOW.
-data2summ = read_parquet("H:\\Shared drives\\MAISRC\\Quantification, Data, and Computation\\Projects\\Statewide Plant Surveys App\\PI Charter\\upstream\\db_unified.parquet")
+data2summ = read_parquet("H:/Shared drives/MAISRC/Quantification, Data, and Computation/Projects/PI Charter App Folder/PI Charter/upstream/db_unified.parquet")
 
 if(any(data2summ$SURVEYORS == "NA")) { stop("Alex, you left NAs in the DB file for surveyors!") }
 
@@ -72,18 +72,6 @@ nontaxonomic = newfieldnames %>%
 data2summ = data2summ %>% 
   select_if(!names(data2summ) %in% nontaxonomic) %>% 
   select(-multipartsurvey, -SUBMITTER_EMAIL, -RAKE_MAX, -SUBMIT_TIME, -sta_nbr.1, -plant_height.1, -unk_sp, -unk_sp.1) #^^^IF ANY MORE COLUMN NAMES ENTER THE DB THAT ARE NOT IN THE COL_NAME_LOOKUP FILE LIKE THESE, THEY WOULD NEED TO BE ADDED HERE. SOMETHING TO CONSIDER DURING APPROVALS.
-
-#REMOVE ALL TEXT VALS FROM ALL BUT THE METADATA COLS (^^^SHOULD ALWAYS BE COLS 1-4 AT THIS POINT!) BUT BEING CAREFUL TO DO SO NOT IN A WAY THAT WILL ELIMINATE MIKE'S TRUES AND FALSES
-#Eliminated TRUEs and FALSEs, so this should no longer be needed. 
-# data2summ[,5:ncol(data2summ)] = data.frame(
-# lapply(data2summ[,5:ncol(data2summ)], 
-#        function(x) {
-#          x[!x %in% c("TRUE", "FALSE")] = suppressWarnings(as.numeric(x[!x %in% c("TRUE", "FALSE")]))
-#          x[x %in% c("TRUE", "FALSE")] = suppressWarnings(as.numeric(as.logical(x[x %in% c("TRUE", "FALSE")])))
-#          return(x)
-#        }
-#  )
-# )
 
 data2summ[,5:ncol(data2summ)] = data.frame(
   suppressWarnings(lapply(data2summ[,5:ncol(data2summ)], as.numeric))
@@ -127,15 +115,6 @@ lakes.summ.new1$taxafound = taxacol
 #CUT ALL UNNEEDED COLS
 lakes.summ.new2 = lakes.summ.new1 %>% 
   select(DOW, SURVEY_START, SURVEYORS, SUBMITTER_NAME, taxafound)
-
-#***Should no longer be needed now.
-# #REMOVE BROAD AND NARROW SUBSTRINGS.
-# lakes.summ.new2$taxafound = gsub("_narrow", "", lakes.summ.new2$taxafound, fixed = T)
-# lakes.summ.new2$taxafound = gsub("_broad", "", lakes.summ.new2$taxafound, fixed = T)
-# 
-# #Remove floating and emergent substrings
-# lakes.summ.new2$taxafound = gsub("_emergent", "", lakes.summ.new2$taxafound, fixed = T)
-# lakes.summ.new2$taxafound = gsub("_floating", "", lakes.summ.new2$taxafound, fixed = T)
 
 #FURTHER COLLAPSE FILE TO PRODUCE THE NEW SUMMARIZED FIELDS BY LAKE FOR THE LAKES_SUMMARY FILES.
 lakes.summ.new3 = lakes.summ.new2 %>%
@@ -273,23 +252,6 @@ lakes.summary.definitive = lakes.summ.new6 #SAVE NON-SPATIAL VERSION ALSO.
 
 
 ###LEADERBOARDS OBJECTS
-
-# #FIND ALL ROWS FOR SURVEYS SUBMITTED BY DNR. 
-# lakes.summ.definitiveDNR = lakes.summary.definitive[grepl("DNR", lakes.summary.definitive$datasource),]
-# #COUNT UP HOW MANY SURVEYORS WE ARE ANONYMIZING.
-# test = lapply(lakes.summ.definitiveDNR$surveyorlist, function(x) {
-#   str_split(x, ",", simplify = F)
-# })
-# test2 = unlist(lapply(test, length))
-# 
-# #FOR EACH DATA RECORD, PASTE TOGETHER AN ANONYMIZED STRING THAT MANY TIMES.
-# for(i in 1:nrow(lakes.summ.definitiveDNR)) {
-#   lakes.summ.definitiveDNR$surveyorlist[i] = paste(c(rep("MN DNR Surveyor", times = test2[i])), collapse = ",")
-# }
-# 
-# #SPLIT-COMBINE
-# lakes.summary.definitiveNonDNR = lakes.summary.definitive[!grepl("DNR", lakes.summary.definitive$datasource),]
-# lakes.summary.definitive = bind_rows(lakes.summ.definitiveDNR, lakes.summary.definitiveNonDNR)
 
 #CREATE DF OF SURVEYORS, DELIMITED BY ,S
 people.list = paste(lakes.summary.definitive$surveyorlist, collapse = ",")

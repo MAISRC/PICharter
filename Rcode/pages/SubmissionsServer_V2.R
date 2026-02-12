@@ -1218,42 +1218,42 @@ observeEvent(input$survey_date2, priority = -1, {
       
         
         #WE CHECK FOR AND AUTO-CORRECT WHOLE_RAKE_DENSITY LOGIC HERE.
-        if(any(names(cleanfile4upload) == "whole_rake_density")) {
-          rows0s = which(cleanfile4upload$whole_rake_density == 0 |
-                           is.na(cleanfile4upload$whole_rake_density)) #WHICH ROWS SHOULD HAVE NO TAX DATA?
-          rowsnon0 = which(cleanfile4upload$whole_rake_density != 0 &
-                             !is.na(cleanfile4upload$whole_rake_density)) #WHICH ROWS SHOULD HAVE SOME TAX DATA?
-          
-          #CYCLE THRU ROWS, LOOK FOR ERRANT LOGIC
-          for(row in rows0s) {
-            if(any(!is.na(cleanfile4upload[row, which_taxonomic]) &
-                   cleanfile4upload[row,which_taxonomic] != 0)) {
-              
-              possible_vals = sort(unique(suppressWarnings(as.numeric(unlist(cleanfile4upload[row, which_taxonomic])))))
-              max_val = max(possible_vals, na.rm=T)
-              
-              if(length(max_val) == 1) {
-                cleanfile4upload[row, "whole_rake_density"] = max_val 
-               }
-            }
-          }
-          
-          for(row in rowsnon0) {
-            #REPLACING NON-0S WITH 0S...
-            if(all(is.na(cleanfile4upload[row, which_taxonomic]) |
-                   cleanfile4upload[row, which_taxonomic] == 0)) {
-              cleanfile4upload[row, "whole_rake_density"] = 0
-            }
-            
-            #REPLACING WRD VALUES WITH TAXONOMIC VALUES THAT WERE HIGHER.
-            if(any(suppressWarnings(as.numeric(cleanfile4upload[row, which_taxonomic])) > 
-                   cleanfile4upload$whole_rake_density[row], 
-                   na.rm = T)) {
-              cleanfile4upload$whole_rake_density[row] = max(suppressWarnings(as.numeric(cleanfile4upload[row, which_taxonomic])), na.rm = T)
-            }
-          }
-        }
-        
+        # if(any(names(cleanfile4upload) == "whole_rake_density")) {
+        #   rows0s = which(cleanfile4upload$whole_rake_density == 0 |
+        #                    is.na(cleanfile4upload$whole_rake_density)) #WHICH ROWS SHOULD HAVE NO TAX DATA?
+        #   rowsnon0 = which(cleanfile4upload$whole_rake_density != 0 &
+        #                      !is.na(cleanfile4upload$whole_rake_density)) #WHICH ROWS SHOULD HAVE SOME TAX DATA?
+        #   
+        #   #CYCLE THRU ROWS, LOOK FOR ERRANT LOGIC
+        #   for(row in rows0s) {
+        #     if(any(!is.na(cleanfile4upload[row, which_taxonomic]) &
+        #            cleanfile4upload[row,which_taxonomic] != 0)) {
+        #       
+        #       possible_vals = sort(unique(suppressWarnings(as.numeric(unlist(cleanfile4upload[row, which_taxonomic])))))
+        #       max_val = max(possible_vals, na.rm=T)
+        #       
+        #       if(length(max_val) == 1) {
+        #         cleanfile4upload[row, "whole_rake_density"] = max_val 
+        #        }
+        #     }
+        #   }
+        #   
+        #   for(row in rowsnon0) {
+        #     #REPLACING NON-0S WITH 0S...
+        #     if(all(is.na(cleanfile4upload[row, which_taxonomic]) |
+        #            cleanfile4upload[row, which_taxonomic] == 0)) {
+        #       cleanfile4upload[row, "whole_rake_density"] = 0
+        #     }
+        #     
+        #     #REPLACING WRD VALUES WITH TAXONOMIC VALUES THAT WERE HIGHER.
+        #     if(any(suppressWarnings(as.numeric(cleanfile4upload[row, which_taxonomic])) > 
+        #            cleanfile4upload$whole_rake_density[row], 
+        #            na.rm = T)) {
+        #       cleanfile4upload$whole_rake_density[row] = max(suppressWarnings(as.numeric(cleanfile4upload[row, which_taxonomic])), na.rm = T)
+        #     }
+        #   }
+        # }
+        # 
         
         #DO CHECK TO SEE IF TOO LOW A MAX RAKE SCORE VAL MAY HAVE BEEN PROVIDED.
 

@@ -119,7 +119,7 @@ $(document).ready(function(){
 });
 ")),
 
-#JS FUNCTION THAT CAN RECEIVE A MESSAGE FROM SHINY SAYING, HEY, THE SESSION JUST ENDED. WHEN THAT HAPPENS, IT'LL GIVE THE SHINY DISCONNECT OVERLAY THE ARIA ROLE OF ALERTDIALOG, MAKE IT FOCUSABLE, AND MOVE FOCUS THERE. ALSO, ENSURE THE DISCONNECT MESSAGE REFRESH LINK ACTUALLY HAS TEXT IN IT. 
+#JS FUNCTION THAT CAN RECEIVE A MESSAGE FROM SHINY SAYING, HEY, THE SESSION JUST ENDED. WHEN THAT HAPPENS, IT'LL GIVE THE SHINY DISCONNECT OVERLAY THE ARIA ROLE OF ALERTDIALOG, MAKE IT FOCUSABLE, AND MOVE FOCUS THERE. ALSO, ENSURE THE DISCONNECT MESSAGE REFRESH LINK ACTUALLY HAS TEXT IN IT. LASTLY, THIS IS ALSO WHERE NEW DISCONNECT MESSAGE TEXT SHOULD GO.
 tags$script(HTML("
   $(document).on('shiny:disconnected', function(event) {
     var el = document.getElementById('ss-connect-dialog');
@@ -250,7 +250,7 @@ tags$script(HTML("
                  #Insert a footer with links, contact info, funding credits, and current version number.
                  footer = tags$footer(
                  shiny::HTML("<br>Created by the Minnesota Aquatic Invasive Species Research Center, University of Minnesota by <address><a href='mailto:bajcz003@umn.edu'>Dr. Alex Bajcz (bajcz003@umn.edu)</a></address>, under the current direction of <address><a href='mailto:walsh229@umn.edu'>Dr. Jake Walsh (walsh229@umn.edu)</a></address>.<br>
-App last updated January 21 2026. Version 2.6.3. View the <a href = 'https://z.umn.edu/PI-AS' target = '_blank'>accessibility statement</a> (opens in new tab).<br>
+App last updated February 12 2026. Version 2.6.4. View the <a href = 'https://z.umn.edu/PI-AS' target = '_blank'>accessibility statement</a> (opens in new tab).<br>
 Funding for this work was provided by the Minnesota Environment and Natural Resources Trust Fund as recommended by the Minnesota Aquatic Invasive Species Research Center and the Legislative-Citizen Commission on Minnesota Resources, and the State of Minnesota.<br><br>"), 
                               id = "footerText",
                           style = "min-width: 320px;"),
