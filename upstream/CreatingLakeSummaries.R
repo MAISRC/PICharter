@@ -47,7 +47,7 @@ convert_column_types <- function(df) {
 }
 
 #READ IN MOST RECENT CLEAN DB--THE PATH TO THIS SHOULD NEVER CHANGE NOW.
-data2summ = read_parquet("H:/Shared drives/MAISRC/Quantification, Data, and Computation/Projects/PI Charter App Folder/PI Charter/upstream/db_unified.parquet")
+data2summ = read_parquet("upstream/db_unified.parquet")
 
 if(any(data2summ$SURVEYORS == "NA")) { stop("Alex, you left NAs in the DB file for surveyors!") }
 

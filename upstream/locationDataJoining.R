@@ -168,16 +168,8 @@ records_nums = which(locdata_filenames %in% records_under_consideration)
 locdata_filenames = locdata_filenames[records_nums]
 locdata_fileids = locdata_fileids[records_nums]
 
-#length(prop_records) #AT TIME OF WRITING, 426
-
-#WHAT RANGE OF FILE TYPES ARE WE LOOKING AT?
-#unique(tools::file_ext(locdata_filenames)) #EXCELS, CSVS, ZIPS, AND GPS FILES.
-
-
 # LOADING CURRENT FILE -----------------------------------------------------------------
 
-#LET'S EXAMINE THE FIRST (LEAST RECENT) AVAILABLE CSV FILE.
-# this_file = tail(which(tools::file_ext(locdata_filenames) == "csv"), 1)
 for(i in 1:length(locdata_filenames)) { #START WRAPPER OF WHOLE WORKFLOW.
 print(paste0(length(locdata_filenames), " files remaining!"))
   
@@ -464,7 +456,7 @@ Press any key to continue.")
   
   print(head(test_locfile))
   new_stanbrs = readline("
-The algorithm did not find a single umabiguous prospective station number column.
+The algorithm did not find a single umambiguous prospective station number column.
 Does any column look like a station number column? 
 Press Y if yes and any other key for no.")
   
