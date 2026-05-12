@@ -171,6 +171,7 @@ for(n in 1:length(content.ids)) {
     if(!is.na(metadata_row$LOOK_COMMENTS)) { print(metadata_row$LOOK_COMMENTS) }
     renamecols_check = readline("Above is info on what columns were deleted,\nas well as on any comments left about column naming by the submitter.\nDo we need to stop and rescue columns?\nPress Y for yes,\nPress any other key to continue.")
     if(renamecols_check == "Y") {
+
       raw_contents = drive_ls(submitted_raw_id) #GET ALL RAW FILES
       current_raw_id = as_id(raw_contents$id[raw_contents$name == metadata_row$RAW_FILE]) #GET ID OF THE CURRENT RAW FILE
       current_raw_dl = drive_download( #DOWNLOAD THAT FILE LOCALLY
@@ -186,16 +187,19 @@ for(n in 1:length(content.ids)) {
       }
       which_cols_check = readline("Provide a string of the names of the columns in the RAW file to move to the clean file,\ne.g. 'A, B, C, D', with no quotes and exact spacing.") #GET LIST OF COLS TO PORT
       cols_to_port = str_split_1(which_cols_check, ", ") #SPLIT LIST PROVIDED INTO A VECTOR OF NAMES
-      ported_cols = current_raw_df[, cols_to_port] #GRAB COLS BY THOSE NAMES
+      ported_cols = dplyr::select(current_raw_df, dplyr::all_of(cols_to_port)) #GRAB COLS BY THOSE NAMES
       print(names(ported_cols))
       new_names_check = readline("Printed above are the names of the columns being ported.\nProvide a string of the new names for these columns,\nas they should appear in the clean file,\ne.g., 'A, B, C, D', with no quotes and exact spacing.\nThese needn't be tidy.") #REQUEST LIST OF NEW COL NAMES
       new_col_names = tidyName(str_split_1(new_names_check, ", ")) #SPLIT THIS LIST INTO A VECTOR
       names(ported_cols) = new_col_names #OVERWRITE THE NAMES OF THE PORTED COLS
+      
+      browser()
+      
       if(nrow(ported_cols) != nrow(current.import)) { #IF RAW AND CLEAN FILES DO NOT MATCH IN LENGTH...
         View(current_raw_df)
         delete_some_rows = readline("It appears that the raw and clean files have differing row numbers.\nPlease enter a string of row numbers in the raw data to delete,\ne.g., '1, 4, 67, 423', with no quotes and exact spacing.") #GET INFO ABOUT WHICH ROWS IN RAW DATA TO DELETE.
         split_rows_nums = as.numeric(str_split_1(delete_some_rows, ", ")) #SPLIT THOSE
-        ported_cols = ported_cols[-split_rows_nums, ] #REMOVE THEM BEFORE PORTING.
+        ported_cols = ported_cols[-split_rows_nums, , drop = F] #REMOVE THEM BEFORE PORTING.
       }
       if(nrow(ported_cols) != nrow(current.import)) { stop("You messed up! The numbers of rows still don't match!")}
       current.import = cbind(current.import, ported_cols) #CBIND INTO CLEAN FILE
@@ -577,6 +581,42 @@ for(n in 1:length(content.ids)) {
       }
     }
   }
+  
+  
+  #CHECK FOR MALFORMED LOCATION DATA (LIKELY UTM THAT NEED TO BE CONVERTED.)
+  if(all(c("latitude", "longitude") %in% names(current.import)) &&
+     any(current.import$latitude < 43,
+         current.import$latitude > 49,
+         current.import$longitude > -89,
+         current.import$longitude < -97,
+         na.rm = T)) {
+    
+    weird_locdata = readline("It looks like this file may contain invalid lat/long data.
+                           What should we do? Press D to delete them. Press C to 
+                           convert them to lat/long from UTM. Press any other key
+                           to skip.")
+    
+    if(weird_locdata == "D") {
+      current.import$latitude = NULL
+      current.import$longitude = NULL
+      print("Deleting those columns...")
+      rewritetoG()
+    }
+    
+    if(weird_locdata == "C") {
+      
+      give_me_col_names = readline("Ok. What column names are we looking for? 
+                                   Use format \"nameLat, nameLong\" exactly!")
+      
+      both_col_names = str_split_1(give_me_col_names, pattern = ", ")
+      print("Converting both those columns from UTM to lat/long...")
+      
+      current.import = convertUTMtoLatLong(current.import, both_col_names[1], both_col_names[2])
+      rewritetoG()
+    }
+    
+  }
+  
   
   #TRY SMART COLUMN CONVERSION TO SEE IF WE CAN GET NUMERALS FOR THE TAXONOMIC COLS AT LEAST
   summary_check_df = current.import %>% dplyr::select(-c(SUBMITTER_NAME, SUBMITTER_EMAIL, DOW, SURVEY_START, RAKE_MAX, SUBMIT_TIME, SURVEYORS))

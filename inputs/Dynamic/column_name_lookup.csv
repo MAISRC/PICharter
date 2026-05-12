@@ -12493,3 +12493,5 @@ Depth to Sediment (ft),alexadd,alexadd,depth_ft,N
 Whole Rake Rating (0-3),alexadd,alexadd,whole_rake_density,N
 Najas sp.,alexadd,alexadd,Najas sp,Y
 Lemna minor ,alexadd,alexadd,Lemna minor,Y
+Filiform Pondweed,alexadd,alexadd,Stuckenia filiformis,Y
+Potamogeton.sp.,alexadd,alexadd,Potamogeton sp,Y

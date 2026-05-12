@@ -36,6 +36,19 @@ googlesheets4::gs4_auth(path = sa_key_path, scopes = c(sheets_scope, drive_scope
 
 # Load pre-req files and functions ------------------------------------------------------
 
+convertUTMtoLatLong = function(currentimport, nameLat = "latitude", nameLong = "longitude") {
+  
+  tmp1 = st_as_sf(currentimport, coords = c(nameLat, nameLong), crs = 26915)
+  tmp2 = st_transform(tmp1, crs = 4326)
+  tmp3 = as.data.frame(st_coordinates(tmp2))
+  
+  currentimport$latitude = tmp3$Y
+  currentimport$longitude = tmp3$X
+  
+  return(currentimport)
+  
+}
+
 tidyName = function(x) {
   base::tolower(
     stringr::str_replace_all(x,
@@ -49,17 +62,15 @@ rewritetoG = function() {
   file.tmp = base::file.path(base::tempdir(), metadata_row$CLEAN_FILE) #WRITE FILE LOCALLY
   utils::write.csv(x = current.import, file = file.tmp, row.names = FALSE)
   
+  #PARENT FOLDER:
+  submitted_folder = googledrive::as_id(submitted_clean_id)
+  
   #FIND PRE-EXISTING FILE, IF WE CAN
-  f = googledrive::drive_get(
-    q = sprintf(
-      "name = '%s' and '%s' in parents and trashed = false",
-      gsub("'", "\\\\'", metadata_row$CLEAN_FILE),
-      submitted_clean_id
-    )
-  )
+  f = googledrive::drive_ls(path = submitted_folder)
+  f = f[f$name == metadata_row$CLEAN_FILE, ]
   
   #IF WE CAN'T, CREATE IT (UNLIKELY!)
-  if (nrow(f) == 0) {
+  if(nrow(f) == 0) {
     googledrive::drive_upload(
       media = file.tmp,
       path  = submitted_clean_id,
