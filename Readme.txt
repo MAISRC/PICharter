@@ -1,0 +1,15 @@
+Welcome to PI Charter's Github Repository!
+
+If you want to visit the app, navigate to Z.UMN.EDU/PICHARTER.
+
+This repository contains most (though not all) files and data associated with the PI Charter R Shiny App, built and run by Dr. Alex Bajcz at the University of Minnesota's Minnesota Aquatic Invasive Species Research Center (MAISRC). The global.R file above houses the bulk of the "setup" and "overhead" of the app. The ui.R and server.R files are mostly organizational placeholders, as the app's server and UI code is mostly distributed into "modules," one per tab on the app. To find those modular files, look in the pages subfolder of the Rcode folder above. Each of the app's four tabs has both a UI and a Server file. 
+
+The www folder contains the app's CSS file (PI_app.css) as well as the various images and logos used within the app. It also contains a subfolder (js) containing custom JavaScript code files, which, at the moment, contains no files. 
+
+The inputs folder contains a number of files that the app depends on to access and join in key information. In the Static subfolder are two files (dows_lakenames_counties.csv) and (commonsci_name_lookup.csv) that function as lookup tables linking lake IDs (DOWs) to names and counties and scientific names of taxa to common names. The MadeUpstream subfolder contains a number of compilated lists build from the database that are used on the Overview tab to populate selectors and, when a marker is activated, the contents of the summary table. Files related to the Leaderboard tab's two tables are also found here.
+
+The Dynamic subfolder contains a file (PICharterFieldNames.csv) that contains metadata on every column of the database. The column_name_lookup.csv file is a massive lookup table that matches every column name we've observed to date against the column names in our database that each is most likely to match to. This helps us to align submitted data across surveyors and to "auto-reject" data that is unlikely to belong in the database.
+
+The upstream folder contains a number of files central to the post-submission QA/QC and summarization processes needed to convert newly submitted surveys into records joined to our database and activatable from within the app. Generally, post-submission QA/QC entails running NewApprovalsPreLoad.R, then NewSubmissionsApproval.R, then optionally locationDataJoining.R (if any separate location files were sent), and then finally CreatingLakeSummaries.R, in that order. The second of these files is essentially a massive for loop that cycles through each submission one at a time and allows the maintainer to perform many manual and automated checks to confirm the data are ready to enter the database.
+
+This is just a cursory summarization of this app's codebase, which is massive! However, every file is extensively annotated for reference. If you have question, please reach out to the app's maintainer: Dr. Alex Bajcz, bajcz003@umn.edu. Thanks!

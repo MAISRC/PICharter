@@ -42,6 +42,8 @@ drive_auth(path = sa_key_path, scopes = c(sheets_scope, drive_scope))
 #ALSO AUTHENTICATE SUCH THAT GOOGLE SHEETS IS HAPPY
 googlesheets4::gs4_auth(path = sa_key_path, scopes = c(sheets_scope, drive_scope))
 
+gtag_id = Sys.getenv("PI_CHARTER_GTAG") #FOR GOOGLE ANALYTICS
+
 # Set up page-generating functions from the Rcode/pages subfolder ----------------------------------------
 source("Rcode/pages/LeaderboardUI.R")
 source("Rcode/pages/LeaderboardServer.R")

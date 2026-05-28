@@ -39,7 +39,7 @@ tags$head(tags$link(
 #LOAD IN GOOGLE ANALYTICS SCRIPT
 shiny::tags$head(
   shiny::tags$script(
-    src = "https://www.googletagmanager.com/gtag/js?id=G-DZN3JZEM2V",
+    src = paste0("https://www.googletagmanager.com/gtag/js?id=", gtag_id),
     async = ""
   ),
   shiny::tags$script(
