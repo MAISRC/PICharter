@@ -169,6 +169,18 @@ tags$script(HTML("
 
 ),
 
+#THIS CHECKS IF A USER HAS VISITED BEFORE TO DETERMINE WHETHER TO LAUNCH THE WELCOME MODAL. IT ALWAYS RETURNS EITHER TRUE OR FALSE, DEPENDING ON WHETHER THE FLAG EXISTS YET.
+tags$head(
+  tags$script(HTML("
+    $(document).on('shiny:connected', function() {
+      var visited = localStorage.getItem('HasVisitedPICharterBefore') === 'true'; 
+
+      Shiny.setInputValue('has_visited_before', visited, {priority: 'event'});
+    });
+  "))
+),
+
+
 shinyjs::useShinyjs(), #ENABLE SHINYJS
 
 #THIS IS A SHINY LIVE REGION THAT IS NOT VISIBLE TO ANYONE BUT IS SCREEN-READER-ENABLED. WHENEVER WE GENERATE A NOTIFICATION, WE CAN TRIGGER A MESSAGE TO GO INTO THIS REGION, WHERE IT'LL THEN BE READ ALOUD TO SCREEN-READER USERS. 
@@ -250,7 +262,7 @@ tags$script(HTML("
                  #Insert a footer with links, contact info, funding credits, and current version number.
                  footer = tags$footer(
                  shiny::HTML("<br>Created by the Minnesota Aquatic Invasive Species Research Center, University of Minnesota by <address><a href='mailto:bajcz003@umn.edu'>Dr. Alex Bajcz (bajcz003@umn.edu)</a></address>, under the current direction of <address><a href='mailto:walsh229@umn.edu'>Dr. Jake Walsh (walsh229@umn.edu)</a></address>.<br>
-App last updated May 12 2026. Version 2.6.5. View the <a href = 'https://z.umn.edu/PI-AS' target = '_blank'>accessibility statement</a> (opens in new tab).<br>
+App last updated May 26 2026. Version 2.6.6. View the <a href = 'https://z.umn.edu/PI-AS' target = '_blank'>accessibility statement</a> (opens in new tab).<br>
 Funding for this work was provided by the Minnesota Environment and Natural Resources Trust Fund as recommended by the Minnesota Aquatic Invasive Species Research Center and the Legislative-Citizen Commission on Minnesota Resources, and the State of Minnesota.<br><br>"), 
                               id = "footerText",
                           style = "min-width: 320px;"),

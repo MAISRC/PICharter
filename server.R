@@ -1,5 +1,5 @@
 shinyServer(function(input, output, session) {
-
+  
 # Navbar navigation -------------------------------------------------------
 #WATCH BUTTONS, CHANGE TABS IF THE TAB PILL CLICKED IS NOT THAT OF THE CURRENT TAB.
 observeEvent(input$switch_browse, {

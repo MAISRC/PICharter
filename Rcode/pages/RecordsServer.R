@@ -8,7 +8,7 @@ recordsServer = function(input, output, session) {
   )
   records_waiter <- Waiter$new(id = "records_formright", 
                            html = spin_hexdots(),
-                           color = "#ffb71e", )
+                           color = "#ffb71e")
   
   #Set up a debounce on Records_surveys so that users could realistically select multiple surveys before the app starts doing things.
   surveys_debounced = debounce(reactive({input$records_surveys}), 1250)
@@ -31,9 +31,43 @@ recordsServer = function(input, output, session) {
   })
   
   
+  output$abundance_data <- renderUI({
+    
+    output$abundance_map <- renderLeaflet({
+      
+      #FIRST GET BOUNDING BOX.
+      bbox1 <- unname(st_bbox(MN))
+      
+      leaflet() %>% 
+        addTiles() %>%
+        fitBounds(bbox1[1], bbox1[2],
+                  bbox1[3], bbox1[4])
+      
+    })
+    
+    tags$figure(
+      tags$figcaption("Map of abundance for the taxon and survey date selected. Consult the legend in the map\'s bottom-right corner for the abundance ratings used. The raw survey data are available in a table on the \"Raw survey data\" tab. Lake-level frequency of occurence data are available in a table on the \"Littoral Frequency of Occurrence\" tab.",
+                      id = "records_map"),
+      leafletOutput("abundance_map")
+    )
+    
+  })
+  
 
 # Decluttering functions --------------------------------------------------
   #WHEN MAKING THE SUBTAB CONTENTS FOR THIS TAB, A LOT OF OPERATIONS NEED TO HAPPEN, SO IT'S EASIER TO JUST BUNDLE THEM INTO FUNCTIONS SO THAT THEY WILL BE EASIER TO FIND AND FIX AS WE GO.
+  
+  kill_abundance_map_subtab = function() {
+    #OTHERWISE, DISABLE AND LOCK THIS TAB (NO LOCATION DATA TO MAP)
+    runjs('
+      // Disable Tab 2
+      $("#records_outputs li a[data-value=\'2\']").parent().addClass("disabled");
+      
+      // Prevent clicking on the disabled tab
+      $("#records_outputs li.disabled a").attr("data-toggle", "");
+    ')
+    updateTabsetPanel(session, "records_outputs", selected = "1") #Flop away from the abundance tab, if that's what folks were on.
+  }
   
   #FUNCTION FOR DETERMINING IF ALL THE CONTENTS OF A COLUMN ARE SOME MIXTURE OF NAS, BLANKS, FALSES, 0S, ETC.
   is_mixed_excludable <- function(column) {
@@ -460,22 +494,35 @@ records_tabs_preprocessing = function(df) {
    dates2pick = as.character(sort(as.Date(unique(df$SURVEY_START)), decreasing = TRUE))
    
    shinyjs::show("records_abund_fieldset")
+ 
+   if(is.null(input$abundance_survey)) { #FIRST TIME ONLY, BUILD THE UI.
    
    output$abundance_selectors <- renderUI({
-     
+    
      tagList(
-       selectInput("abundance_survey",
-                   label = "Select a survey.", 
-                   choices = dates2pick),
-       selectInput("abundance_taxon", 
-                   label = "Select a taxon observed during that survey.",
-                   choices = NULL), #AT FIRST, THE TAXON SELECTOR WILL BE EMPTY, BUT WE WILL SOON POPULATE IT.
-       downloadButton("abundance_map_download",
-                      "Download map as HTML", 
-                      class = "mapInputs")
+       selectInput(
+         "abundance_survey",
+         label = "Select a survey.", 
+         choices = dates2pick
+       ),
+         selectInput(
+           "abundance_taxon", 
+           label = "Select a taxon observed during that survey.",
+           choices = NULL
+         ),
+       downloadButton(
+         "abundance_map_download",
+         "Download map as HTML", 
+         class = "mapInputs"
+       )
      )
-     
+      
    })
+   } else { #BEYOND THAT, SIMPLY UPDATE IT.
+     
+     updateSelectInput(session, "abundance_survey", choices = dates2pick)
+     
+   }
    
  }
  
@@ -522,7 +569,7 @@ records_tabs_preprocessing = function(df) {
    
    #IF THE FIRST TAXON IN A SECOND SURVEY SELECTED JUST SO HAPPENS TO BE THE SAME TAXON THAT WAS ALREADY SELECTED IN THE FIRST SURVEY, THAT WILL NOT REGISTER AS AN INPUT CHANGE FOR INPUT$ABUNDANCE_TAXON. HERE, WE FORCE ONE TO OCCUR ANYWAY BY DOING A QUICK SWITCH BETWEEN TWO AVAILABLE CHOICES, IF POSSIBLE.
    prev_taxon = input$abundance_taxon #WHAT IS THE PREV TAXON?
-   
+ 
    if(isTruthy(prev_taxon) && #IF THIS ISN'T NULL
       prev_taxon == taxa_available[1] && #AND THIS PREV TAXON MATCHES WHAT WILL BE THE FIRST TAXON IN THE NEW LIST.
       length(taxa_available) > 1) { #AND THERE IS MORE THAN ONE NEW CHOICE AVAILABLE...
@@ -579,11 +626,7 @@ records_tabs_preprocessing = function(df) {
      if(taxon_name == "whole_rake_density") {
        taxon_name = "All plants"
      }
-     
-     output$abundance_data <- renderUI({
-       
-       output$abundance_map <- renderLeaflet({
- 
+
          #IF MAPPING WET WEIGHTS FROM JILL, WE NEED TO DO SOMETHING DIFFERENT...
          if(any(data_map3$RAKE_MAX %in% c("Relative fractions of captured matter", 
                                          "Wet weights (g) instead of rake scores"), na.rm = T)) {
@@ -629,11 +672,11 @@ records_tabs_preprocessing = function(df) {
          
          #FIRST GET BOUNDING BOX.
          bbox1 <- unname(st_bbox(data_map3))
-         
-         map1 = leaflet() %>% 
-             addTiles() %>% 
+
+         map1 = leafletProxy("abundance_map") %>% 
            fitBounds(bbox1[1], bbox1[2], #SET IT AT CENTER OF BOUNDING BOX
                      bbox1[3], bbox1[4]) %>% 
+           removeControl("abund_map_legend") %>% 
            addCircleMarkers(data=data_map3$geometry, #ADD MARKERS FOR EACH RAKE SCORE VAL WE HAVE.
                             color = "black",
                             weight = 0.5,
@@ -672,6 +715,7 @@ records_tabs_preprocessing = function(df) {
                      pal = map_abund_pal, 
                      values = values_tmp,
                      labFormat = labFormat_custom,
+                     layerId = "abund_map_legend",
                      opacity = 1, 
                      title = HTML(paste0("<span class=italicize>",
                                          gsub(" ", "<br>", taxon_name), 
@@ -688,6 +732,7 @@ records_tabs_preprocessing = function(df) {
                                to = max(data_map3$taxon), 
                                length = 5),
                     opacity = 1, 
+                    layerId = "abund_map_legend",
                     title = HTML(paste0("<span class=italicize>",
                                         gsub(" ", "<br>", taxon_name), 
                                         "</span>", rake_lab))
@@ -709,16 +754,6 @@ records_tabs_preprocessing = function(df) {
          )
          
          map1 #NEEDED--MUST BE LAST.
-           
-       })
-
-       tags$figure(
-         tags$figcaption("Map of abundance for the taxon and survey date selected. Consult the legend in the map\'s bottom-right corner for the abundance ratings used. The raw survey data are available in a table on the \"Raw survey data\" tab. Lake-level frequency of occurence data are available in a table on the \"Littoral Frequency of Occurrence\" tab.",
-                         id = "records_map"),
-       leafletOutput("abundance_map")
-       )
-       
-       })
 
 } 
 
@@ -800,8 +835,7 @@ observeEvent(surveys_debounced(),
              ignoreNULL = FALSE, #<--ALLOWS REOPENING THE DOW SELECTOR
              {
 
-    if(isTruthy(input$records_surveys) &&
-       !"Select a lake first" %in% input$records_surveys) {
+    if(isTruthy(input$records_surveys)) {
 
       #TURN ON THE WAITER.
       records_waiter$show()
@@ -883,28 +917,27 @@ observeEvent(surveys_debounced(),
           filter(!is.na(latitude),
                  !is.na(longitude))
         
+      if(nrow(dataJustSpatial) > 0) { #<--PREVIOUSLY, THIS WOULD PROCEED TO UNLOCK THE ABUNDANCE TAB IF LAT/LONG WERE COLUMN NAMES IN THE DATA SET, EVEN IF THERE WERE ACTUALLY NO USEFUL DATA THERE, SO WE CHECK POST-FILTER NOW.
+        
         #CUSTOM JS THAT ENABLES THIS TAB, GIVEN THAT SPATIAL DATA EXIST.
       runjs('
       $("#records_outputs li a[data-value=\'2\']").parent().removeClass("disabled");
       
        $("#records_outputs li a[data-value=\'2\']").attr("data-toggle", "tab");
       ')
-        
+
         #POPULATE THE TWO ABUNDANCE SUB-TAB SELECTORS, THEN RENDER THE MAP IN AN INVALIDATION CHAIN.
       records_rakes_subtab_selector1(dataJustSpatial)
 
       } else {
-        #OTHERWISE, DISABLE AND LOCK THIS TAB (NO LOCATION DATA TO MAP)
-        runjs('
-      // Disable Tab 2
-      $("#records_outputs li a[data-value=\'2\']").parent().addClass("disabled");
-      
-      // Prevent clicking on the disabled tab
-      $("#records_outputs li.disabled a").attr("data-toggle", "");
-    ')
-        updateTabsetPanel(session, "records_outputs", selected = "1") #Flop away from the abundance tab, if that's what folks were on.
+        kill_abundance_map_subtab() #THERE LOOKED TO BE LOCATION DATA IN THE SURVEYS SELECTED BUT IN REALITY THERE WAS NONE.
         
       }
+      } else {
+      
+        kill_abundance_map_subtab() #THERE WERE NO LAT/LONG DATA IN THE SURVEYS SELECTED.
+        
+    }
 
       records_waiter$hide()
 
@@ -913,10 +946,9 @@ observeEvent(surveys_debounced(),
 
       shinyjs::hide("rawTableCaptionDiv", anim = T, animType = "fade")
       shinyjs::enable("records_dows") #REOPEN THE DOWS SELECTOR
-      
       output$survey_table <- renderDataTable({ })
-      
       output$survey_metadata <- renderUI({ })
+      kill_abundance_map_subtab()
       
       records_waiter$hide()
     }
@@ -937,7 +969,6 @@ observeEvent(input$only_spatial, {
   #WIPE OUT THE CONTENTS OF THE SUBTABS.
   output$survey_metadata <- renderUI({ })
   output$abundance_selectors <- renderUI({ })
-  output$abundance_data <- renderUI({ })
   output$survey_table <- renderDataTable({ })
   shinyjs::hide("records_abund_fieldset")
   shinyjs::hide("rawTableCaptionDiv")
@@ -1005,26 +1036,48 @@ observe({
 
 observeEvent(list(input$abundance_survey, surveys_debounced()), { #This needs to get triggered if users mess around with the surveys they've selected at all. 
   
-  if(isTruthy(input$abundance_survey)) {
-    records_rakes_subtab_selector2(records_reactives$avail_data)
+  #IF USERS SELECT A MIX OF SURVEYS WITH AND WITHOUT LOCATION DATA, AVAIL_DATA HERE WILL CONTAIN THAT MIX AND BAMBOOZLE THE CODE DOWNSTREAM, WHICH IS EXPECTING ONLY LOCATION-ENABLED DATA.
+  all_avail_data = records_reactives$avail_data
+  
+  #SO, WE CHECK TO ENSURE LAT/LONG DATA EXIST AND PROCEED ONLY IF SO, AND FILTER DOWN TO ONLY THOSE DATA.
+  if(!all(c("latitude", 'longitude') %in% names(all_avail_data))) {
+    proceed = FALSE
+  } else {
+  abundance_relevant_data = all_avail_data %>% 
+    filter(!is.na(latitude), !is.na(longitude))
+   if(nrow(abundance_relevant_data) > 0) {
+     proceed = TRUE
+   } else {
+     proceed = FALSE
+   }
+  }
+  
+  if(isTruthy(input$abundance_survey) &&
+     isTruthy(input$records_surveys) && #<--IF THEY'VE DESELECTED ALL SURVEYS, THIS WILL BE NULL AND I DON'T BELIEVE THIS SHOULD RUN IN THAT CASE.
+     proceed == TRUE) { 
+
+    records_rakes_subtab_selector2(abundance_relevant_data)
   }
   
 })
 
 observeEvent(input$abundance_taxon, {
-  
+
   if(isTruthy(input$abundance_taxon)) {
     records_rakes_subtab_map(records_reactives$processed_dat)
   }
     
-    if("Select a lake first" %in% input$records_surveys) {
+    if(!isTruthy(input$records_surveys)) {
       #WHEN THE USER HAS RE-SELECTED NO SELECTION FOR RECORDS_SURVEYS, LET'S INSTEAD WIPE THE MAP BACK OUT. 
       output$abundance_selectors <- renderUI({ })
-      output$abundance_data <- renderUI({ })
       shinyjs::hide("records_abund_fieldset")
     }
   
 })
+
+
+# Download handlers -------------------------------------------------------
+
 
 #WATCHING THE DOWNLOAD RECORDS BUTTON, HANDLES THE DOWNLOAD PROCESS OF REDACTED DATA
 
@@ -1048,6 +1101,16 @@ observeEvent(input$abundance_taxon, {
       write.csv(fieldNameDirectory, file, row.names = FALSE)
     }
     
+  )
+  
+  output$download_all_records <- downloadHandler(
+    filename = function() {
+      paste0("PICharterRecordsAll", Sys.Date(), ".parquet")
+    },
+    content = function(file) {
+      existing_dbfile = "inputs/MadeUpstream/db_unified_censored.parquet"
+      file.copy(existing_dbfile, file)
+    }
   )
   
   

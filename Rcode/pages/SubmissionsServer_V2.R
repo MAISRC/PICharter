@@ -1352,7 +1352,12 @@ observeEvent(input$survey_date2, priority = -1, {
                                     name = prepared2$name.me)
         }
         
-      }
+        #CACHE THE FIRST THREE ANSWERS IN LOCAL STORAGE FOR THE USER'S CONVENIENCE NEXT TIME.
+        runjs("localStorage.setItem('PICharterSubNonThrows', $('input[name=\"acknowledge_data2\"]:checked').val());")
+        runjs("localStorage.setItem('PICharterSubName', $('#submitter_name2').val());")
+        runjs("localStorage.setItem('PICharterSubEmail', $('#submitter_email2').val());")
+        
+      } #/ END ENTIRE SUBMISSION PROCESS
      }
     }
 
@@ -1696,5 +1701,32 @@ observeEvent(input$new_sub_showhide, {
   }
   
 })
+
+
+###OBSERVERS FOR AUTO-POPULATING THE FIRST THREE QUESTIONS IF THE USER HAS CACHED RESPONSES
+observeEvent(input$sub_non_throws, {
+  
+  if(isTruthy(input$sub_non_throws)) {
+    updateRadioButtons(session, "acknowledge_data2", selected = input$sub_non_throws)
+  }
+  
+})
+
+observeEvent(input$sub_name, {
+  
+  if(isTruthy(input$sub_name)) {
+    updateTextInput(session, "submitter_name2", value = input$sub_name)
+  }
+  
+})
+
+observeEvent(input$sub_email, {
+  
+  if(isTruthy(input$sub_email)) {
+    updateTextInput(session, "submitter_email2", value = input$sub_email)
+  }
+  
+})
+
   
 }

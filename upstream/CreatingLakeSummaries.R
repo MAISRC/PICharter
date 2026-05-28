@@ -298,3 +298,55 @@ submitter_leaderboard = {
 ###COPY OVER THE DB FILE TO WHERE IT WILL SHIP WITH THE APP.
 
 file.copy("upstream/db_unified.parquet", "inputs/MadeUpstream/db_unified.parquet", overwrite = TRUE)
+
+
+###MAKE A VERSION OF THE DB FILE THAT IS FIT FOR SERVING DIRECTLY IN ITS ENTIRETY FROM THE RECORDS TAB.
+
+df = data2summ
+
+df[df == ""] = NA #REPLACE ALL BLANKS WITH NAS
+
+#REPLACE BAD FALSES AND TRUES WITH REAL TRUES/FALSES
+df <- lapply(df, function(x) {
+  if(is.character(x)) {
+    x <- ifelse(x == "TRUE", TRUE, ifelse(x == "FALSE", FALSE, x))
+  } else {
+    x
+  }
+})
+
+#FUNCTION FOR DETERMINING IF ALL THE CONTENTS OF A COLUMN ARE SOME MIXTURE OF NAS, BLANKS, FALSES, 0S, ETC.
+is_mixed_excludable <- function(column) {
+  all(column %in% c(0, FALSE, "FALSE", "0", NA), na.rm=T)
+}
+
+df <- as.data.frame(df) # CONVERT LIST BACK TO DF
+
+#HAVE TO REMOVE THE .1 AND .2 SUBSTRINGS AS NEEDED.
+adjusted_names = names(df)
+adjusted_names = gsub(".1", "", adjusted_names)
+adjusted_names = gsub(".2", "", adjusted_names)
+
+is.taxonomic = which(adjusted_names %in% tidyName(taxonomic)) #WHICH COLS TAXONOMIC?
+df[, is.taxonomic] = convert_column_types(df[, is.taxonomic]) #DO SMART TYPE CONVERSION ON ALL TAXONOMIC COLS TO SIMPLIFY THEM TO NUMERIC IF POSSIBLE
+
+protected_species = read.csv("inputs/Static/protected_nameskey.csv") #A list of protected species we must scrub from records.
+protected_species$taxon_tidy = tidyName(protected_species$TAXON) #Tidy the scientific names for column name matching.
+
+#REDACT ANY PROTECTED SPECIES FROM THE TABLE AND ALSO THE OUTPUTTED FILE.
+df = df %>% 
+  dplyr::select_if(.predicate = !adjusted_names %in% protected_species$taxon_tidy) %>% 
+  dplyr::select(-SUBMITTER_EMAIL) %>% #ALSO, REMOVE SUBMITTER_EMAIL COLUMN
+  dplyr::select_if(~!is_mixed_excludable(.)) #REMOVE ANY COLUMNS THAT ARE ENTIRELY NA OR 0 or FALSE FOR NEATER REPORTING BUT MAINTAIN ANY TEXT VALUES FOR NOW.
+
+#IF ANY MN DNR DATA ARE HERE, REDACT THE SURVEYORS' NAMES.
+df$SURVEYORS[grepl("DNR", df$SUBMITTER_NAME)] = "[Redacted--contact the supervisor of the MN DNR program listed in the 'SUBMITTER_NAME' field for more information]"
+
+tribal_DOWs = readRDS("inputs/Static/tribal_DOWs.rds")
+ourlakes = lakes.summary.definitive$DOW #COMPARE OUR LAKES TO THE TRIBES'
+tribal_conflicts = ourlakes[which(ourlakes %in% tribal_DOWs)] #FIND THOSE WE HAVE RECORDS OF. THESE WILL NEED TO BE OBSCURED.
+
+#REMOVE TRIBAL LAKES
+df2 = df %>% 
+  dplyr::filter(!DOW %in% tribal_conflicts)
+write_parquet(as.data.frame(df2), sink = "inputs/MadeUpstream/db_unified_censored.parquet")

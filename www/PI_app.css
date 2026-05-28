@@ -94,17 +94,17 @@ div.navbar-collapse {
   height: 0px !important;
 }
 
-a, #download_table, #download_records, #download_directory {
+a, #download_table, #download_records, #download_directory, #download_all_records {
   color: #704D00;
   text-decoration: underline;
   font-size: 90%;
 }
 
-a:hover, #download_table:hover, #download_records:hover, #download_directory:hover {
+a:hover, #download_table:hover, #download_records:hover, #download_directory:hover, #download_all_records:hover {
   color: #664600;
 }
 
-a:visited, #download_table:visited, #download_records:visited, #download_directory:visited {
+a:visited, #download_table:visited, #download_records:visited, #download_directory:visited, #download_all_records:visited {
   color: #704D00;
 }
 

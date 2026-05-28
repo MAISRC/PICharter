@@ -698,3 +698,133 @@ DT_A11Y_Callback <- DT::JS('
     });
   });
 ')
+
+##ON THE BROWSE TAB, HERE IS THE CONTENTS OF THE HELP DIALOG
+dialog = shiny::modalDialog(
+  title = tagList(div("Welcome to P.I Charter!"),
+                  div(style = "position: absolute;
+                                 top: 8px;
+                                 right: 8px;",
+                      shiny::modalButton(HTML("&#10006;")))),
+  size = "l",
+  easyClose = T,
+  div(class = "flexthis flexcol width100", 
+      style = "min-width: 330px;",
+      actionButton("howto8",
+                   class = "howtomodalbuttons",
+                   "What is P.I. Charter?",
+                   icon = icon("plus"),
+                   #ENSURE USE OF AN ACCESSIBLE ICON AND ALSO MAKE SURE ARIA ATTRIBUTES RECOGNIZE THIS AS AN ACCORDION CONTROLLER.
+                   `aria-expanded` = "true", #START OPEN!
+                   `aria-controls` = "howtoanswer8"),
+      div(id = "howtoanswer8", #NOT HIDDEN
+          class = "howtoanswers",
+          HTML("<b>P.I. Charter</b> is an online database for Point-Intercept aquatic plant survey data for the US state of Minnesota, hosted by the <a href='https://maisrc.umn.edu/', target ='_blank'>Minnesota Aquatic Invasive Species Research Center (MAISRC) at the University of Minnesota</a>.<br><br>
+                            
+                            <b>P.I. Charter</b> is a collaborative effort among ecologists, managers, and contributors compiling records from over a 1,500 P.I. surveys to date from various organizations and surveyors. <a href='https://scholar.google.com/citations?user=-WpMgAQAAAAJ&hl=en', target='_blank'>Dr. Mike Verhoeven</a> painstakingly requested, cleaned, aggregated, and analyzed many of these surveys over many years, and <a href='https://maisrc.umn.edu/alex-bajcz', target='_blank'>Dr. Alex Bajcz</a> has since built this Shiny application to house this database long-term.This app is an acknowledgement of the immense work these survey data represent to collect and an assurance to stakeholders throughout the state that MAISRC will keep aggregating these essential data well into the future!<br><br>
+                            
+                            <strong>Important: Due to how <b>P.I. Charter</b> is hosted, it unavoidably times out after 15 minutes of inactivity. If this happens, you will need to refresh the page to continue, and all your progress will be lost. Please plan accordingly!</strong>")),
+      actionButton("howto1",
+                   class = "howtomodalbuttons",
+                   "What Can I Do On P.I. Charter?",
+                   icon = icon("plus"),
+                   `aria-expanded` = "true", #START OPEN!
+                   `aria-controls` = "howtoanswer1"),
+      div(id = "howtoanswer1", #NOT HIDDEN
+          class = "howtoanswers",
+          HTML("Presently, <b>P.I. Charter</b> has four tabs. On the 'Overview' tab (the landing page), you can explore summaries of the survey records in our database at the lake level; on the 'Leaderboard' tab, you can see everyone who has contributed to this database so far; on the 'Submissions' tab, you can submit new data files to our database; and on the “Records’ tab, you can see the raw data from individual surveys and get survey-level summaries of those data.")), #***Maddie suggested putting links to video tutorials here.
+      actionButton("howto0",
+                   class = "howtomodalbuttons",
+                   "Video Tutorial for the Overview Tab",
+                   icon = icon("plus"),
+                   `aria-expanded` = "false",
+                   `aria-controls` = "howtoanswer0"),
+      hidden(div(id = "howtoanswer0",
+                 class = "howtoanswers",
+                 HTML("You can find a detailed <a href = 'https://www.youtube.com/watch?v=7SpdcWgZ0ww' target = '_blank'>video tutorial covering the uses of the Overview tab</a> of <b>P.I. Charter</b> on MAISRC\'s Youtube channel (closed captioning available; link opens in a new tab). A text summary is also available in the next menu below."))),
+      actionButton("howto2",
+                   class = "howtomodalbuttons",
+                   "Guide to the Overview Tab",
+                   icon = icon("plus"),
+                   `aria-expanded` = "false",
+                   `aria-controls` = "howtoanswer2"),
+      hidden(div(id = "howtoanswer2",
+                 class = "howtoanswers",
+                 HTML("On the left side of the Overview tab, you can find a map of Minnesota. The markers on the map show lakes that have P.I. survey records in our database so far. Click or tap on any marker to select and activate it. When you do, its corresponding records will appear in the table on the right side of the tab. The table is sortable, filterable, and paginated so that you can explore as many lakes' records at a time as you want.<br><br>
+
+Open up the \'Show filters and toggles\' menu to see more options for engaging with the map and table; for example, you can clear all selected records by using the \'Clear selections\' toggle or clear just one selected marker by clicking or tapping a map marker a second time. You can select all the markers currently shown on the map by hitting the \'Select all markers\' button.<br><br>
+
+If you would like to more easily find a specific lake, use the \'DOW (Lake)\' filter. If you want to see only markers from a specific county, use the \'County\' filter. If you want to see which lakes a specific taxon has been found in so far, use the \'Taxa observed\' filter. Note that only a small fraction of all Minnesota lakes have been surveyed. As such, keep in mind that a specific taxon may exist at more lakes than is shown. Lastly, the \'Toggle names\' button will switch between scientific and common names for all taxa on this tab. For more details on any aspect of this tab, see the video tutorial linked to in the menu above this one."))),
+      actionButton("howto3",
+                   class = "howtomodalbuttons",
+                   "What Is A P.I. Survey?",
+                   icon = icon("plus"),
+                   `aria-expanded` = "false",
+                   `aria-controls` = "howtoanswer3"),
+      hidden(div(id = "howtoanswer3",
+                 class = "howtoanswers",
+                 HTML("A P.I. survey is a systematic exploration of a lake's aquatic plant community. Here's a very quick description of how such a survey is generally performed: First, a grid is laid over a map of a lake; sampling locations become the intersections in that grid. To collect a sample, a metal rake head tied to a pole or rope is dragged along the lake bottom. All taxa attached to the rake head are identified and their relative abundances are recorded. After dozens or even hundreds of rake tosses, a picture emerges about the diversity and abundance of plant taxa in a lake! If you want to know more about survey methods, <a href='https://www3.uwsp.edu/cnr-ap/UWEXLakes/Documents/ecology/Aquatic%20Plants/PI-Protocol-2010.pdf', target = '_blank'>consider checking out this PDF document detailing the process used by the Wisconsin DNR</a>, which uses a very similar approach to the one generally used in Minnesota. Additionally, <a href='https://files.dnr.state.mn.us/eco/lake-habitat/lake-plant-survey-manual.pdf', target='_blank'>Chapter 5 of this PDF document</a> that describes the process used in Minnesota in more detail."))),
+      actionButton("howto4",
+                   class = "howtomodalbuttons",
+                   "How are P.I. Surveys Different From Other Kinds?",
+                   icon = icon("plus"),
+                   `aria-expanded` = "false",
+                   `aria-controls` = "howtoanswer4"),
+      hidden(div(id = "howtoanswer4",
+                 class = "howtoanswers",
+                 HTML("P.I. surveys are not the only kind of plant survey. Another common type is a 'meander' survey, so called because the surveyor meanders in a zig-zag pattern around a lake rather than using pre-defined sampling locations like in a P.I. survey. Another key difference is that, often, other survey types are aimed only at finding one or a few specific taxa (especially invasives), whereas a P.I. survey will collect data on every plant taxon found. While both kinds of surveys are valuable, P.I. surveys are more comprehensive and less sensitive to a surveyor's assumptions. These two differences can also be used to tell the two survey types apart. For example, <a href='https://drive.google.com/file/d/1IE-k6VD-iPF0coQuXHLXN-Dhy1w1jVQD/view?usp=share_link', target = '_blank'>here is a sample report from a P.I. survey</a>. Notice, on page 11, the grid-like distribution of sampling locations. Now, <a href='https://drive.google.com/file/d/1wNZMSww-bd9efzZcbXZK95ZQYTL2sRYp/view?usp=share_link', target = '_blank'>here is a meander survey report</a>. Notice, on pages 2 and 3, how the sample locations follow a snaky path. Also, notice that the purpose of this meander survey was specifically to find invasive species, even though other species were sometimes noted."))),
+      actionButton("howto5",
+                   class = "howtomodalbuttons",
+                   "Why Are P.I. Surveys Valuable?",
+                   icon = icon("plus"),
+                   `aria-expanded` = "false",
+                   `aria-controls` = "howtoanswer5"),
+      hidden(div(id = "howtoanswer5",
+                 class = "howtoanswers",
+                 HTML("P.I. surveys provide an unbiased and in-depth view of the health and diversity of waterbodies. They tell us how robust plant communities are, how invaded they are, where sensitive or ecologically important species are living, what kinds of conditions different taxa prefer, and how our floral communities are changing over time, among many other things. Simply put, P.I. survey data enable research that couldn't happen without them. If you want just a few examples of such research conducted by MAISRC teams, check out <a href='https://maisrc.umn.edu/native-restoration', target ='_blank'>this description of research on the post-management restoration of native vegetation</a> and <a href = 'https://maisrc.umn.edu/integrated-surveillance', target = '_blank'>this research on the early detection and monitoring of invasive aquatic plants using modeling empowered by P.I. survey data</a>."))),
+      actionButton("howto6",
+                   class = "howtomodalbuttons",
+                   "Why is MAISRC Requesting and Collecting P.I. Surveys?",
+                   icon = icon("plus"),
+                   `aria-expanded` = "false",
+                   `aria-controls` = "howtoanswer6"),
+      hidden(div(id = "howtoanswer6",
+                 class = "howtoanswers",
+                 HTML("MAISRC wants to make P.I. survey data available for everyone. Every year, significant investments are made across Minnesota by state and local agencies, homeowners, lake managers, lake associations, restoration companies, and other stakeholders to conduct these surveys. However, while the <a href='https://www.dnr.state.mn.us/eco/pubs_aquatics/aquatic_reports.html', target ='_blank'>Minnesota DNR</a> keeps a database of surveys conducted by their teams and makes these available to the public, no one currently aggregates the data collected by non-state agencies and other sources, preventing these data from being explored and leveraged.<br><br>
+
+While the methodologies used to collect these data are standardized across surveyors, the data management and storage practices vary by organization. P.I. Charter is designed to overcome the data science challenges raised by the disparity in data storage systems used--it can meaningfully combined even very different spreadsheets together into one spreadsheet. By submitting your P.I. survey data into P.I. Charter, you are contributing to a statewide database of these data accessible to all."))),
+      actionButton("howto7",
+                   class = "howtomodalbuttons",
+                   "Why Does P.I. Charter Default to Using Scientific Names?",
+                   icon = icon("plus"),
+                   `aria-expanded` = "false",
+                   `aria-controls` = "howtoanswer7"),
+      hidden(div(id = "howtoanswer7",
+                 class = "howtoanswers",
+                 HTML("To make sure the data we are collecting is reliable, combinable, and universally interpretable, we refer to taxa by their scientific (Latin) names by default. Most importantly, scientific names are unambiguous, meaning each name refers to one and only one taxon--no two species can ever share the same scientific name. Meanwhile, common names change over time, regionally, and between dialects of the same language, and they differ across languages too. If you are unfamiliar with the scientific names of any taxa shown here, you may find it helpful to <a href = 'https://www.minnesotawildflowers.info/page/aquatics?pID=0', target = _blank>visit the Minnesota Wildflowers page on native aquatic species</a>, which provides both common and scientific names for many relevant taxa."))),
+      actionButton("howto9",
+                   class = "howtomodalbuttons",
+                   "Contract Language for Getting P.I. Survey Data Submitted",
+                   icon = icon("plus"),
+                   `aria-expanded` = "false",
+                   `aria-controls` = "howtoanswer9"),
+      hidden(div(id = "howtoanswer9",
+                 class = "howtoanswers",
+                 HTML("<p>If you're an organization that is contracted to collect P.I. survey data, or if you're an organization that contracts with companies or other entities to have P.I. surveys conducted on your lakes, <strong>we want your data!</strong> Below, we have prepared some generalized language you could include in contracts that indicates that survey data will be submitted to <b>P.I. Charter</b> as part of the contract unless one party opts out. Please feel free to use and adapt this language.</p><br<br>
+                <h4>• For lake associations or government managers:</h4><br>
+<blockquote>As a collaborating organization with the Minnesota Aquatic Invasive Species Research Center (MAISRC), we recognize the value of sharing plant survey data. We wish for our survey data to be shared with the research center and made available on their public database to inform management, monitor long-term trends, and support research. Our plant survey data can be submitted to MAISRC via <b>P.I. Charter</b> at z.umn.edu/PICharter.</blockquote>
+
+<h4>• For contractors:</h4><br>
+<blockquote>Our company collaborates with the Minnesota Aquatic Invasive Species Research Center (MAISRC). By default, all point intercept plant survey data will be shared with MAISRC researchers and made available on a public database to inform management, monitor long-term trends, and support research. The data will be submitted to MAISRC via <b>P.I. Charter</b>: <a href='z.umn.edu/PICharter' target='_blank'>z.umn.edu/PICharter</a>. If you do not wish for us to share your survey data, please notify us in writing.</blockquote>"))),
+  )
+)
+
+#BY DEFAULT, THE MODAL TITLE WILL BE AN H4, BUT IT NEEDS TO BE AN H3 FOR US. THIS FINDS AND REPLACES THE TAG TYPE.
+dlg_fixed =
+  htmltools::tagQuery(dialog)$
+  find("h4.modal-title")$
+  each(function(node, i) {  # <- note the second arg. No need to use, but must be present.
+    node$name = "h3"
+    node      # must return the modified node
+  })$
+  allTags()

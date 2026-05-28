@@ -192,9 +192,7 @@ for(n in 1:length(content.ids)) {
       new_names_check = readline("Printed above are the names of the columns being ported.\nProvide a string of the new names for these columns,\nas they should appear in the clean file,\ne.g., 'A, B, C, D', with no quotes and exact spacing.\nThese needn't be tidy.") #REQUEST LIST OF NEW COL NAMES
       new_col_names = tidyName(str_split_1(new_names_check, ", ")) #SPLIT THIS LIST INTO A VECTOR
       names(ported_cols) = new_col_names #OVERWRITE THE NAMES OF THE PORTED COLS
-      
-      browser()
-      
+
       if(nrow(ported_cols) != nrow(current.import)) { #IF RAW AND CLEAN FILES DO NOT MATCH IN LENGTH...
         View(current_raw_df)
         delete_some_rows = readline("It appears that the raw and clean files have differing row numbers.\nPlease enter a string of row numbers in the raw data to delete,\ne.g., '1, 4, 67, 423', with no quotes and exact spacing.") #GET INFO ABOUT WHICH ROWS IN RAW DATA TO DELETE.

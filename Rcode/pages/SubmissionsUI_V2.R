@@ -89,6 +89,22 @@ $(document).ready(function() {
 
   ")),
     
+    #THIS CHECKS IF A USER HAS USED THE SUBMISSIONS TAB BEFORE TO SUCCESSFULLY SEND A SURVEY AND HAS CACHED ANSWERS TO THE FIRST THREE QUESTIONS. IF SO, IT PINGS OBSERVERS ON THE SERVER SIDE TO PLUG THOSE ANSWERS IN FOR THE FIRST THREE SUBMISSIONS QUESTIONS.
+    tags$head(
+      tags$script(HTML("
+    $(document).on('shiny:connected', function() {
+      var nonThrows = localStorage.getItem('PICharterSubNonThrows'); 
+      if(nonThrows) { Shiny.setInputValue('sub_non_throws', nonThrows, {priority: 'event'}); }
+      
+      var subName = localStorage.getItem('PICharterSubName'); 
+      if(subName) { Shiny.setInputValue('sub_name', subName, {priority: 'event'}); }
+      
+      var subEmail = localStorage.getItem('PICharterSubEmail'); 
+      if(subEmail) { Shiny.setInputValue('sub_email', subEmail, {priority: 'event'}); }
+    });
+  "))
+    ),
+    
                   ## Submissions tab, element 1 (INSTRUCTIONS) ---------------------------------------------
                   
     ##SHOW/HIDE INSTRUCTIONS BUTTON

@@ -62,6 +62,10 @@ recordsUI = function() {
                      target = "_blank",
                      "A tutorial for this tab is available on MAISRC's Youtube channel (opens in a new tab).",
                      style= "width: 80%; margin-bottom: 10px; display: block; margin-left: auto; margin-right: auto;"),
+              downloadButton("download_all_records", 
+                                     label = "New: Download the entire (censored) database as a Parquet file (openable in R with the arrow package).", 
+                                     class = "link-style-btn", 
+                                     style = "padding: 0; border: none; background: none; cursor: pointer; text-align: left; margin-bottom: 10px; display: block; margin-left: auto; margin-right: auto; text-wrap: wrap; width: 80%;"),
               tags$fieldset( #SEMANTICALLY APPROPRIATE DIV
               id = "records_formleft",
               tags$legend(class = "overview_filter_legends",
