@@ -120,6 +120,8 @@ records_tabs_preprocessing = function(df) {
   
 #GENERATE THE DATA THAT WILL POPULATE THE FREQ OF OCCURRENCE SUBTAB.
  records_LFOO_subtab = function(df) {
+   
+   if(nrow(df) > 0) {
 
    names2match = tidyName(gsub(".1", "", x = names(df))) %>%  #REMOVE FUNNY .1S AND TIDY.
      gsub(".2", "", x = .)
@@ -142,12 +144,16 @@ records_tabs_preprocessing = function(df) {
    }
 
    #FOR EACH SURVEY, CALCULATE POPULATION FREQUENCY OF OCCURRENCE (% COVER) FOR EACH TAXON AND FOR ALL PLANTS AS A WHOLE
-   data_graph2 = data_graph[, sapply(data_graph, function(x) !all(x == 0))] #EXCLUDE ALL COLS CONTAINING ONLY 0S
+   data_graph2 = data_graph[, sapply(data_graph, function(x) !all(x == 0)), drop = FALSE] #EXCLUDE ALL COLS CONTAINING ONLY 0S
   
    #REDUCE ALL TAXONOMIC DATA TO PRESENCE/ABSENCE AT THIS POINT
-   notThese = which(names(data_graph2) %in% c("SURVEY_START", "depth_ft")) 
-   data_graph2[-notThese] = 
-     apply(data_graph2[-notThese], c(1,2), function(x) { ifelse(x > 0, 1, 0)})
+   notThese = which(names(data_graph2) %in% c("SURVEY_START", "depth_ft"))
+   
+   if(length(notThese) < ncol(data_graph2))  {
+     #ONLY PROCEED IF THERE ARE ACTUAL TAXONOMIC COLS TO WORK WITH
+     data_graph2[-notThese] = 
+       apply(data_graph2[-notThese], c(1,2), function(x) { ifelse(x > 0, 1, 0)})
+   }
  
    data_graph3 = data_graph2 %>% 
      select(-contains(c("drepanocladus", "fontinalis", "sponge", "algae", "wolffia", "lemna",
@@ -172,6 +178,14 @@ records_tabs_preprocessing = function(df) {
                          `Max occupied depth (ft)`),
                       ~round((sum(.) / n()) * 100, 1)))  %>%  #CALC PRECENT COVER FOR EACH TAXON (ALL OTHER COLS) FOR EACH SURVEY
      arrange(desc(as.Date(SURVEY_START))) #ARRANGE BY DATES IN ASCENDING ORDER (MOST RECENT FIRST) 
+   
+   #IF ALL TAXA WERE FILTERED OUT (E.G. SURVEY ONLY RECORDED NON-VASCULAR OR FLOATING PLANTS), BAIL OUT GRACEFULLY.
+   if(ncol(data_graph3) < 5) {
+     output$survey_metadata <- renderUI({
+       p("No qualifying plant taxa were detected in the selected survey(s). Non-vascular plants, floating plants, and algae are excluded from LFOO calculations.", class = "mistakeNote")
+     })
+     return(invisible(NULL))
+   }
    
    #REORDER THE COLUMNS IN LEFT TO RIGHT ORDER BY DECREASING AVG PERCENT COVER.
    col_means = colMeans(data_graph3[5:ncol(data_graph3)]) #GET THE COL AVGS OF ALL BUT THE LEADER COLS
@@ -199,7 +213,7 @@ records_tabs_preprocessing = function(df) {
                       data.frame(`Plant LFOO` = 
                                    round((data_graph5$`Points occupied (N*)`/data_graph5$`Points sampled (N)`) * 100, 1) %>%
                                    paste0(.,  "%"), #THEN THE NEW COMMUNITY LFOQ
-                                 data_graph5[,5:ncol(data_graph5)])) #THEN THE TAXON-SPECIFIC LFOQS 
+                                 data_graph5[, 5:ncol(data_graph5), drop = FALSE])) #THEN THE TAXON-SPECIFIC LFOQS 
      
      #REPLACE THE TAXONOMIC COLUMN NAMES TO BE MORE HUMAN READABLE 
      names(dat_tmp1)[6:ncol(dat_tmp1)] = replace_names(names(dat_tmp1)[6:ncol(dat_tmp1)],
@@ -253,7 +267,7 @@ records_tabs_preprocessing = function(df) {
    if(nrow(data_graph4) == 1) { #IF A SINGLE SURVEY WAS SELECTED
      
      #GRAB JUST THE TAXONOMIC DATA
-     data_plotly = data_graph4[1, 5:ncol(data_graph4)]
+     data_plotly = data_graph4[1, 5:ncol(data_graph4), drop = FALSE]
      
      #ORDER THE DF'S TAXA LARGEST TO SMALLEST LFOO
      col_means = colMeans(data_plotly) #GET THE COL AVGS
@@ -485,6 +499,11 @@ records_tabs_preprocessing = function(df) {
      )
    })
   
+   } else {
+     output$survey_metadata <- renderUI({
+       p("No data were found for the selected survey(s).", class = "mistakeNote")
+     })
+   }
  }
  
  #BUILDS THE SELECTORS MENU FOR THE ABUNDANCE SUB-TAB UPON SELECTION OF A SPECIFIC SURVEYS LIST OF INTEREST.
@@ -817,7 +836,7 @@ records_tabs_preprocessing = function(df) {
       #RESET THE INPUT
       shinyWidgets::updatePickerInput(session, 
                                       "records_surveys",
-                           choices = "Select a lake first")
+                           choices = NULL)
       
       #HIDE THE WAITER IF IT'S STILL ON BECAUSE SOMEONE HAS PICKED A DIFFERENT LAKE FROM HAVING ALREADY HAD ONE SELECTED...
       records_waiter$hide()
@@ -835,9 +854,10 @@ observeEvent(surveys_debounced(),
              ignoreInit = TRUE, #OTHERWISE TRIGGERS ON LOAD.
              ignoreNULL = FALSE, #<--ALLOWS REOPENING THE DOW SELECTOR
              {
-
-    if(isTruthy(input$records_surveys)) {
-
+ 
+    if(isTruthy(input$records_surveys) &&
+       length(input$records_surveys) > 0) {
+      
       #TURN ON THE WAITER.
       records_waiter$show()
       
@@ -958,13 +978,13 @@ observeEvent(surveys_debounced(),
   })
 
 #OBSERVER THAT WATCHES THE CHECKBOX INPUT AND, IF CHECKED, FILTERS RECORDS TO ONLY THOSE CONTAINING SOME LOCATION DATA.
-observeEvent(input$only_spatial, {
+observeEvent(input$only_spatial, ignoreInit = TRUE, {
   
   #DISABLE ANY WAITERS, AS THEY HAVE A PESKY HABIT OF COMING ON WHEN UNWANTED.
   records_waiter$hide()
   
   #WIPE OUT ANY SELECTED SPECIFIC SURVEY(S), WHICH HAS THE CONSEQUENCE OF ESSENTIALLY RESETTING CERTAIN ASPECTS OF THE TAB
-  shinyWidgets::updatePickerInput(session, "records_surveys", selected = "Select a lake first")
+  shinyWidgets::updatePickerInput(session, "records_surveys", selected = NULL)
   
   #MAKE SURE TO RE-ENABLE THE DOW SELECTOR, IN CASE IT IS CURRENTLY LOCKED.
   shinyjs::enable("records_dows")
@@ -1037,7 +1057,7 @@ observe({
 
 # Observers related to the abundance map subtab ---------------------------
 
-observeEvent(list(input$abundance_survey, surveys_debounced()), { #This needs to get triggered if users mess around with the surveys they've selected at all. 
+observeEvent(list(input$abundance_survey, surveys_debounced()), ignoreInit = TRUE, { #This needs to get triggered if users mess around with the surveys they've selected at all. 
   
   #IF USERS SELECT A MIX OF SURVEYS WITH AND WITHOUT LOCATION DATA, AVAIL_DATA HERE WILL CONTAIN THAT MIX AND BAMBOOZLE THE CODE DOWNSTREAM, WHICH IS EXPECTING ONLY LOCATION-ENABLED DATA.
   all_avail_data = records_reactives$avail_data
@@ -1064,7 +1084,7 @@ observeEvent(list(input$abundance_survey, surveys_debounced()), { #This needs to
   
 })
 
-observeEvent(input$abundance_taxon, {
+observeEvent(input$abundance_taxon, ignoreInit = TRUE, {
 
   if(isTruthy(input$abundance_taxon)) {
     records_rakes_subtab_map(records_reactives$processed_dat)
