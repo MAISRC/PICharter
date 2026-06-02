@@ -626,6 +626,7 @@ browseServer = function(input, output, session) {
       tags$p("Summary of survey data by lake. Click or tap on a lake's map marker to activate it and display its summary data here. You can also ",
              downloadButton("download_table", "download this table as a .CSV file", 
                             class = "link-style-btn",  
+                            icon = NULL, 
                             style = "padding: 0; border: none; background: none; cursor: pointer;"),
              " for use in spreadsheet software.")
     )

@@ -103,7 +103,7 @@ records_tabs_preprocessing = function(df) {
   adjusted_names = gsub(".2", "", adjusted_names)
   
   is.taxonomic = which(adjusted_names %in% tidyName(taxonomic)) #WHICH COLS TAXONOMIC?
-  df[, is.taxonomic] = convert_column_types(df[, is.taxonomic]) #DO SMART TYPE CONVERSION ON ALL TAXONOMIC COLS TO SIMPLIFY THEM TO NUMERIC IF POSSIBLE
+  df[, is.taxonomic] = convert_column_types(df[, is.taxonomic, drop = FALSE]) #DO SMART TYPE CONVERSION ON ALL TAXONOMIC COLS TO SIMPLIFY THEM TO NUMERIC IF POSSIBLE
 
   #REDACT ANY PROTECTED SPECIES FROM THE TABLE AND ALSO THE OUTPUTTED FILE.
   df = df %>% 
@@ -513,6 +513,7 @@ records_tabs_preprocessing = function(df) {
        downloadButton(
          "abundance_map_download",
          "Download map as HTML", 
+         icon = NULL,
          class = "mapInputs"
        )
      )
@@ -899,10 +900,12 @@ observeEvent(surveys_debounced(),
             tags$li(downloadButton("download_records", 
                                    label = "Download these data as a .CSV file.", 
                                    class = "link-style-btn", 
+                                   icon = NULL,
                                    style = "padding: 0; border: none; background: none; cursor: pointer;")),
             tags$li(downloadButton("download_directory", 
                                    label = "Download a .CSV file explaining each column name.", 
                                    class = "link-style-btn", 
+                                   icon = NULL,
                                    style = "padding: 0; border: none; background: none; cursor: pointer;"))
           )
         )

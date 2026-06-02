@@ -117,11 +117,6 @@ div.navbar-header {
   height: 0px;
 }
 
-i.fa-download {
-  visibility: hidden;
-  width: 0px;
-}
-
 .mapInputs {
   background-color: #FAFAFA; 
   color: #7a0019; 

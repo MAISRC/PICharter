@@ -554,6 +554,7 @@ $(document).ready(function() {
           #DOWNLOAD CLEAN FILE BUTTON UPON SUBMISSION
           shinyjs::hidden(shiny::downloadButton("download_now2",
                                 shiny::span("Download the processed data."),
+                                icon = NULL,
                                 class = "mapInputs")),
           #RESET BUTTON UPON SUBMISSION
           shinyjs::hidden(shiny::actionButton("reset_button2", 
