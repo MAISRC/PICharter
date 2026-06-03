@@ -60,17 +60,17 @@ recordsUI = function() {
               tags$h3("Survey records selection menu", class = "sr-only"), #SCREEN READER HEADING.
               tags$a(href = "https://www.youtube.com/watch?v=aX5mOzsezwE", 
                      target = "_blank",
-                     "A tutorial for this tab is available on MAISRC's Youtube channel (opens in a new tab).",
+                     "Click for a tutorial on this tab on MAISRC's Youtube Channel (opens in new tab).",
                      style= "width: 80%; margin-bottom: 10px; display: block; margin-left: auto; margin-right: auto;"),
               downloadButton("download_all_records", 
-                                     label = "New: Download the entire (censored) database as a Parquet file (openable in R with the arrow package).", 
+                                     label = HTML("New: Download the whole (censored) database as a .parquet (openable with R's <i>arrow</i> package)."), 
                                      icon = NULL, 
                                      class = "link-style-btn", 
                                      style = "padding: 0; border: none; background: none; cursor: pointer; text-align: left; margin-bottom: 10px; display: block; margin-left: auto; margin-right: auto; text-wrap: wrap; width: 80%;"),
               tags$fieldset( #SEMANTICALLY APPROPRIATE DIV
               id = "records_formleft",
               tags$legend(class = "overview_filter_legends",
-                          HTML("<span><b>Select Survey Records to View.</b> Use these options to select a specific lake and survey(s) to view.</span>")
+                          HTML("<span><b>Select Records to View.</b> Use these options to view records from specific lakes and surveys. Note: Interacting with these when records are visible may clear them.</span>")
                           ),
 
                   #CHECKBOX FOR FILTERING TO ONLY SPATIAL DATA.
@@ -81,7 +81,7 @@ recordsUI = function() {
        #SELECTOR FOR PICKING A LAKE
        selectizeInput("records_dows", 
                       label = HTML(
-                                   "<span><b>Select a lake.</b> Delete all contents to use as a search bar. This is a required question; until you select a lake, the survey date picker below this question will not appear.</span>"),
+                                   "<span><b>Select lake.</b> To use as search bar, delete contents. Required question; the date picker will not open until you select a lake.</span>"),
                    choices = NULL,
                    options = list(render = I("{
       option: function(item, escape) {
@@ -91,7 +91,7 @@ recordsUI = function() {
        uiOutput("lakefinder_note"),
        #SELECTOR FOR PICKING THAT LAKE'S RECORDS
        hidden(shinyWidgets::pickerInput("records_surveys", 
-                      HTML("<span><b>Select one (or more) survey(s).</b> Uncheck all selections to pick a different lake. This is a required question; until you select at least one survey date, the tabs on the right-hand side of the screen will not populate.</span>"),
+                      HTML("<span><b>Select 1+ surveys.</b> Deselect all to re-enable the lake picker. Required question; records will not populate until you select at least one survey.</span>"),
                       choices = NULL,
                       multiple = TRUE,
                       options = list(`actions-box` = TRUE, #GIVES SELECT AND DESELECT ALL BUTTONS,

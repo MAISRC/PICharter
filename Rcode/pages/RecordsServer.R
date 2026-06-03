@@ -26,7 +26,7 @@ recordsServer = function(input, output, session) {
   
   #RENDER THIS AS A NOTE FOR USERS
   output$lakefinder_note = renderUI({
-    div(HTML("If you're unsure of which lake you're interested in, <a target= '_blank', href='https://maps1.dnr.state.mn.us/lakefinder/mobile/'>use LakeFinder to locate it.</a>"),
+    div(HTML("If you don't know a lake's name or DOW, <a target= '_blank', href='https://maps1.dnr.state.mn.us/lakefinder/mobile/'>use LakeFinder.</a>"),
         id="lakefinder_note")
   })
   
@@ -842,7 +842,7 @@ records_tabs_preprocessing = function(df) {
       records_waiter$hide()
       
       output$lakefinder_note = renderUI({
-        div(HTML("If you're unsure of the DOW for the lake you're interested in, <a target= '_blank', href='https://maps1.dnr.state.mn.us/lakefinder/mobile/'>use LakeFinder to get it.</a>"),
+        div(HTML("If you don't know a lake's DOW, <a target= '_blank', href='https://maps1.dnr.state.mn.us/lakefinder/mobile/'>use LakeFinder.</a>"),
             id="lakefinder_note")
       })
 
@@ -991,11 +991,12 @@ observeEvent(input$only_spatial, ignoreInit = TRUE, {
   
   #WIPE OUT THE CONTENTS OF THE SUBTABS.
   output$survey_metadata <- renderUI({ })
-  output$abundance_selectors <- renderUI({ })
+  shinyjs::hide("abundance_selectors")
   output$survey_table <- renderDataTable({ })
   shinyjs::hide("records_abund_fieldset")
   shinyjs::hide("rawTableCaptionDiv")
-  output$abundance_map <- renderLeaflet({ })
+  shinyjs::hide("abundance_data")
+  leafletProxy("abundance_map") %>% clearMarkers() %>% clearControls() %>% clearShapes() #INSTEAD OF TEARING THE MAP DOWN, WHICH WILL RENDER ITS VISIBILITY AS NONE, WHICH IS HARD TO UNDO, WE SIMPLY STRIP THE DATA OUT OF IT VIA PROXY. THEN, THERE'S NO NEED TO RE-SHOW IT LATER WHEN IT GETS NEW DATA.
   
   #RESTRICT TO ONLY SPATIAL DATA.
   if(input$only_spatial == TRUE) {
@@ -1028,7 +1029,6 @@ observeEvent(input$only_spatial, ignoreInit = TRUE, {
 })
 
 #THIS OBSERVER WATCHES THE SURVEY TABLE'S SEARCH BAR AND REPORTS TO SCREEN READER USERS ONLY THE NUMBER OF SEARCH RESULTS GENERATED.
-#THIS OBSERVER WATCHES THE TABLE AND REPORTS TO SCREEN READER USERS ANY STATE CHANGES TO PAGE/LENGTH/RESULTS.
 table_state2 = reactive({
   req(input$survey_table_rows_all)
   req(input$survey_table_state)
@@ -1040,6 +1040,7 @@ table_state2 = reactive({
   )
 }) %>% debounce(750)
 
+#THIS OBSERVER WATCHES THE TABLE AND REPORTS TO SCREEN READER USERS ANY STATE CHANGES TO PAGE/LENGTH/RESULTS.
 observe({
   state = table_state2()
   page = floor(state$start / state$length) + 1
@@ -1088,11 +1089,15 @@ observeEvent(input$abundance_taxon, ignoreInit = TRUE, {
 
   if(isTruthy(input$abundance_taxon)) {
     records_rakes_subtab_map(records_reactives$processed_dat)
+    shinyjs::show("abundance_data")
+    shinyjs::show("abundance_selectors")
+    shinyjs::show("records_abund_fieldset")
   }
     
     if(!isTruthy(input$records_surveys)) {
       #WHEN THE USER HAS RE-SELECTED NO SELECTION FOR RECORDS_SURVEYS, LET'S INSTEAD WIPE THE MAP BACK OUT. 
-      output$abundance_selectors <- renderUI({ })
+      shinyjs::hide("abundance_selectors")
+      shinyjs::hide("abundance_data")
       shinyjs::hide("records_abund_fieldset")
     }
   
