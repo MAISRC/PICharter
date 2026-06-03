@@ -140,7 +140,14 @@ recordsUI = function() {
                                          uiOutput("abundance_selectors")))),
                                   column(width = 8,
                                          id = "abundance_map_cell",
-                                         uiOutput("abundance_data"))
+                                         div(id = "abundance_data",
+                                           tags$figure(
+                                           tags$figcaption("Map of abundance for the taxon and survey date selected. Consult the legend in the map\'s bottom-right corner for the abundance ratings used. The raw survey data are available in a table on the \"Raw survey data\" tab. Lake-level frequency of occurence data are available in a table on the \"Littoral Frequency of Occurrence\" tab.",
+                                                           id = "records_map"),
+                                           leafletOutput("abundance_map")
+                                         )
+                                        )
+                                    )
                                   )
                               )
                      ),

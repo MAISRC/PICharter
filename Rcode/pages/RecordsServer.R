@@ -4,7 +4,8 @@ recordsServer = function(input, output, session) {
   #SET UP A REACTIVES TRACKER FOR THIS TAB
   records_reactives = reactiveValues(
     avail_data = NULL, #THE MOST RECENTLY ACCESSED SURVEY DATA FILE
-    processed_dat = NULL #DATA THAT HAS BEEN WORKED OVER A BIT MORE FOR THE SUB-TABS HERE.
+    processed_dat = NULL, #DATA THAT HAS BEEN WORKED OVER A BIT MORE FOR THE SUB-TABS HERE.
+    map4download = NULL #A STANDALONE LEAFLET MAP (NOT A PROXY) KEPT IN SYNC WITH THE DISPLAYED MAP FOR DOWNLOADING.
   )
   records_waiter <- Waiter$new(id = "records_formright", 
                            html = spin_hexdots(),
@@ -30,29 +31,20 @@ recordsServer = function(input, output, session) {
         id="lakefinder_note")
   })
   
-  
-  output$abundance_data <- renderUI({
+  output$abundance_map <- renderLeaflet({
     
-    output$abundance_map <- renderLeaflet({
-      
-      #FIRST GET BOUNDING BOX.
-      bbox1 <- unname(st_bbox(MN))
-      
-      leaflet() %>% 
-        addTiles() %>%
-        fitBounds(bbox1[1], bbox1[2],
-                  bbox1[3], bbox1[4])
-      
-    })
+    #FIRST GET BOUNDING BOX.
+    bbox1 <- unname(st_bbox(MN))
     
-    tags$figure(
-      tags$figcaption("Map of abundance for the taxon and survey date selected. Consult the legend in the map\'s bottom-right corner for the abundance ratings used. The raw survey data are available in a table on the \"Raw survey data\" tab. Lake-level frequency of occurence data are available in a table on the \"Littoral Frequency of Occurrence\" tab.",
-                      id = "records_map"),
-      leafletOutput("abundance_map")
-    )
+    leaflet() %>% 
+      addTiles() %>%
+      fitBounds(bbox1[1], bbox1[2],
+                bbox1[3], bbox1[4])
     
   })
   
+  #MAKE SURE THIS STARTS HIDDEN.
+  shinyjs::addClass("abundance_data", "mute-abund-map")
 
 # Decluttering functions --------------------------------------------------
   #WHEN MAKING THE SUBTAB CONTENTS FOR THIS TAB, A LOT OF OPERATIONS NEED TO HAPPEN, SO IT'S EASIER TO JUST BUNDLE THEM INTO FUNCTIONS SO THAT THEY WILL BE EASIER TO FIND AND FIX AS WE GO.
@@ -693,18 +685,31 @@ records_tabs_preprocessing = function(df) {
          #FIRST GET BOUNDING BOX.
          bbox1 <- unname(st_bbox(data_map3))
 
+         #THE AI AGENT RE-WROTE THE CODE IN THIS REGION. HERE'S WHY: NOW THAT WE USE A LEAFLETPROXY, WE CAN'T JUST STASH THE NEWLY BIRTHED MAP EACH TIME--ALL WE'D HAVE WOULD BE A PROXY OBJECT. SO, INSTEAD, WE NEED TO BE BUILDING A PROXY AND A STANDALONE LEAFLET MAP IN PARALLEL, ONE THAT THE USER SEES AND ONE THAT THE USER COULD DOWNLOAD. SO, WE BUNDLE A LOT OF THE COMMANDS FOR BOTH SO WE CAN FIRE THEM BOTH WITH THE SAME INPUTS.
+         
+         #SHARED CIRCLE MARKER ARGS (USED BY BOTH PROXY AND STANDALONE MAP)
+         circle_marker_args = list(
+           data = data_map3$geometry,
+           color = "black",
+           weight = 0.5,
+           radius = 5,
+           opacity = 1,
+           fillColor = map_abund_pal(unlist(as.vector(st_drop_geometry(data_map3[1])))),
+           fillOpacity = 1
+         )
+         
+         #BUILD THE PROXY
          map1 = leafletProxy("abundance_map") %>% 
-           fitBounds(bbox1[1], bbox1[2], #SET IT AT CENTER OF BOUNDING BOX
-                     bbox1[3], bbox1[4]) %>% 
+           fitBounds(bbox1[1], bbox1[2], bbox1[3], bbox1[4]) %>% 
            removeControl("abund_map_legend") %>% 
-           addCircleMarkers(data=data_map3$geometry, #ADD MARKERS FOR EACH RAKE SCORE VAL WE HAVE.
-                            color = "black",
-                            weight = 0.5,
-                            radius = 5,
-                            opacity = 1,
-                            fillColor = map_abund_pal(unlist(as.vector(st_drop_geometry(data_map3[1])))),
-                            fillOpacity = 1, 
-                            )
+           { do.call(addCircleMarkers, c(list(.), circle_marker_args)) }
+
+         #BUILD THE STANDALONE LEAFLET FOR DOWNLOAD
+         map_standalone = leaflet() %>%
+           addTiles() %>%
+           fitBounds(bbox1[1], bbox1[2], bbox1[3], bbox1[4]) %>%
+           { do.call(addCircleMarkers, c(list(.), circle_marker_args)) } #<--BRACES HELP THE PIPE KNOW TO PUT THE INPUTS INTO THE DOT INSTEAD OF THE 1ST ARG OF DO.CALL.
+
          #THEN, PLOT THE LEGEND SLIGHTLY DIFFERENTLY DEPENDING UPON THE FORMAT OF THE RAKE DATA.
          if(bins1 == FALSE) {
 
@@ -730,49 +735,37 @@ records_tabs_preprocessing = function(df) {
              labFormat_custom <- labelFormat()
            }
            
-           map1 = map1 %>% 
-             addLegend(position = "bottomright", 
-                     pal = map_abund_pal, 
-                     values = values_tmp,
-                     labFormat = labFormat_custom,
-                     layerId = "abund_map_legend",
-                     opacity = 1, 
-                     title = HTML(paste0("<span class=italicize>",
-                                         gsub(" ", "<br>", taxon_name), 
-                                         "</span>", rake_lab))
-                     
-                     
-                     )
-         } else {
-           map1 = map1 %>% 
-             addLegend(position = "bottomright", 
-                    pal = map_abund_pal, 
-                    values = sort(unlist(as.vector(st_drop_geometry(data_map3[1])))), 
-                    bins = seq(from = min(data_map3$taxon), 
-                               to = max(data_map3$taxon), 
-                               length = 5),
-                    opacity = 1, 
-                    layerId = "abund_map_legend",
-                    title = HTML(paste0("<span class=italicize>",
-                                        gsub(" ", "<br>", taxon_name), 
-                                        "</span>", rake_lab))
-                    
-                    
+           legend_args = list(
+             position = "bottomright",
+             pal = map_abund_pal,
+             values = values_tmp,
+             labFormat = labFormat_custom,
+             layerId = "abund_map_legend",
+             opacity = 1,
+             title = HTML(paste0("<span class=italicize>", gsub(" ", "<br>", taxon_name), "</span>", rake_lab))
            )
-         }
-         map4download = reactive({ map1 }) #SET THIS AS A REACTIVE.
-         
-         #USE IN THE DOWNLOAD HANDLER
-         output$abundance_map_download = downloadHandler(
-           filename = function() {
-             paste0("PICharter_", Sys.Date(), ".html") 
-           }, 
-           content = function(file) {
 
-             saveWidget(map4download(), file) #REFERENCE THE REACTIVE MADE AT THE SAME TIME AS THE MAP BEING RENDERED.
-           }
-         )
-         
+         } else {
+
+           legend_args = list(
+             position = "bottomright",
+             pal = map_abund_pal,
+             values = sort(unlist(as.vector(st_drop_geometry(data_map3[1])))),
+             bins = seq(from = min(data_map3$taxon), to = max(data_map3$taxon), length = 5),
+             opacity = 1,
+             layerId = "abund_map_legend",
+             title = HTML(paste0("<span class=italicize>", gsub(" ", "<br>", taxon_name), "</span>", rake_lab))
+           )
+
+         }
+
+         #ADD THE CUSTOM LEGENDS TO BOTH OBJECTS BEING MADE.
+         map1 = do.call(addLegend, c(list(map1), legend_args))
+         map_standalone = do.call(addLegend, c(list(map_standalone), legend_args))
+
+         #STASH THE STANDALONE MAP SO THE DOWNLOAD HANDLER CAN ACCESS IT.
+         records_reactives$map4download = map_standalone
+
          map1 #NEEDED--MUST BE LAST.
 
 } 
@@ -995,8 +988,7 @@ observeEvent(input$only_spatial, ignoreInit = TRUE, {
   output$survey_table <- renderDataTable({ })
   shinyjs::hide("records_abund_fieldset")
   shinyjs::hide("rawTableCaptionDiv")
-  shinyjs::hide("abundance_data")
-  leafletProxy("abundance_map") %>% clearMarkers() %>% clearControls() %>% clearShapes() #INSTEAD OF TEARING THE MAP DOWN, WHICH WILL RENDER ITS VISIBILITY AS NONE, WHICH IS HARD TO UNDO, WE SIMPLY STRIP THE DATA OUT OF IT VIA PROXY. THEN, THERE'S NO NEED TO RE-SHOW IT LATER WHEN IT GETS NEW DATA.
+  shinyjs::addClass("abundance_data", "mute-abund-map")
   
   #RESTRICT TO ONLY SPATIAL DATA.
   if(input$only_spatial == TRUE) {
@@ -1088,16 +1080,19 @@ observeEvent(list(input$abundance_survey, surveys_debounced()), ignoreInit = TRU
 observeEvent(input$abundance_taxon, ignoreInit = TRUE, {
 
   if(isTruthy(input$abundance_taxon)) {
-    records_rakes_subtab_map(records_reactives$processed_dat)
-    shinyjs::show("abundance_data")
+
+    shinyjs::removeClass("abundance_data", "mute-abund-map")
     shinyjs::show("abundance_selectors")
     shinyjs::show("records_abund_fieldset")
+    
+    records_rakes_subtab_map(records_reactives$processed_dat)
+
   }
     
     if(!isTruthy(input$records_surveys)) {
       #WHEN THE USER HAS RE-SELECTED NO SELECTION FOR RECORDS_SURVEYS, LET'S INSTEAD WIPE THE MAP BACK OUT. 
       shinyjs::hide("abundance_selectors")
-      shinyjs::hide("abundance_data")
+      shinyjs::addClass("abundance_data", "mute-abund-map")
       shinyjs::hide("records_abund_fieldset")
     }
   
@@ -1106,6 +1101,16 @@ observeEvent(input$abundance_taxon, ignoreInit = TRUE, {
 
 # Download handlers -------------------------------------------------------
 
+#DOWNLOAD HANDLER FOR THE ABUNDANCE MAP.
+output$abundance_map_download = downloadHandler(
+  filename = function() {
+    paste0("PICharter_", Sys.Date(), ".html")
+  },
+  content = function(file) {
+    req(records_reactives$map4download)
+    saveWidget(records_reactives$map4download, file)
+  }
+)
 
 #WATCHING THE DOWNLOAD RECORDS BUTTON, HANDLES THE DOWNLOAD PROCESS OF REDACTED DATA
 
