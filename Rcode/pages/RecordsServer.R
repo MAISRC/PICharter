@@ -504,8 +504,9 @@ records_tabs_preprocessing = function(df) {
    #HERE ARE THE DATES TO POPULATE THE SURVEY SELECTOR WITH.
    dates2pick = as.character(sort(as.Date(unique(df$SURVEY_START)), decreasing = TRUE))
    
+   shinyjs::removeClass("abundance_data", "mute-abund-map")
    shinyjs::show("records_abund_fieldset")
- 
+
    if(is.null(input$abundance_survey)) { #FIRST TIME ONLY, BUILD THE UI.
    
    output$abundance_selectors <- renderUI({
@@ -984,7 +985,6 @@ observeEvent(input$only_spatial, ignoreInit = TRUE, {
   
   #WIPE OUT THE CONTENTS OF THE SUBTABS.
   output$survey_metadata <- renderUI({ })
-  shinyjs::hide("abundance_selectors")
   output$survey_table <- renderDataTable({ })
   shinyjs::hide("records_abund_fieldset")
   shinyjs::hide("rawTableCaptionDiv")
@@ -1082,7 +1082,6 @@ observeEvent(input$abundance_taxon, ignoreInit = TRUE, {
   if(isTruthy(input$abundance_taxon)) {
 
     shinyjs::removeClass("abundance_data", "mute-abund-map")
-    shinyjs::show("abundance_selectors")
     shinyjs::show("records_abund_fieldset")
     
     records_rakes_subtab_map(records_reactives$processed_dat)
@@ -1091,7 +1090,6 @@ observeEvent(input$abundance_taxon, ignoreInit = TRUE, {
     
     if(!isTruthy(input$records_surveys)) {
       #WHEN THE USER HAS RE-SELECTED NO SELECTION FOR RECORDS_SURVEYS, LET'S INSTEAD WIPE THE MAP BACK OUT. 
-      shinyjs::hide("abundance_selectors")
       shinyjs::addClass("abundance_data", "mute-abund-map")
       shinyjs::hide("records_abund_fieldset")
     }
