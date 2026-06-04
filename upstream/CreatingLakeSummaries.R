@@ -327,6 +327,10 @@ adjusted_names = names(df)
 adjusted_names = gsub(".1", "", adjusted_names)
 adjusted_names = gsub(".2", "", adjusted_names)
 
+taxonomic = newfieldnames %>%  #FILTER TO ONLY TAXONOMIC COL NAMES
+  filter(taxonomic == "Y") %>% 
+  pull()
+
 is.taxonomic = which(adjusted_names %in% tidyName(taxonomic)) #WHICH COLS TAXONOMIC?
 df[, is.taxonomic] = convert_column_types(df[, is.taxonomic]) #DO SMART TYPE CONVERSION ON ALL TAXONOMIC COLS TO SIMPLIFY THEM TO NUMERIC IF POSSIBLE
 
@@ -336,7 +340,6 @@ protected_species$taxon_tidy = tidyName(protected_species$TAXON) #Tidy the scien
 #REDACT ANY PROTECTED SPECIES FROM THE TABLE AND ALSO THE OUTPUTTED FILE.
 df = df %>% 
   dplyr::select_if(.predicate = !adjusted_names %in% protected_species$taxon_tidy) %>% 
-  dplyr::select(-SUBMITTER_EMAIL) %>% #ALSO, REMOVE SUBMITTER_EMAIL COLUMN
   dplyr::select_if(~!is_mixed_excludable(.)) #REMOVE ANY COLUMNS THAT ARE ENTIRELY NA OR 0 or FALSE FOR NEATER REPORTING BUT MAINTAIN ANY TEXT VALUES FOR NOW.
 
 #IF ANY MN DNR DATA ARE HERE, REDACT THE SURVEYORS' NAMES.
@@ -349,4 +352,5 @@ tribal_conflicts = ourlakes[which(ourlakes %in% tribal_DOWs)] #FIND THOSE WE HAV
 #REMOVE TRIBAL LAKES
 df2 = df %>% 
   dplyr::filter(!DOW %in% tribal_conflicts)
+
 write_parquet(as.data.frame(df2), sink = "inputs/MadeUpstream/db_unified_censored.parquet")
