@@ -21,9 +21,11 @@ bolboschoenus_fluviatilis,River bulrush
 bolboschoenus_maritimus,Prairie bulrush
 boltonia_asteroides,False aster
 brasenia_schreberi,Watershield
+brassicaceae_taxa,Mustard family
 butomus_umbellatus,Flowering rush
 cabomba_caroliniana,Fanwort
 calamagrostis_canadensis,Bluejoint
+calamagrostis_sp,Bluejoints
 calla_palustris,Wild calla
 callitriche_hermaphroditica,Autumn water starwort
 callitriche_heterophylla,Larger water starwort
@@ -41,10 +43,13 @@ ceratophyllum_demersum,Common coontail
 ceratophyllum_echinatum,Spiny coontail
 ceratophyllum_sp,Hornworts
 chamaedaphne_calyculata,Leatherleaf
+chara_aspera,Rough stonewort
 chara_braunii,Braun's stonewort
 chara_canescens,Bearded stonewort
 chara_contraria,Conflicting stonewort
+chara_foliolosa,Leafy stonewort
 chara_globularis,Fragile stonewort
+chara_longifolia,Giant stonewort
 chara_sp,Muskgrasses
 characeae,Stonewort family
 characeae_taxa,Muskgrasses
@@ -95,9 +100,11 @@ fontinalis_sp,Fontinalis mosses
 fontinalis_sullivantii,Sullivant's willow moss
 frangula_alnus,Alder buckthorn
 freshwater_sponge,Freshwater sponges
+galium_sp,Bedstraws
 glyceria_borealis,Northern manna grass
 glyceria_canadensis,Rattlesnake manna grass
 glyceria_maxima,Reed sweetgrass
+glyceria_sp,Manna-grasses
 gramineae_poaceae_family,Grasses
 gratiola_aurea,Golden hedgehyssop
 heteranthera_dubia,Water stargrass
@@ -147,6 +154,7 @@ lycopus_americanus,Cut-leaved bugleweed
 lysimachia_nummularia,Moneywort
 lysimachia_sp,Loosestrifes
 lysimachia_terrestris,Yellow loosestrife
+lysimachia_thyrsiflora,Tufted loosestrife
 lythrum_salicaria,Purple loosestrife
 lythrum_virgatum,European wand loosestrife
 menyanthes_trifoliata,Buckbean
@@ -173,6 +181,7 @@ najas_minor,Brittle naiad
 najas_sp,Water-nymphs
 nasturtium_officinale,Watercress
 nelumbo_lutea,American lotus
+nitella_clavata,Clavate stonewort
 nitella_flexilis,Smooth stonewort
 nitella_furcata,Forked stonewort
 nitella_macounii,Macoun's stonewort
@@ -184,6 +193,7 @@ nitellopsis_sp,Starry stonewort
 nostoc_sp,Star jellies
 nuphar_advena,Spatterdock
 nuphar_microphylla,Yellow pond-lily
+nuphar_rubrodisca,Intermediate pond-lily
 nuphar_sp,Water-lilies
 nuphar_variegata,Bullhead pond-lily
 nymphaea_leibergii,Small white waterlily
@@ -195,6 +205,7 @@ persicaria_amphibia,Water smartweed
 persicaria_lapathifolia,Nodding smartweed
 persicaria_sp,Knotweeds
 phalaris_arundinacea,Reed canary grass
+phalaris_sp,Canary grasses
 phragmites_australis,Common reed
 phragmites_australis_americanus,Common reed (native)
 phragmites_australis_australis,Common reed (non-native)
@@ -230,6 +241,8 @@ potamogeton_sp,Pondweeds
 potamogeton_strictifolius,Straight-leaved pondweed
 potamogeton_vaseyi,Vasey's pondweed
 potamogeton_zosteriformis,Flat-stemmed pondweed
+potentilla_palustris,Marsh cinquefoil
+potentilla_sp,Cinquefoils
 ranunculus_aquatilis,Common water-crowfoot
 ranunculus_flabellaris,Large yellow water crowfoot
 ranunculus_flammula,Spearwort
@@ -243,6 +256,7 @@ ricciocarpos_natans,Fringed heartwort
 rorippa_aquatica,Lakecress
 rorippa_sylvestris,Creeping yellowcress
 rumex_britannica,Greater water dock
+rumex_sp,Docks
 ruppia_cirrhosa,Spiral ditchgrass
 sagittaria_cristata,Crested arrowhead
 sagittaria_cuneata,Arum-leaved arrowhead
@@ -282,6 +296,7 @@ sparganium_sp,Bur-reeds
 sphagnum_magellanicum,Magellanic bogmoss
 sphagnum_sp,Sphagnum mosses
 spirodela_polyrrhiza,Common duckweed
+spiraea_alba,White meadowsweet
 spirodela_sp,Duckweed species
 spirogyra_sp,Water silks
 stratiotes_aloides,Water aloe
@@ -291,6 +306,7 @@ stuckenia_sp,Stuckenia pondweeds
 stuckenia_vaginata,Sheathed pondweed
 thelypteris_palustris,Marsh fern
 tolypella_intricata,Tassel stonewort
+tolypella_sp,Tolypella stoneworts
 trapa_natans,Water chestnut
 triadenum_fraseri,Marsh St. John's-wort
 typha_angustifolia,Narrow-leaved cattail
@@ -313,6 +329,7 @@ vallisneria_sp,Eelgrasses
 verbena_sp,Verbenas
 veronica_americana,American speedwell
 veronica_catenata,Water speedwell
+veronica_sp,Speedwells
 wolffia_borealis,Spotted watermeal
 wolffia_columbiana,Columbian watermeal
 wolffia_sp,Watermeals

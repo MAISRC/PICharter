@@ -2,6 +2,7 @@ fieldNames,Explanation,Taxonomic
 acorus_americanus,,Y
 acorus_sp,"""_sp"" indicates an unknown species within a given genus, as indicated by the surveyor, not MAISRC",Y
 algae,,Y
+alisma_gramineum,,Y
 alisma_sp,"""_sp"" indicates an unknown species within a given genus, as indicated by the surveyor, not MAISRC",Y
 alisma_triviale,,Y
 alnus_sp,"""_sp"" indicates an unknown species within a given genus, as indicated by the surveyor, not MAISRC",Y
@@ -18,9 +19,12 @@ bolboschoenus_fluviatilis,,Y
 bolboschoenus_maritimus,,Y
 boltonia_asteroides,,Y
 brasenia_schreberi,,Y
+brassicaceae_taxa,"""_taxa"" indicates an unknown taxon within a given family, as indicated by the surveyor, not MAISRC",Y
 butomus_umbellatus,,Y
 calamagrostis_canadensis,,Y
+calamagrostis_sp,"""_sp"" indicates an unknown species within a given genus, as indicated by the surveyor, not MAISRC",Y
 calla_palustris,,Y
+callitriche_hermaphroditica,,Y
 callitriche_sp,"""_sp"" indicates an unknown species within a given genus, as indicated by the surveyor, not MAISRC",Y
 caltha_palustris,,Y
 carex_aquatilis,,Y
@@ -34,10 +38,13 @@ ceratophyllum_demersum,,Y
 ceratophyllum_echinatum,,Y
 ceratophyllum_sp,"""_sp"" indicates an unknown species within a given genus, as indicated by the surveyor, not MAISRC",Y
 chamaedaphne_calyculata,,Y
+chara_aspera,,Y
 chara_braunii,,Y
 chara_canescens,,Y
 chara_contraria,,Y
+chara_foliolosa,,Y
 chara_globularis,,Y
+chara_longifolia,,Y
 chara_sp,"""_sp"" indicates an unknown species within a given genus, as indicated by the surveyor, not MAISRC",Y
 characeae_taxa,"""_taxa"" indicates an unknown taxon within a given family, as indicated by the surveyor, not MAISRC",Y
 cicuta_maculata,,Y
@@ -78,8 +85,10 @@ fontinalis_antipyretica,,Y
 fontinalis_sp,"""_sp"" indicates an unknown species within a given genus, as indicated by the surveyor, not MAISRC",Y
 fontinalis_sullivantii,,Y
 freshwater_sponge,"""_sp"" indicates an unknown species within a given genus, as indicated by the surveyor, not MAISRC",Y
+galium_sp,"""_sp"" indicates an unknown species within a given genus, as indicated by the surveyor, not MAISRC",Y
 glyceria_borealis,,Y
 glyceria_canadensis,,Y
+glyceria_sp,"""_sp"" indicates an unknown species within a given genus, as indicated by the surveyor, not MAISRC",Y
 guid,"Used by some surveyers as a ""station number"" for linking in location data. Otherwise, unlikely to have meaning to most end users.",N
 heteranthera_dubia,,Y
 heteranthera_sp,"""_sp"" indicates an unknown species within a given genus, as indicated by the surveyor, not MAISRC",Y
@@ -111,6 +120,7 @@ lemna_sp,"""_sp"" indicates an unknown species within a given genus, as indicate
 lemna_trisulca,,Y
 lemna_turionifera,,Y
 lemnaceae_taxa,"""_taxa"" indicates an unknown taxon within a given family, as indicated by the surveyor, not MAISRC",Y
+littorella_americana,,Y
 littorella_uniflora,,Y
 lobelia_dortmanna,,Y
 longitude,Longitude data for the sampled location,N
@@ -119,6 +129,7 @@ lychnothamnus_barbatus,,Y
 lycopus_americanus,,Y
 lysimachia_sp,"""_sp"" indicates an unknown species within a given genus, as indicated by the surveyor, not MAISRC",Y
 lysimachia_terrestris,,Y
+lysimachia_thyrsiflora,,Y
 lythrum_salicaria,,Y
 menyanthes_trifoliata,,Y
 multipartsurvey,"Legacy column indicating whether the lake was surveyed in multiple discrete events, as might be common on large lakes",N
@@ -139,6 +150,7 @@ najas_minor,,Y
 najas_sp,"""_sp"" indicates an unknown species within a given genus, as indicated by the surveyor, not MAISRC",Y
 nasturtium_officinale,,Y
 nelumbo_lutea,,Y
+nitella_clavata,,Y
 nitella_flexilis,,Y
 nitella_furcata,,Y
 nitella_macounii,,Y
@@ -151,6 +163,7 @@ nostoc_sp,,Y
 no_veg_found,A column used by some surveyers to indicate that a sample was taken at a location but no taxa of any kind were recovered on the rake head (useful from a QA/QC perspective),N
 nuphar_advena,,Y
 nuphar_microphylla,,Y
+nuphar_rubrodisca,,Y
 nuphar_sp,"""_sp"" indicates an unknown species within a given genus, as indicated by the surveyor, not MAISRC",Y
 nuphar_variegata,,Y
 nymphaea_leibergii,,Y
@@ -162,6 +175,7 @@ persicaria_amphibia,,Y
 persicaria_lapathifolia,,Y
 persicaria_sp,"""_sp"" indicates an unknown species within a given genus, as indicated by the surveyor, not MAISRC",Y
 phalaris_arundinacea,,Y
+phalaris_sp,"""_sp"" indicates an unknown species within a given genus, as indicated by the surveyor, not MAISRC",Y
 phragmites_australis,,Y
 phragmites_australis_americanus,Native subspecies,Y
 phragmites_australis_australis,Non-native subspecies,Y
@@ -182,6 +196,7 @@ potamogeton_hillii,,Y
 potamogeton_illinoensis,,Y
 potamogeton_natans,,Y
 potamogeton_nodosus,,Y
+potamogeton_oakesianus,,Y
 potamogeton_obtusifolius,,Y
 potamogeton_perfoliatus,,Y
 potamogeton_praelongus,,Y
@@ -194,6 +209,8 @@ potamogeton_spirillus,"""_sp"" indicates an unknown species within a given genus
 potamogeton_strictifolius,,Y
 potamogeton_vaseyi,,Y
 potamogeton_zosteriformis,,Y
+potentilla_palustris,,Y
+potentilla_sp,"""_sp"" indicates an unknown species within a given genus, as indicated by the surveyor, not MAISRC",Y
 RAKE_MAX,"The maximum possible value for a rake abundance score in the surveyor's preferred scale (e.g., if a surveyor uses a 0-4 system, this would be 4)",N
 ranunculus_aquatilis,,Y
 ranunculus_flabellaris,,Y
@@ -205,6 +222,7 @@ riccia_fluitans,,Y
 riccia_sp,"""_sp"" indicates an unknown species within a given genus, as indicated by the surveyor, not MAISRC",Y
 ricciocarpos_natans,,Y
 rumex_britannica,,Y
+rumex_sp,"""_sp"" indicates an unknown species within a given genus, as indicated by the surveyor, not MAISRC",Y
 ruppia_cirrhosa,,Y
 sagittaria_cristata,,Y
 sagittaria_cuneata,,Y
@@ -230,6 +248,7 @@ scolochloa_festucacea,,Y
 scorpidium_scorpioides,,Y
 scutellaria_lateriflora,,Y
 scutellaria_sp,"""_sp"" indicates an unknown species within a given genus, as indicated by the surveyor, not MAISRC",Y
+secchi_ft,Secchi depth as measured in feet. Generally only relevant for some MN DNR surveys,N
 sium_suave,,Y
 solanum_dulcamara,,Y
 solidago_sp,"""_sp"" indicates an unknown species within a given genus, as indicated by the surveyor, not MAISRC",Y
@@ -242,6 +261,7 @@ sparganium_natans,,Y
 sparganium_sp,"""_sp"" indicates an unknown species within a given genus, as indicated by the surveyor, not MAISRC",Y
 sphagnum_magellanicum,,Y
 sphagnum_sp,"""_sp"" indicates an unknown species within a given genus, as indicated by the surveyor, not MAISRC",Y
+spiraea_alba,,Y
 spirodela_polyrrhiza,,Y
 spirodela_sp,"""_sp"" indicates an unknown species within a given genus, as indicated by the surveyor, not MAISRC",Y
 spirogyra_sp,"""_sp"" indicates an unknown species within a given genus, as indicated by the surveyor, not MAISRC",Y
@@ -261,6 +281,7 @@ SURVEY_START,The date on which the survey began (some surveys take more than one
 SURVEYORS,"The surveyors who conducted the survey, if known",N
 thelypteris_palustris,,Y
 tolypella_intricata,,Y
+tolypella_sp,"""_sp"" indicates an unknown species within a given genus, as indicated by the surveyor, not MAISRC",Y
 triadenum_fraseri,,Y
 typha_angustifolia,,Y
 typha_x_glauca,,Y
@@ -280,6 +301,7 @@ vallisneria_sp,"""_sp"" indicates an unknown species within a given genus, as in
 verbena_sp,"""_sp"" indicates an unknown species within a given genus, as indicated by the surveyor, not MAISRC",Y
 veronica_americana,,Y
 veronica_catenata,,Y
+veronica_sp,"""_sp"" indicates an unknown species within a given genus, as indicated by the surveyor, not MAISRC",Y
 whole_rake_density,A metric recorded by some surveyors that ascribes a rake score to all taxa collectively observed. Should be no lower than the highest rake score for any observed individual taxon.,N
 wolffia_borealis,,Y
 wolffia_columbiana,,Y

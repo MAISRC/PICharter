@@ -6659,11 +6659,11 @@ malt,James Johnson,riley,Myriophyllum alterniflorum,Y
 malt,James Johnson,susan,Myriophyllum alterniflorum,Y
 malt,James Johnson,weaver,Myriophyllum alterniflorum,Y
 malt,James Johnson,wilmes,Myriophyllum alterniflorum,Y
-malg,April Londo,cedar,Characeae,Y
-malg,April Londo,ham,Characeae,Y
-malg,April Londo,josephine,Characeae,Y
-malg,April Londo,mcmahon,Characeae,Y
-malg,April Londo,silver,Characeae,Y
+malg,April Londo,cedar,Characeae taxa,Y
+malg,April Londo,ham,Characeae taxa,Y
+malg,April Londo,josephine,Characeae taxa,Y
+malg,April Londo,mcmahon,Characeae taxa,Y
+malg,April Londo,silver,Characeae taxa,Y
 macroalgae_nitella_spp,Allison Gamble_19,washington,Nitella sp,Y
 macroalgae_nitella_sp,Allison Gamble_19,frances,Nitella sp,Y
 macroalgae_chara_spp,Allison Gamble_19,cedar,Chara sp,Y
@@ -6672,26 +6672,26 @@ macroalgae_chara_spp,Allison Gamble_19,rays,Chara sp,Y
 macroalgae_chara_spp,Allison Gamble_19,washington,Chara sp,Y
 macroalgae_chara_sp,Allison Gamble_19,reeds,Chara sp,Y
 macroalgae_chara_globularis,Allison Gamble_19,frances,Chara globularis,Y
-macroalgae_[chara_spp_&_nitella_spp_],Allison Gamble,benton,Characeae,Y
-macroalgae_[chara_spp_&_nitella_spp_],Allison Gamble,fox,Characeae,Y
-macroalgae_[chara_spp_&_nitella_spp_],Allison Gamble,frances,Characeae,Y
-macroalgae_[chara_spp_&_nitella_spp_],Allison Gamble,german,Characeae,Y
-macroalgae_[chara_spp_&_nitella_spp_],Allison Gamble,gorman,Characeae,Y
-macroalgae_[chara_spp_&_nitella_spp_],Allison Gamble,kelly,Characeae,Y
-macroalgae_[chara_spp_&_nitella_spp_],Allison Gamble,lily,Characeae,Y
-macroalgae_[chara_spp_&_nitella_spp_],Allison Gamble,mountain,Characeae,Y
-macroalgae_[chara_spp_&_nitella_spp_],Allison Gamble,rays,Characeae,Y
-macroalgae_[chara_spp_&_nitella_spp_],Allison Gamble,reeds,Characeae,Y
-macroalgae_[chara_spp_&_nitella_spp_],Allison Gamble,roemhildt,Characeae,Y
-macroalgae_[chara_spp_&_nitella_spp_],Allison Gamble,shields,Characeae,Y
-macroalgae_[chara_spp_&_nitella_spp_],Allison Gamble,sleepy eye,Characeae,Y
-macroalgae_[chara_spp_&_nitella_spp_],Allison Gamble,washington,Characeae,Y
-macroalgae_[chara_spp_&_nitella_spp_],Allison Gamble,west jefferson,Characeae,Y
-macroalgae_[chara_spp_&_nitella_spp_],April Londo,big marine,Characeae,Y
-macroalgae_[chara_spp_&_nitella_spp_],Mark Ranweiler,oscar,Characeae,Y
-macroalgae_[chara_spp_&_nitella_spp_],Mark Ranweiler,toad,Characeae,Y
-macroalgae_[chara_spp_&_nitella_spp_],Mark Ranweiler,upper cormorant,Characeae,Y
-macroalgae,April Londo,big marine,Characeae,Y
+macroalgae_[chara_spp_&_nitella_spp_],Allison Gamble,benton,Characeae taxa,Y
+macroalgae_[chara_spp_&_nitella_spp_],Allison Gamble,fox,Characeae taxa,Y
+macroalgae_[chara_spp_&_nitella_spp_],Allison Gamble,frances,Characeae taxa,Y
+macroalgae_[chara_spp_&_nitella_spp_],Allison Gamble,german,Characeae taxa,Y
+macroalgae_[chara_spp_&_nitella_spp_],Allison Gamble,gorman,Characeae taxa,Y
+macroalgae_[chara_spp_&_nitella_spp_],Allison Gamble,kelly,Characeae taxa,Y
+macroalgae_[chara_spp_&_nitella_spp_],Allison Gamble,lily,Characeae taxa,Y
+macroalgae_[chara_spp_&_nitella_spp_],Allison Gamble,mountain,Characeae taxa,Y
+macroalgae_[chara_spp_&_nitella_spp_],Allison Gamble,rays,Characeae taxa,Y
+macroalgae_[chara_spp_&_nitella_spp_],Allison Gamble,reeds,Characeae taxa,Y
+macroalgae_[chara_spp_&_nitella_spp_],Allison Gamble,roemhildt,Characeae taxa,Y
+macroalgae_[chara_spp_&_nitella_spp_],Allison Gamble,shields,Characeae taxa,Y
+macroalgae_[chara_spp_&_nitella_spp_],Allison Gamble,sleepy eye,Characeae taxa,Y
+macroalgae_[chara_spp_&_nitella_spp_],Allison Gamble,washington,Characeae taxa,Y
+macroalgae_[chara_spp_&_nitella_spp_],Allison Gamble,west jefferson,Characeae taxa,Y
+macroalgae_[chara_spp_&_nitella_spp_],April Londo,big marine,Characeae taxa,Y
+macroalgae_[chara_spp_&_nitella_spp_],Mark Ranweiler,oscar,Characeae taxa,Y
+macroalgae_[chara_spp_&_nitella_spp_],Mark Ranweiler,toad,Characeae taxa,Y
+macroalgae_[chara_spp_&_nitella_spp_],Mark Ranweiler,upper cormorant,Characeae taxa,Y
+macroalgae,April Londo,big marine,Characeae taxa,Y
 m_spicatum,April Londo,schmidt,Myriophyllum spicatum,Y
 m_spicatum,sblood,kohlman,Myriophyllum spicatum,Y
 m_sibiricum,April Londo,schmidt,Myriophyllum sibiricum,Y
@@ -7514,7 +7514,7 @@ lemna_minor,sblood,kohlman,Lemna minor,Y
 lemna_major,April Londo,medicine,Spirodela polyrrhiza,Y
 Lemna spp.,alexadd,alexadd,Lemna sp,Y
 Lemna spp,alexadd,alexadd,Lemna sp,Y
-"Lemna major/minor, Wolffia columbiana",alexadd,alexadd,Lemnaceae,Y
+"Lemna major/minor, Wolffia columbiana",alexadd,alexadd,Lemnaceae taxa,Y
 Lemna major/minor,alexadd,alexadd,Lemna sp,Y
 lemna,Allison Gamble,east jefferson,Lemna sp,Y
 lemna,Allison Gamble,madison,Lemna sp,Y
@@ -11195,12 +11195,12 @@ Charadeep,alexadd,alexadd,Chara sp,Y
 characeae_taxa,alexadd,alexadd,Characeae taxa,Y
 chara2,Rob Brown,powderhorn,Chara sp,Y
 "chara_spp_,_muskgrass",sblood,kohlman,Chara sp,Y
-chara_spp_&_nitella_spp,April Londo,big carnelian,Characeae,Y
-chara_spp_&_nitella_spp,April Londo,cedar,Characeae,Y
-chara_spp_&_nitella_spp,April Londo,josephine,Characeae,Y
-chara_spp_&_nitella_spp,April Londo,mcmahon,Characeae,Y
-chara_spp_&_nitella_spp,April Londo,silver,Characeae,Y
-chara_spp_&_nitella_spp,April Londo,turtle,Characeae,Y
+chara_spp_&_nitella_spp,April Londo,big carnelian,Characeae taxa,Y
+chara_spp_&_nitella_spp,April Londo,cedar,Characeae taxa,Y
+chara_spp_&_nitella_spp,April Londo,josephine,Characeae taxa,Y
+chara_spp_&_nitella_spp,April Londo,mcmahon,Characeae taxa,Y
+chara_spp_&_nitella_spp,April Londo,silver,Characeae taxa,Y
+chara_spp_&_nitella_spp,April Londo,turtle,Characeae taxa,Y
 chara_spp,Allison Gamble,reeds,Chara sp,Y
 chara_spp,April Londo,bald eagle,Chara sp,Y
 chara_spp,April Londo,coon east,Chara sp,Y
@@ -12237,7 +12237,7 @@ Najas spp.,alexadd,alexadd,Najas sp,Y
 Depth (m),alexadd,alexadd,depth_ft,N
 utm_crs,alexadd,alexadd,utm_crs,N
 Najas spp.,alexadd,alexadd,Najas sp,Y
-Chara spp. & Nitella spp.,alexadd,alexadd,Characeae,Y
+Chara spp. & Nitella spp.,alexadd,alexadd,Characeae taxa,Y
 Valisneria americanus,alexadd,alexadd,Vallisneria americana,Y
 Potomogeton crispus,alexadd,alexadd,Potamogeton crispus,Y
 Potomogeton amplifolius,alexadd,alexadd,Potamogeton amplifolius,Y
@@ -12249,12 +12249,12 @@ Nymphaea sp.,alexadd,alexadd,Nymphaea sp,Y
 Scirpus sp.,alexadd,alexadd,Scirpus sp,Y
 Typha sp.,alexadd,alexadd,Typha sp,Y
 Algae_surf,alexadd,alexadd,Algae,Y
-Chara spp. & Nitella spp.,alexadd,alexadd,Characeae,Y
+Chara spp. & Nitella spp.,alexadd,alexadd,Characeae taxa,Y
 Myriophyllum verticelatum,alexadd,alexadd,Myriophyllum verticillatum,Y
 Potamogeton foliosus,alexadd,alexadd,Potamogeton foliosus,Y
 Potamogetonsp. (unknown),alexadd,alexadd,Potamogeton sp,Y
 Utricularia spp.,alexadd,alexadd,Utricularia sp,Y
-Macro algae,alexadd,alexadd,Characeae,Y
+Macro algae,alexadd,alexadd,Characeae taxa,Y
 saggitaria spp.,alexadd,alexadd,Sagittaria sp,Y
 Isoetes tenella,alexadd,alexadd,Isoetes echinospora,Y
 Myriophyllum ventillatum,alexadd,alexadd,Myriophyllum verticillatum,Y
@@ -12459,9 +12459,9 @@ Potamogeton foliosus subsp. foliosus,alexadd,alexadd,Potamogeton foliosus,Y
 Elymus virginicus var. virginicus,alexadd,alexadd,Elymus virginicus,Y
 Potamogeton illioensis,alexadd,alexadd,Potamogeton illinoensis,Y
 Sagittaria spp.,alexadd,alexadd,Sagittaria sp,Y
-Chara spp & Nitella spp.,alexadd,alexadd,Characeae,Y
+Chara spp & Nitella spp.,alexadd,alexadd,Characeae taxa,Y
 Lemna minor & Lemna major,alexadd,alexadd,Lemna sp,Y
-Lemna minor & Spirodela polyrhiza,alexadd,alexadd,Lemnaceae,Y
+Lemna minor & Spirodela polyrhiza,alexadd,alexadd,Lemnaceae taxa,Y
 Lemna minor & L. major,alexadd,alexadd,Lemna sp,Y
 Neddle Spike Rush,alexadd,alexadd,Eleocharis acicularis,Y
 Iris vericolor,alexadd,alexadd,Iris versicolor,Y
@@ -12485,7 +12485,7 @@ Solanum_dulcamara_Bittersweet_Nightshade,alexadd,alexadd,Solanum dulcamara,Y
 Myriophyllum spicatum X sibiricum hybrid,alexadd,alexadd,Myriophyllum spicatum x sibiricum,Y
 Elodea sp.,alexadd,alexadd,Elodea sp,Y
 Wolffia sp.,alexadd,alexadd,Wolffia sp,Y
-Duckweeds (Lemna sp. and Spirodela sp.),alexadd,alexadd,Lemnaceae,Y
+Duckweeds (Lemna sp. and Spirodela sp.),alexadd,alexadd,Lemnaceae taxa,Y
 Lemna sp.,alexadd,alexadd,Lemna sp,Y
 Nitella sp.,alexadd,alexadd,Nitella sp,Y
 Myriophyllum sp.,alexadd,alexadd,Myriophyllum sp,Y
@@ -12496,3 +12496,27 @@ Lemna minor ,alexadd,alexadd,Lemna minor,Y
 Filiform Pondweed,alexadd,alexadd,Stuckenia filiformis,Y
 Potamogeton.sp.,alexadd,alexadd,Potamogeton sp,Y
 Veronica anagallis-aquatica,alexadd,alexadd,Veronica catenata,Y
+secchi_ft,alexadd,alexadd,secchi_ft,N
+c_aspe,alexadd,alexadd,Chara aspera,Y
+c_foli,alexadd,alexadd,Chara foliolosa,Y
+c_long,alexadd,alexadd,Chara longifolia,Y
+calama,alexadd,alexadd,Calamagrostis sp,Y
+ch,alexadd,alexadd,Callitriche hermaphroditica,Y
+cres,alexadd,alexadd,Brassicaceae taxa,Y
+gal,alexadd,alexadd,Galium sp,Y
+gl,alexadd,alexadd,Glyceria sp,Y
+lysithyr,alexadd,alexadd,Lysimachia thyrsiflora,Y
+n_clav,alexadd,alexadd,Nitella clavata,Y
+nur,alexadd,alexadd,Nuphar rubrodisca,Y
+pha,alexadd,alexadd,Phalaris sp,Y
+popa,alexadd,alexadd,Potentilla palustris,Y
+ru,alexadd,alexadd,Rumex sp,Y
+spi,alexadd,alexadd,Spiraea alba,Y
+toly,alexadd,alexadd,Tolypella sp,Y
+v,alexadd,alexadd,Veronica sp,Y
+Azolla mexicana,alexadd,alexadd,Azolla microphyla,Y
+Potamogeton oakesianus,alexadd,alexadd,Potamogeton oakesianus,Y
+alisma_gramineum,alexadd,alexadd,Alisma gramineum,Y
+littorella_americana,alexadd,alexadd,Littorella americana,Y
+potentilla_sp,alexadd,alexadd,Potentilla sp,Y
+Myriophyllum_verticillatum_Whorled_water_milfoil,alexadd,alexadd,Myriophyllum verticillatum,Y

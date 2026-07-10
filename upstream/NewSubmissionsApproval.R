@@ -330,7 +330,13 @@ for(n in 1:length(content.ids)) {
   surveyDOW_check = readline("Press Y if these DOW, start date, and submit time values are valid.\nPress D to change DOW,\nPress S to change survey start (YYYY-MM-DD format!).\nPress T to change submit time.\nEnter multiples to change multiples.\nPress any other key to continue.")}
   if(grepl("D", surveyDOW_check)) {
     newval = readline("Enter the proper DOW value to use. Do not use quotes!")
+    if(nchar(newval) == 8 &
+       str_sub(newval, 7, 8) == "00") { #THIS IS PAST THE SUBBASIN CHECK, SO IF THERE'S A SUBBASIN CODE HERE, WE NEED TO EXTRACT IT.
     current.import$DOW = newval 
+    } else {
+    current.import$DOW = paste0(str_sub(newval, 1, 6), "00")
+    current.import$subbasin = str_sub(newval, 7, 8)
+    }
     rewritetoG()
   }
   if(grepl("S", surveyDOW_check)) {

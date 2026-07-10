@@ -262,7 +262,7 @@ tags$script(HTML("
                  #Insert a footer with links, contact info, funding credits, and current version number.
                  footer = tags$footer(
                  shiny::HTML("<br>Created by the Minnesota Aquatic Invasive Species Research Center, University of Minnesota by <address><a href='mailto:bajcz003@umn.edu'>Dr. Alex Bajcz (bajcz003@umn.edu)</a></address>, under the current direction of <address><a href='mailto:walsh229@umn.edu'>Dr. Jake Walsh (walsh229@umn.edu)</a></address>.<br>
-App last updated June 4 2026. Version 2.6.6.5. View the <a href = 'https://z.umn.edu/PI-AS' target = '_blank'>accessibility statement</a> (opens in new tab). Check out our <a href = 'https://doi.org/10.1002/ece3.73779' target = '_blank'>publication on <i>P.I. Charter</i> in <i>Ecology and Evolution</i></a> (opens in new tab)!<br>
+App last updated July 10 2026. Version 2.6.6.6. View the <a href = 'https://z.umn.edu/PI-AS' target = '_blank'>accessibility statement</a> (opens in new tab). Check out our <a href = 'https://doi.org/10.1002/ece3.73779' target = '_blank'>publication on <i>P.I. Charter</i> in <i>Ecology and Evolution</i></a> (opens in new tab)!<br>
 Funding for this work was provided by the Minnesota Environment and Natural Resources Trust Fund as recommended by the Minnesota Aquatic Invasive Species Research Center and the Legislative-Citizen Commission on Minnesota Resources, and the State of Minnesota.<br><br>"), 
                               id = "footerText",
                           style = "min-width: 320px;"),
