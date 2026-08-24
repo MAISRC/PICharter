@@ -94,8 +94,8 @@ convert_column_types_approv = function(df) {
     #ATTEMPT TO CONVERT TO NUMERIC NEXT
     numeric_column = column
     numeric_column[is.na(numeric_column)] = 0
-    numeric_column = as.numeric(numeric_column)
-    if (!anyNA(numeric_column)) {
+    numeric_column = suppressWarnings(as.numeric(numeric_column))
+    if(!anyNA(numeric_column)) {
       return(numeric_column)
     }
     
@@ -109,8 +109,8 @@ convert_column_types = function(df) {
   suppressWarnings(lapply(df, function(column) {
 
     #ATTEMPT TO CONVERT TO NUMERIC NEXT
-    numeric_column = as.numeric(column)
-    if (!anyNA(numeric_column)) {
+    numeric_column = suppressWarnings(as.numeric(column))
+    if(!anyNA(numeric_column)) {
       return(numeric_column)
     }
     
